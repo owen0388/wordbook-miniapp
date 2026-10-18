@@ -1,0 +1,63 @@
+{
+  "appid": "wx7dc97e4e4ee08fc8",
+  "compileType": "miniprogram",
+  "libVersion": "3.5.5",
+  "projectname": "单词秒记",
+  "description": "针对小学英语教材的背单词工具：按艾宾浩斯遗忘曲线安排复习，每日定量、次日抽查、错词优先",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "lazyCodeLoading": "requiredComponents",
+    "ignoreDevUnusedFiles": false,
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "packOptions": {
+    "ignore": [
+      {
+        "value": "data",
+        "type": "folder"
+      },
+      {
+        "value": "scripts",
+        "type": "folder"
+      },
+      {
+        "value": "preview",
+        "type": "folder"
+      },
+      {
+        "value": "assets/fonts",
+        "type": "folder"
+      },
+      {
+        "value": ".bat",
+        "type": "suffix"
+      },
+      {
+        "value": ".md",
+        "type": "suffix"
+      }
+    ],
+    "include": []
+  },
+  "simulatorPluginLibVersion": {},
+  "editorSetting": {}
+}

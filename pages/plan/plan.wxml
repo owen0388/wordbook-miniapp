@@ -1,0 +1,133 @@
+<view class="page-in-side page">
+
+  <view class="fx-glow"></view>
+  <view class="fx-bg"></view>
+
+  <!-- 每日词量 -->
+  <view class="card">
+    <view class="card-title"><text>每日学习量</text></view>
+
+    <view class="row-between item">
+      <view class="flex1">
+        <view class="item-label">每日新词量</view>
+        <view class="muted item-hint">每天新学多少个单词</view>
+      </view>
+      <view class="val">{{plan.dailyNewCount}}</view>
+    </view>
+    <slider
+      min="5" max="100" step="5"
+      value="{{plan.dailyNewCount}}"
+      show-value="{{false}}"
+      activeColor="#2E6BD6"
+      bindchange="onNewCount" />
+
+    <view class="row-between item">
+      <view class="flex1">
+        <view class="item-label">每日复习上限</view>
+        <view class="muted item-hint">抽查队列最多取多少个词</view>
+      </view>
+      <view class="val">{{plan.dailyReviewLimit}}</view>
+    </view>
+    <slider
+      min="20" max="200" step="10"
+      value="{{plan.dailyReviewLimit}}"
+      show-value="{{false}}"
+      activeColor="#2E6BD6"
+      bindchange="onReviewLimit" />
+  </view>
+
+  <!-- 题型 -->
+  <view class="card">
+    <view class="card-title"><text>出题题型</text></view>
+    <view class="muted item-hint mb">至少保留一种；新词会从中随机抽出若干种依次考</view>
+
+    <view
+      class="mode {{item.on ? 'mode-on' : ''}}"
+      wx:for="{{modeList}}"
+      wx:key="key"
+      data-key="{{item.key}}"
+      bindtap="toggleMode">
+      <view class="mode-check">{{item.on ? '✓' : ''}}</view>
+      <view class="flex1">
+        <view class="item-label">{{item.label}}</view>
+        <view class="muted item-hint">{{item.hint}}</view>
+      </view>
+    </view>
+
+    <view class="row-between item mt">
+      <view class="flex1">
+        <view class="item-label">每个词需通过题型数</view>
+        <view class="muted item-hint">全部通过才计入"已学"</view>
+      </view>
+      <view class="stepper">
+        <view class="step-btn" bindtap="onLess">−</view>
+        <view class="step-val">{{plan.passModeCount}}</view>
+        <view class="step-btn" bindtap="onMore">+</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 抽查门槛 -->
+  <view class="card">
+    <view class="card-title"><text>次日抽查门槛</text></view>
+    <view class="muted item-hint mb">复习抽查正确率达到该值，才解锁当天新词</view>
+
+    <view class="chips">
+      <view
+        class="chip {{plan.passRate === item ? 'chip-on' : ''}}"
+        wx:for="{{passRateOptions}}"
+        wx:key="*this"
+        data-value="{{item}}"
+        bindtap="pickPassRate">{{item}}%</view>
+    </view>
+
+    <view class="row-between item mt">
+      <view class="flex1">
+        <view class="item-label">严格模式</view>
+        <view class="muted item-hint">未达标时今日只复习，不学新词</view>
+      </view>
+      <switch checked="{{plan.strictMode}}" color="#2E6BD6" bindchange="onStrict" />
+    </view>
+
+    <view class="tip" wx:if="{{!plan.strictMode}}">
+      已关闭严格模式：无论抽查结果如何，都会继续学新词。
+      对自制力强的用户更灵活，但更容易出现"背了忘"。
+    </view>
+
+    <view class="row-between item mt">
+      <view class="flex1">
+        <view class="item-label">自动朗读发音</view>
+        <view class="muted item-hint">题面出现英文时自动读一遍，答完再读一遍</view>
+      </view>
+      <switch checked="{{plan.autoSpeak}}" color="#2E6BD6" bindchange="onAutoSpeak" />
+    </view>
+
+    <view class="row-between item mt">
+      <view class="flex1">
+        <view class="item-label">答题音效</view>
+        <view class="muted item-hint">答对是上行小铃铛，答错是柔和低音，配合轻震动</view>
+      </view>
+      <switch checked="{{plan.sfxOn}}" color="#2E6BD6" bindchange="onSfx" />
+    </view>
+
+    <view class="tip" wx:if="{{!plan.sfxOn}}">
+      已关闭音效与震动。安静环境（如图书馆、睡前）建议关掉。
+    </view>
+
+    <view class="tip" wx:if="{{plan.sfxOn}}">
+      听到"叮咚"就说明音效通路正常。<text class="tip-link" bindtap="testSfx">点这里再试听一次 ›</text>
+    </view>
+
+    <view class="tip" wx:if="{{!speechReady}}">
+      当前还没内置发音音频。发音走本机文件播放，不联网、不耗流量，补上音频后即可自动朗读。
+    </view>
+  </view>
+
+  <!-- 危险操作 -->
+  <view class="card">
+    <view class="card-title"><text>数据</text></view>
+    <view class="muted item-hint mb">所有学习数据都保存在本机，不会上传。</view>
+    <button hover-class="btn-press" class="btn btn-danger-ghost" bindtap="clearData">清除全部学习数据</button>
+  </view>
+
+</view>

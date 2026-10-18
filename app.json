@@ -1,0 +1,32 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/catalog/catalog",
+    "pages/bookshelf/bookshelf",
+    "pages/wrongbook/wrongbook",
+    "pages/plan/plan",
+    "pages/study/session/session",
+    "pages/study/result/result"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#27386E",
+    "navigationBarTitleText": "单词秒记",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F8F3E9",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#8A9099",
+    "selectedColor": "#1B3A6B",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "今日" },
+      { "pagePath": "pages/catalog/catalog", "text": "词库" },
+      { "pagePath": "pages/bookshelf/bookshelf", "text": "我的教材" },
+      { "pagePath": "pages/wrongbook/wrongbook", "text": "错词本" }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

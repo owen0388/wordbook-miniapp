@@ -1,0 +1,123 @@
+<view class="page-in page">
+
+  <view class="fx-glow"></view>
+  <view class="fx-bg"></view>
+
+  <!-- 顶部问候 -->
+  <view class="hero">
+    <view class="row-between">
+      <view class="flex1">
+        <view class="hero-date">{{dateText}} · {{weekdayText}}</view>
+        <view class="hero-title">{{doneToday ? '今日已完成，继续保持' : '今天也要记单词'}}</view>
+      </view>
+      <view class="mascot">
+        <view class="m-ear l"></view>
+        <view class="m-ear r"></view>
+        <view class="m-body">
+          <view class="m-belly"></view>
+          <view class="m-eye l"><view class="m-pupil"></view></view>
+          <view class="m-eye r"><view class="m-pupil"></view></view>
+          <view class="m-beak"></view>
+        </view>
+      </view>
+      <view class="streak">
+        <view class="streak-num">{{overall.streak}}</view>
+        <view class="streak-label">连续天数</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 今日任务 -->
+  <view class="card task-card">
+    <view class="card-title">
+      <text>今日任务</text>
+      <text class="muted" wx:if="{{hasShelf}}">复习优先，通过后解锁新词</text>
+    </view>
+
+    <block wx:if="{{hasShelf}}">
+      <view class="stat-grid">
+        <view class="stat">
+          <view class="stat-num">{{reviewCount}}</view>
+          <view class="stat-label">待抽查</view>
+        </view>
+        <view class="stat">
+          <view class="stat-num">{{newCount}}</view>
+          <view class="stat-label">待新学</view>
+        </view>
+        <view class="stat">
+          <view class="stat-num">{{plan.dailyNewCount}}</view>
+          <view class="stat-label">每日计划</view>
+        </view>
+      </view>
+
+      <button
+        hover-class="btn-press" class="btn btn-primary task-btn"
+        bindtap="startStudy"
+        disabled="{{reviewCount + newCount === 0}}">
+        {{reviewCount + newCount === 0 ? '今日任务已完成' : '开始学习'}}
+      </button>
+
+      <view class="muted center task-hint" wx:if="{{reviewCount > 0}}">
+        抽查正确率达 {{plan.passRate}}% 才会开始今日新词
+      </view>
+      <view class="muted center task-hint" wx:else>
+        今日无待复习内容，直接开始新词
+      </view>
+    </block>
+
+    <block wx:else>
+      <view class="empty">
+        <view class="empty-text">还没有选择教材\n先去词库挑选要背的课本</view>
+        <button hover-class="btn-press" class="btn btn-primary btn-sm" bindtap="startStudy">去选教材</button>
+      </view>
+    </block>
+  </view>
+
+  <!-- 当前主学教材 -->
+  <view class="card" wx:if="{{primaryBook}}" bindtap="goBookshelf">
+    <view class="card-title">
+      <text>主学教材</text>
+      <text class="muted">管理 ›</text>
+    </view>
+    <view class="book-name">{{primaryBook.name}}</view>
+    <view class="row-between book-meta">
+      <text class="muted">{{primaryBook.learned}} / {{primaryBook.total}} 词已学</text>
+      <text class="tag tag-primary">{{primaryBook.percent}}%</text>
+    </view>
+    <view class="bar book-bar">
+      <view class="bar-fill" style="width: {{primaryBook.percent}}%"></view>
+    </view>
+  </view>
+
+  <!-- 总览 -->
+  <view class="card">
+    <view class="card-title"><text>学习总览</text></view>
+    <view class="stat-grid">
+      <view class="stat">
+        <view class="stat-num">{{overall.learned}}</view>
+        <view class="stat-label">已学单词</view>
+      </view>
+      <view class="stat">
+        <view class="stat-num">{{overall.mastered}}</view>
+        <view class="stat-label">已掌握</view>
+      </view>
+      <view class="stat">
+        <view class="stat-num">{{overall.totalLibrary}}</view>
+        <view class="stat-label">词库总量</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快捷入口 -->
+  <view class="card">
+    <view class="list-item" bindtap="goPlan">
+      <text>学习计划</text>
+      <text class="muted">每日新词 {{plan.dailyNewCount}} 个 ›</text>
+    </view>
+    <view class="list-item" bindtap="goWrongBook">
+      <text>错词本</text>
+      <text class="muted">查看需要重点复习的词 ›</text>
+    </view>
+  </view>
+
+</view>

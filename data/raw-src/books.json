@@ -1,0 +1,66 @@
+[
+  {
+    "source": "pep-3a.csv",
+    "textbookId": "pep_3a",
+    "textbookName": "人教版（PEP）三年级上册",
+    "publisher": "人教版",
+    "grade": 3,
+    "term": "上",
+    "unitColumn": null,
+    "columns": {
+      "word": "英文",
+      "meaningCn": "中文",
+      "phonetic": "音标",
+      "example": "例句",
+      "note": "备注"
+    }
+  },
+  {
+    "source": "pep-4a.csv",
+    "textbookId": "pep_4a",
+    "textbookName": "人教版（PEP）四年级上册",
+    "publisher": "人教版",
+    "grade": 4,
+    "term": "上",
+    "unitColumn": null,
+    "columns": {
+      "word": "英文",
+      "meaningCn": "中文",
+      "phonetic": "音标",
+      "example": "例句",
+      "note": "备注"
+    }
+  },
+  {
+    "source": "pep-5a.csv",
+    "textbookId": "pep_5a",
+    "textbookName": "人教版（PEP）五年级上册",
+    "publisher": "人教版",
+    "grade": 5,
+    "term": "上",
+    "unitColumn": null,
+    "columns": {
+      "word": "英文",
+      "meaningCn": "中文",
+      "phonetic": "音标",
+      "example": "例句",
+      "note": "备注"
+    }
+  },
+  {
+    "source": "pep-6a.csv",
+    "textbookId": "pep_6a",
+    "textbookName": "人教版（PEP）六年级上册",
+    "publisher": "人教版",
+    "grade": 6,
+    "term": "上",
+    "unitColumn": null,
+    "columns": {
+      "word": "英文",
+      "meaningCn": "中文",
+      "phonetic": "音标",
+      "example": "例句",
+      "note": "备注"
+    }
+  }
+]

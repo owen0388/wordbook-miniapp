@@ -1,0 +1,49 @@
+<view class="page-in-up page">
+
+  <view class="fx-glow"></view>
+  <view class="fx-bg"></view>
+
+  <view class="hero">
+    <view class="hero-emoji" wx:if="{{accuracy >= 80}}">完成</view>
+    <view class="hero-emoji" wx:else>加油</view>
+    <view class="hero-title">{{remark}}</view>
+    <view class="hero-sub">连续打卡 {{report.streak}} 天 · 用时 {{report.durationText}}</view>
+  </view>
+
+  <view class="card">
+    <view class="card-title"><text>本轮战报</text></view>
+    <view class="stat-grid">
+      <view class="stat">
+        <view class="stat-num">{{report.newPassed}}</view>
+        <view class="stat-label">新学通过</view>
+      </view>
+      <view class="stat">
+        <view class="stat-num">{{report.reviewTotal}}</view>
+        <view class="stat-label">复习抽查</view>
+      </view>
+      <view class="stat">
+        <view class="stat-num">{{report.wrongCount}}</view>
+        <view class="stat-label">答错</view>
+      </view>
+    </view>
+
+    <view class="divider"></view>
+
+    <view class="row-between">
+      <text class="sub">正确率</text>
+      <text class="acc">{{accuracy}}%</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{report.wrongCount > 0}}">
+    <view class="card-title"><text>错词已记录</text></view>
+    <view class="sub">
+      答错的词已进入错词本，明天的抽查会优先安排它们。
+      现在也可以直接去错词本专项复习。
+    </view>
+  </view>
+
+  <button hover-class="btn-press" class="btn btn-primary" bindtap="goHome">返回首页</button>
+  <button hover-class="btn-press" class="btn btn-ghost mt" bindtap="goWrongBook" wx:if="{{report.wrongCount > 0}}">去错词本</button>
+
+</view>

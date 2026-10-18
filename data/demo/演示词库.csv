@@ -1,0 +1,33 @@
+﻿textbook_id,textbook_name,publisher,grade,term,unit_seq,unit_name,seq,word,phonetic,pos,meaning_cn,example,example_cn,audio_file,note
+demo_a,【演示】人教版样例 三年级上册,人教版,3,上,1,Unit 1 Hello!,1,hello,/həˈləʊ/,int.,你好,Hello! I'm Mike.,你好！我是迈克。,,演示数据-请勿用于正式发布
+demo_a,【演示】人教版样例 三年级上册,人教版,3,上,1,Unit 1 Hello!,2,hi,/haɪ/,int.,嗨；你好,Hi, Amy!,嗨，埃米！,,演示数据-请勿用于正式发布
+demo_a,【演示】人教版样例 三年级上册,人教版,3,上,1,Unit 1 Hello!,3,book,/bʊk/,n.,书,This is my book.,这是我的书。,,演示数据-请勿用于正式发布
+demo_a,【演示】人教版样例 三年级上册,人教版,3,上,1,Unit 1 Hello!,4,pen,/pen/,n.,钢笔,I have a pen.,我有一支钢笔。,,演示数据-请勿用于正式发布
+demo_a,【演示】人教版样例 三年级上册,人教版,3,上,1,Unit 1 Hello!,5,pencil,/ˈpensl/,n.,铅笔,Where is my pencil?,我的铅笔在哪儿？,,演示数据-请勿用于正式发布
+demo_a,【演示】人教版样例 三年级上册,人教版,3,上,1,Unit 1 Hello!,6,school,/skuːl/,n.,学校,I go to school.,我去上学。,,演示数据-请勿用于正式发布
+demo_a,【演示】人教版样例 三年级上册,人教版,3,上,2,Unit 2 Colours,1,red,/red/,adj.,红色的,The apple is red.,这个苹果是红色的。,,演示数据-请勿用于正式发布
+demo_a,【演示】人教版样例 三年级上册,人教版,3,上,2,Unit 2 Colours,2,blue,/bluː/,adj.,蓝色的,The sky is blue.,天空是蓝色的。,,演示数据-请勿用于正式发布
+demo_a,【演示】人教版样例 三年级上册,人教版,3,上,2,Unit 2 Colours,3,green,/ɡriːn/,adj.,绿色的,The leaf is green.,叶子是绿色的。,,演示数据-请勿用于正式发布
+demo_a,【演示】人教版样例 三年级上册,人教版,3,上,2,Unit 2 Colours,4,yellow,/ˈjeləʊ/,adj.,黄色的,I like yellow.,我喜欢黄色。,,演示数据-请勿用于正式发布
+demo_a,【演示】人教版样例 三年级上册,人教版,3,上,2,Unit 2 Colours,5,orange,/ˈɒrɪndʒ/,n.,橙子；橙色,This is an orange.,这是一个橙子。,,演示数据-请勿用于正式发布
+demo_a,【演示】人教版样例 三年级上册,人教版,3,上,3,Unit 3 Numbers,1,one,/wʌn/,num.,一,I have one apple.,我有一个苹果。,,演示数据-请勿用于正式发布
+demo_a,【演示】人教版样例 三年级上册,人教版,3,上,3,Unit 3 Numbers,2,two,/tuː/,num.,二,Two cats.,两只猫。,,演示数据-请勿用于正式发布
+demo_a,【演示】人教版样例 三年级上册,人教版,3,上,3,Unit 3 Numbers,3,three,/θriː/,num.,三,Three books.,三本书。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,1,Unit 1 Animals,1,cat,/kæt/,n.,猫,The cat is sleeping.,那只猫在睡觉。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,1,Unit 1 Animals,2,dog,/dɒɡ/,n.,狗,My dog is big.,我的狗很大。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,1,Unit 1 Animals,3,bird,/bɜːd/,n.,鸟,A bird can fly.,鸟会飞。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,1,Unit 1 Animals,4,fish,/fɪʃ/,n.,鱼,Fish live in water.,鱼生活在水里。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,1,Unit 1 Animals,5,apple,/ˈæpl/,n.,苹果,I eat an apple every day.,我每天吃一个苹果。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,1,Unit 1 Animals,6,banana,/bəˈnɑːnə/,n.,香蕉,The banana is yellow.,香蕉是黄色的。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,2,Unit 2 Family,1,mother,/ˈmʌðə(r)/,n.,母亲；妈妈,This is my mother.,这是我的妈妈。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,2,Unit 2 Family,2,father,/ˈfɑːðə(r)/,n.,父亲；爸爸,My father is a teacher.,我爸爸是老师。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,2,Unit 2 Family,3,sister,/ˈsɪstə(r)/,n.,姐妹,I have a sister.,我有一个姐姐。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,2,Unit 2 Family,4,brother,/ˈbrʌðə(r)/,n.,兄弟,My brother is ten.,我弟弟十岁。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,2,Unit 2 Family,5,teacher,/ˈtiːtʃə(r)/,n.,教师,She is our teacher.,她是我们的老师。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,2,Unit 2 Family,6,student,/ˈstjuːdnt/,n.,学生,I am a student.,我是一名学生。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,3,Unit 3 Food,1,water,/ˈwɔːtə(r)/,n.,水,Drink more water.,多喝水。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,3,Unit 3 Food,2,milk,/mɪlk/,n.,牛奶,I like milk.,我喜欢牛奶。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,3,Unit 3 Food,3,bread,/bred/,n.,面包,Have some bread.,吃点面包吧。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,3,Unit 3 Food,4,rice,/raɪs/,n.,米饭,We eat rice.,我们吃米饭。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,3,Unit 3 Food,5,cake,/keɪk/,n.,蛋糕,The cake is sweet.,蛋糕很甜。,,演示数据-请勿用于正式发布
+demo_b,【演示】北师大样例 四年级下册,北师大版,4,下,3,Unit 3 Food,6,egg,/eɡ/,n.,蛋,I have an egg.,我有一个鸡蛋。,,演示数据-请勿用于正式发布

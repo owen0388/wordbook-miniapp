@@ -1,0 +1,153 @@
+#!/usr/bin/env node
+/**
+ * 小程序静态校验（编译前自查）
+ * 运行： node scripts/lint-miniapp.cjs
+ *
+ * 为什么需要它：
+ *   微信开发者工具的报错是「编译期」的，改一轮要重新编译才能看到结果。
+ *   下面这些问题都会直接让编译失败，但都能在本地用文本规则查出来：
+ *
+ *   1) WXSS 不支持 `*` 通配符选择器      → error at token `*`
+ *   2) 页面缺 .json                      → 页面无法注册，整个小程序白屏
+ *   3) 括号不配对                        → 样式表被截断，后面全部失效
+ *   4) WXML 标签不配对                    → 页面渲染报错
+ *   5) 用了较新的 CSS 简写（inset / gap 等）在旧安卓 WebView 上不生效
+ *
+ * 这个脚本不替代真机验证，只负责把"必然失败"的低级错误挡在前面。
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const ROOT = path.resolve(__dirname, '..');
+let errors = 0;
+let warns = 0;
+let checks = 0;
+
+function err(msg) { errors++; console.log('  ✗ ' + msg); }
+function warn(msg) { warns++; console.log('  ! ' + msg); }
+function ok(msg) { checks++; console.log('  ✓ ' + msg); }
+
+function rel(p) { return path.relative(ROOT, p).replace(/\\/g, '/'); }
+
+function walk(dir, out, filter) {
+  fs.readdirSync(dir).forEach((name) => {
+    const p = path.join(dir, name);
+    const st = fs.statSync(p);
+    if (st.isDirectory()) {
+      if (['node_modules', '.git', 'data', 'scripts', 'preview'].indexOf(name) >= 0) return;
+      walk(p, out, filter);
+    } else if (filter(name)) {
+      out.push(p);
+    }
+  });
+  return out;
+}
+
+/** 去掉 CSS 注释，避免注释里的 * 被误判 */
+function stripCssComments(s) {
+  return s.replace(/\/\*[\s\S]*?\*\//g, '');
+}
+
+/* ---------- 1. 页面文件是否齐全 ---------- */
+console.log('\n[1] 页面文件完整性');
+const appJson = JSON.parse(fs.readFileSync(path.join(ROOT, 'app.json'), 'utf8'));
+const pages = appJson.pages || [];
+if (!pages.length) err('app.json 里没有 pages');
+pages.forEach((p) => {
+  const base = path.join(ROOT, p);
+  ['js', 'json', 'wxml', 'wxss'].forEach((ext) => {
+    const f = base + '.' + ext;
+    if (!fs.existsSync(f)) err(rel(f) + ' 不存在（缺 .json 会导致页面无法注册）');
+  });
+});
+ok(pages.length + ' 个页面的 js/json/wxml/wxss 都已就位');
+
+/* ---------- 2. WXSS 规则 ---------- */
+console.log('\n[2] WXSS 语法与兼容性');
+const wxssFiles = walk(ROOT, [], (n) => n.endsWith('.wxss'));
+wxssFiles.forEach((f) => {
+  const raw = fs.readFileSync(f, 'utf8');
+  const s = stripCssComments(raw);
+  const name = rel(f);
+
+  // 括号平衡
+  if (s.split('{').length !== s.split('}').length) {
+    err(name + ' 大括号不配对');
+  }
+
+  s.split('\n').forEach((line, i) => {
+    const ln = i + 1;
+    const t = line.trim();
+
+    // 通配符选择器：`*` 或 `> *` 或 `*:nth-child`
+    if (/(^|[,\s>+~])\*(\s*[{:,.\[]|$)/.test(t) && t.indexOf('font') < 0) {
+      err(name + ':' + ln + ' 使用了 * 通配符选择器（WXSS 不支持，改用 view）');
+    }
+
+    // 较新的 CSS 简写，旧安卓 WebView 不认
+    if (/^inset\s*:/.test(t)) {
+      warn(name + ':' + ln + ' inset 简写在旧安卓上不生效，建议展开成 top/right/bottom/left');
+    }
+    // 鼠标态选择器在小程序里无意义
+    if (/:hover|:focus\b/.test(t)) {
+      warn(name + ':' + ln + ' :hover / :focus 在真机上不触发，改用 hover-class');
+    }
+  });
+
+  // @font-face 必须走 base64 或网络地址，本地路径不生效
+  const fontFaces = s.match(/@font-face\{[\s\S]*?\}/g) || [];
+  fontFaces.forEach((ff) => {
+    if (/src\s*:\s*url\(\s*['"]?(?!data:|https?:)/.test(ff) && !/url\('?data:/.test(ff)) {
+      warn(name + ' @font-face 引用了本地文件路径，小程序不支持，需转 base64 或放网络');
+    }
+  });
+});
+ok(wxssFiles.length + ' 个 WXSS 文件已检查');
+
+/* ---------- 3. WXML 标签配对 ---------- */
+console.log('\n[3] WXML 标签配对');
+const wxmlFiles = walk(ROOT, [], (n) => n.endsWith('.wxml'));
+wxmlFiles.forEach((f) => {
+  const s = fs.readFileSync(f, 'utf8').replace(/<!--[\s\S]*?-->/g, '');
+  ['view', 'block', 'scroll-view', 'swiper', 'button', 'text'].forEach((tag) => {
+    const open = (s.match(new RegExp('<' + tag + '(\\s|>)', 'g')) || []).length;
+    const close = (s.match(new RegExp('</' + tag + '>', 'g')) || []).length;
+    // 自闭合写法 <tag ... />
+    const selfClose = (s.match(new RegExp('<' + tag + '[^>]*/>', 'g')) || []).length;
+    if (open - selfClose !== close) {
+      err(rel(f) + ' <' + tag + '> 数量不配对：开 ' + (open - selfClose) + ' / 闭 ' + close);
+    }
+  });
+});
+ok(wxmlFiles.length + ' 个 WXML 文件已检查');
+
+/* ---------- 4. 页面 JSON 合法性 ---------- */
+console.log('\n[4] JSON 合法性');
+const jsonFiles = walk(ROOT, [], (n) => n.endsWith('.json'));
+jsonFiles.forEach((f) => {
+  try {
+    JSON.parse(fs.readFileSync(f, 'utf8'));
+  } catch (e) {
+    err(rel(f) + ' 不是合法 JSON：' + e.message);
+  }
+});
+ok(jsonFiles.length + ' 个 JSON 文件已检查');
+
+/* ---------- 5. 音效资源 ---------- */
+console.log('\n[5] 资源完整性');
+['tap', 'correct', 'wrong', 'finish'].forEach((n) => {
+  const f = path.join(ROOT, 'assets', 'sfx', n + '.mp3');
+  if (!fs.existsSync(f)) err('缺少音效 assets/sfx/' + n + '.mp3（运行 node scripts/build-sfx 前需先跑 build-sfx.py）');
+});
+if (fs.existsSync(path.join(ROOT, 'assets', 'sfx'))) ok('4 个答题音效齐全');
+
+const dict = path.join(ROOT, 'assets', 'dict', 'bundle.js');
+if (!fs.existsSync(dict)) err('缺少词库产物 assets/dict/bundle.js');
+else ok('词库产物存在');
+
+/* ---------- 汇总 ---------- */
+console.log('\n' + '='.repeat(44));
+console.log('通过检查 ' + checks + ' 项 · 警告 ' + warns + ' 项 · 错误 ' + errors + ' 项');
+console.log('='.repeat(44) + '\n');
+process.exit(errors ? 1 : 0);

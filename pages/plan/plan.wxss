@@ -1,0 +1,127 @@
+/* 学习计划 */
+
+.item {
+  margin-top: 32rpx;
+}
+
+.item-label {
+  font-size: 30rpx;
+  font-weight: 500;
+}
+
+.item-hint {
+  font-size: 24rpx;
+  margin-top: 6rpx;
+  line-height: 1.5;
+}
+
+.mb { margin-bottom: 24rpx; }
+.mt { margin-top: 32rpx; }
+
+.val {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: var(--primary);
+  min-width: 90rpx;
+  text-align: right;
+}
+
+slider {
+  margin: 8rpx 0 0;
+}
+
+/* 题型多选 */
+.mode {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 24rpx 24rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid var(--line);
+  margin-bottom: 16rpx;
+}
+
+.mode-on {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+}
+
+.mode-check {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 20rpx;
+  border: 1rpx solid var(--line);
+  background: #fff;
+  color: var(--primary);
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mode-on .mode-check {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+/* 步进器 */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.step-btn {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 32rpx;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-val {
+  font-size: 36rpx;
+  font-weight: 600;
+  min-width: 72rpx;
+  text-align: center;
+  color: var(--primary);
+}
+
+/* 选项块 */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.chip {
+  font-size: 28rpx;
+  padding: 16rpx 40rpx;
+  border-radius: 32rpx;
+  background: var(--bg);
+  color: var(--text-sub);
+  border: 1rpx solid transparent;
+}
+
+.chip-on {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-color: var(--primary);
+  font-weight: 600;
+}
+
+.tip {
+  margin-top: 24rpx;
+  background: var(--warn-soft);
+  color: var(--warn);
+  font-size: 24rpx;
+  line-height: 1.6;
+  padding: 24rpx;
+  border-radius: 14rpx;
+}

@@ -1,0 +1,4 @@
+﻿textbook_id,textbook_name,publisher,grade,term,unit_seq,unit_name,seq,word,phonetic,pos,meaning_cn,example,example_cn,audio_file,note
+pep_3_1,人教版PEP（三年级起点）三年级上册,人教版,3,上,1,Unit 1 Hello!,1,hello,/həˈləʊ/,int.,你好,Hello! I'm Mike.,你好！我是迈克。,hello.mp3,示例行-请按教材词汇表核对后替换
+pep_3_1,人教版PEP（三年级起点）三年级上册,人教版,3,上,1,Unit 1 Hello!,2,book,/bʊk/,n.,书,This is my book.,这是我的书。,book.mp3,示例行-请按教材词汇表核对后替换
+bnu_4_2,北师大版（一年级起点）四年级下册,北师大版,4,下,1,Unit 1,1,apple,/ˈæpl/,n.,苹果,I like apples.,我喜欢苹果。,apple.mp3,示例行-请按教材词汇表核对后替换

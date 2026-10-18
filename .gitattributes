@@ -1,0 +1,13 @@
+# 统一换行，避免 Windows 上提交后 diff 全变
+* text=auto eol=lf
+
+# 二进制文件不要做任何换行/编码转换
+*.mp3 binary
+*.woff2 binary
+*.xlsx binary
+*.png binary
+*.jpg binary
+*.ico binary
+
+# Windows 批处理必须 CRLF
+*.bat text eol=crlf

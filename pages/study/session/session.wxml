@@ -1,0 +1,126 @@
+<view class="page-in-side page session" wx:if="{{!loading}}">
+
+  <view class="fx-glow"></view>
+  <view class="fx-bg"></view>
+
+  <!-- ===== 抽查未过关 ===== -->
+  <block wx:if="{{phase === 'gate'}}">
+    <view class="card gate">
+      <view class="gate-score">{{reviewAccuracy}}<text class="gate-pct">%</text></view>
+      <view class="gate-title">抽查正确率未达 {{passRate}}%</view>
+      <view class="gate-desc">
+        本轮复习了 {{reviewTotal}} 个词，答对 {{reviewCorrect}} 个。
+        建议先把错词再巩固一轮，今天的新词暂时不开始。
+      </view>
+      <button hover-class="btn-press" class="btn btn-primary s-btn" bindtap="onRetry">再巩固一轮（{{reviewTotal - reviewCorrect}} 个错词）</button>
+      <button hover-class="btn-press" class="btn btn-ghost s-btn gate-skip" bindtap="onSkipNew">今天先到这里</button>
+    </view>
+  </block>
+
+  <block wx:else>
+    <!-- ===== 顶部进度 ===== -->
+    <view class="s-head">
+      <view class="row-between">
+        <text class="tag tag-primary">{{phaseLabel}}</text>
+        <text class="muted">{{done}} / {{total}}</text>
+      </view>
+      <view class="bar s-bar">
+        <view class="bar-fill" style="width: {{percent}}%"></view>
+      </view>
+    </view>
+
+    <!-- ===== 学习卡（新词首次出现） ===== -->
+    <view class="card s-card" wx:if="{{kind === 'card'}}">
+      <view class="s-tag">新词</view>
+      <view class="s-word-row">
+        <view class="s-word">{{word.word}}</view>
+        <view class="s-spk {{canSpeak ? '' : 's-spk-off'}}" bindtap="onSpeak">🔊</view>
+      </view>
+      <view class="s-phonetic">{{word.phonetic}}</view>
+      <view class="divider"></view>
+      <view class="s-meaning">
+        <text class="s-pos" wx:if="{{word.pos}}">{{word.pos}}</text>{{word.meaningCn}}
+      </view>
+      <view class="s-example" wx:if="{{word.example}}">
+        <view class="s-ex-en">{{word.example}}</view>
+        <view class="s-ex-cn">{{word.exampleCn}}</view>
+      </view>
+    </view>
+
+    <!-- ===== 答题卡 ===== -->
+    <view class="card s-card" wx:else>
+      <view class="s-tag">{{modeLabel}}</view>
+
+      <!-- 英译中 / 词义选择：给英文 -->
+      <block wx:if="{{mode === 'choice' || mode === 'en2cn'}}">
+        <view class="s-word-row">
+          <view class="s-word">{{word.word}}</view>
+          <view class="s-spk {{canSpeak ? '' : 's-spk-off'}}" bindtap="onSpeak">🔊</view>
+        </view>
+        <view class="s-phonetic">{{word.phonetic}}</view>
+      </block>
+
+      <!-- 中译英 / 拼写：给中文 -->
+      <block wx:else>
+        <view class="s-word-cn">
+          <text class="s-pos" wx:if="{{word.pos}}">{{word.pos}}</text>{{word.meaningCn}}
+        </view>
+        <view class="s-phonetic" wx:if="{{mode === 'spell'}}">{{word.phonetic}}</view>
+      </block>
+
+      <view class="s-hint">{{modeHint}}</view>
+    </view>
+
+    <!-- ===== 作答区 ===== -->
+    <block wx:if="{{kind === 'quiz'}}">
+
+      <!-- 四选一 -->
+      <view class="opts" wx:if="{{mode === 'choice'}}">
+        <view
+          class="opt {{answered && item === word.meaningCn ? 'opt-right' : ''}} {{answered && item === selected && item !== word.meaningCn ? 'opt-wrong' : ''}}"
+          wx:for="{{options}}"
+          wx:key="*this"
+          data-value="{{item}}"
+          bindtap="onPickOption">
+          {{item}}
+        </view>
+      </view>
+
+      <!-- 输入作答 -->
+      <view class="ans" wx:else>
+        <input
+          class="ans-input"
+          value="{{input}}"
+          bindinput="onInput"
+          bindconfirm="onSubmitInput"
+          confirm-type="done"
+          disabled="{{answered}}"
+          placeholder="{{mode === 'en2cn' ? '输入中文意思' : '输入英文单词'}}" />
+        <button hover-class="btn-press" class="btn btn-primary s-btn" bindtap="onSubmitInput" disabled="{{answered}}">确 认</button>
+      </view>
+    </block>
+
+    <!-- 学习卡按钮 -->
+    <button hover-class="btn-press" class="btn btn-primary s-btn s-card-btn" wx:if="{{kind === 'card'}}" bindtap="onCardNext">记住了，去做题</button>
+
+    <!-- ===== 判分反馈 ===== -->
+    <view class="fb {{lastCorrect ? 'fb-right' : 'fb-wrong'}}" wx:if="{{answered}}">
+      <view class="fb-head">
+        <text class="fb-title">{{lastCorrect ? '答对了' : '答错了'}}</text>
+        <text class="fb-badge" wx:if="{{lastCorrect}}">+1 阶段</text>
+        <text class="fb-badge" wx:else>阶段 -1，明天重来</text>
+      </view>
+      <view class="fb-correct" wx:if="{{!lastCorrect}}">正确答案：{{correctAnswer}}</view>
+      <view class="fb-detail">
+        <text class="fb-w">{{word.word}}</text>
+        <text class="fb-p">{{word.phonetic}}</text>
+        <text class="fb-m">{{word.pos}} {{word.meaningCn}}</text>
+      </view>
+      <button hover-class="btn-press" class="btn {{lastCorrect ? 'btn-primary' : 'btn-accent'}} s-btn" bindtap="onContinue">
+        {{lastCorrect ? '继续' : '继续（稍后重做这题）'}}
+      </button>
+    </view>
+
+  </block>
+
+</view>

@@ -1,0 +1,46 @@
+{
+  "version": "2026-10-18",
+  "generatedAt": "2026-10-18T04:44:04.208Z",
+  "textbooks": [
+    {
+      "id": "pep_3a",
+      "name": "人教版（PEP）三年级上册",
+      "publisher": "人教版",
+      "grade": 3,
+      "term": "上",
+      "unitCount": 1,
+      "wordCount": 107,
+      "file": "words/pep_3a.json"
+    },
+    {
+      "id": "pep_4a",
+      "name": "人教版（PEP）四年级上册",
+      "publisher": "人教版",
+      "grade": 4,
+      "term": "上",
+      "unitCount": 1,
+      "wordCount": 109,
+      "file": "words/pep_4a.json"
+    },
+    {
+      "id": "pep_5a",
+      "name": "人教版（PEP）五年级上册",
+      "publisher": "人教版",
+      "grade": 5,
+      "term": "上",
+      "unitCount": 1,
+      "wordCount": 118,
+      "file": "words/pep_5a.json"
+    },
+    {
+      "id": "pep_6a",
+      "name": "人教版（PEP）六年级上册",
+      "publisher": "人教版",
+      "grade": 6,
+      "term": "上",
+      "unitCount": 1,
+      "wordCount": 143,
+      "file": "words/pep_6a.json"
+    }
+  ]
+}

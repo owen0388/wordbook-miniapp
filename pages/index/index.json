@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "单词秒记",
+  "usingComponents": {},
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
+}

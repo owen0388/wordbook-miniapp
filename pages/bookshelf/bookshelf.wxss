@@ -1,0 +1,47 @@
+/* 我的教材 */
+
+.book {
+  padding: 32rpx 0;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.book:last-of-type {
+  border-bottom: none;
+}
+
+.book-main {
+  flex: 1;
+}
+
+.book-name {
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.book-meta {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+}
+
+.book-stat {
+  margin: 24rpx 0 16rpx;
+}
+
+.ops {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 28rpx;
+}
+
+.op {
+  font-size: 26rpx;
+  color: var(--primary);
+  background: var(--primary-soft);
+  padding: 12rpx 28rpx;
+  border-radius: 32rpx;
+}
+
+.op-danger {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
