@@ -40,6 +40,10 @@
         "type": "folder"
       },
       {
+        "value": "tools",
+        "type": "folder"
+      },
+      {
         "value": "preview",
         "type": "folder"
       },
