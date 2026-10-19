@@ -40,6 +40,28 @@
   color: var(--muted);
 }
 
+/* 中途里程碑：浮在顶部，不占布局、不遮挡题目 */
+.s-milestone {
+  position: fixed;
+  top: 150rpx;
+  left: 50%;
+  z-index: 30;
+  padding: 14rpx 32rpx;
+  border-radius: var(--r-pill);
+  background: rgba(39, 56, 110, 0.92);
+  color: #FFFFFF;
+  font-size: 24rpx;
+  letter-spacing: 1rpx;
+  transform: translateX(-50%);
+  animation: msPop 0.28s var(--spring);
+  pointer-events: none;
+}
+
+@keyframes msPop {
+  from { opacity: 0; transform: translateX(-50%) translateY(-10rpx) scale(0.94); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+
 /* 卡片 */
 .s-card {
   text-align: center;

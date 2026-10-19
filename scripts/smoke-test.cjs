@@ -75,6 +75,27 @@ check('计划默认值', user.getPlan().dailyNewCount === 10);
 user.savePlan({ dailyNewCount: 10, passModeCount: 2 });
 check('计划可保存', user.getPlan().dailyNewCount === 10);
 
+/* ---------- 2.5 自适应减量 ---------- */
+section('2.5 自适应减量（昨天没做完就少给一点）');
+{
+  const base = { dailyNewCount: 10 };
+  const yStr = dt.yesterday();
+
+  delete store.wb_daily_log;
+  check('昨天没来过 → 不减量', srs.effectiveNewCount(base) === 10);
+
+  store.wb_daily_log = { [yStr]: { finished: true } };
+  check('昨天做完了 → 不减量', srs.effectiveNewCount(base) === 10);
+
+  store.wb_daily_log = { [yStr]: { finished: false } };
+  check('昨天没做完 → 减到 8', srs.effectiveNewCount(base) === 8);
+
+  check('减量下限为 4', srs.effectiveNewCount({ dailyNewCount: 5 }) === 4);
+  check('减量不累积（计划 20 → 18）', srs.effectiveNewCount({ dailyNewCount: 20 }) === 18);
+
+  delete store.wb_daily_log;   // 清掉，避免影响后面的打卡测试
+}
+
 /* ---------- 3. 排期算法（FSRS） ---------- */
 section('3. FSRS 排期');
 const w = dict.getWords(books[0].id)[0];

@@ -30,6 +30,7 @@ Page({
     percent: 0,
     segWidth: 0,              // 复习段在整条进度里的宽度占比（用于分段上色）
     phaseNote: '',            // 「先复习 N 个，做完就学新词」这类结构提示
+    milestone: '',            // 中途飘一句「还剩多少」，2 秒后自动消失
 
     // 复习抽查结果
     reviewCorrect: 0,
@@ -58,6 +59,7 @@ Page({
   },
 
   onUnload() {
+    if (this._mt) clearTimeout(this._mt);
     if (!this.finished) this.flushLog(false);
     speech.destroy();   // 释放播放器，否则页面退出后仍在响
   },
@@ -82,13 +84,26 @@ Page({
     }
 
     this.session = session;
-    this.newItems = session.newItems;
+    this.newItems = session.newItems;   // 拆分前的全量，用于统计每个词要过几道题
     this.setData({ passRate: session.plan.passRate });
+
+    // 热身：同时有新词和复习时，把**前 3 个新词**提到复习之前。
+    // 复习是最枯燥的抽查，新词才有新鲜感；把枯燥的全堆在开头，
+    // 用户往往在最累的环节就退出了，永远到不了有趣的部分。
+    // 只提 3 个（新词不足 6 个时不拆），既让有趣的部分提前，
+    // 又不破坏「抽查过关才解锁新词」—— 3 个的量算尝鲜，不算解锁。
+    let warmupItems = [];
+    if (session.reviewItems.length && session.newItems.length >= 6) {
+      const cut = this._cutAtWord(session.newItems, 3);
+      warmupItems = session.newItems.slice(0, cut);
+      session.newItems = session.newItems.slice(cut);
+    }
+    this.warmupItems = warmupItems;
 
     // 全局进度：复习块与新词块合并成一条。
     // 之前进度是按"当前阶段"算的，复习走完 20/20 后进新词块又从 1/60 开始，
     // 用户会以为"怎么又从头来、永远走不完"。合并成一条才符合直觉。
-    this.grandTotal = session.reviewItems.length + session.newItems.length;
+    this.grandTotal = session.reviewItems.length + session.newItems.length + warmupItems.length;
     this.grandDone = 0;
     this.reviewLen = session.reviewItems.length;
 
@@ -100,11 +115,29 @@ Page({
     });
     this.newWordIds = Object.keys(this.pendingByWord);
 
-    if (session.reviewItems.length) {
+    if (warmupItems.length) {
+      this.enterPhase('warmup', warmupItems);
+    } else if (session.reviewItems.length) {
       this.enterPhase('review', session.reviewItems);
     } else {
       this.enterPhase('new', session.newItems);
     }
+  },
+
+  /**
+   * 找出前 n 个词在条目数组里的切割位置。
+   * newItems 是「词1卡、词1题、词1题、词2卡、…」这样按词连续排列的，
+   * 所以要按 wordId 数到第 n+1 个词才开始切，不能简单按条数切。
+   */
+  _cutAtWord(items, n) {
+    const seen = [];
+    for (let i = 0; i < items.length; i++) {
+      if (seen.indexOf(items[i].wordId) < 0) {
+        seen.push(items[i].wordId);
+        if (seen.length > n) return i;
+      }
+    }
+    return items.length;
   },
 
   enterPhase(phase, items) {
@@ -118,10 +151,14 @@ Page({
       ? Math.round((items.length / this.grandTotal) * 100)
       : 0;
 
+    let label = this.isWrongOnly ? '错词专项'
+      : phase === 'warmup' ? '先看几个新词'
+        : phase === 'review' ? '抽查复习' : '新词学习';
+
     this.setData({
       loading: false,
       phase,
-      phaseLabel: this.isWrongOnly ? '错词专项' : (phase === 'review' ? '抽查复习' : '新词学习'),
+      phaseLabel: label,
       phaseNote: this._phaseNote(phase, items.length),
       total: this.grandTotal,
       done: this.grandDone,
@@ -144,13 +181,15 @@ Page({
    */
   _phaseNote(phase, count) {
     if (this.isWrongOnly) return '只做错词，做完就结束';
+
+    const rest = (this.session && this.session.newItems.length) || 0;
+
+    if (phase === 'warmup') return '这几个学完，接着复习昨天和到期的词';
     if (phase === 'review') {
       if (this.round > 1) return `再巩固这 ${count} 个错词`;
-      const n = (this.session && this.session.newItems.length) || 0;
-      return n ? `先复习 ${count} 个，做完就学新词` : '今天只复习，没有新词';
+      return rest ? `复习 ${count} 个，之后还有 ${rest} 个新词` : '今天只复习，没有新词';
     }
-    const n = (this.session && this.session.newItems.length) || 0;
-    return n ? `最后一段了，新词 ${n} 个` : '最后一段了';
+    return rest ? `最后一段了，新词 ${rest} 个` : '最后一段了';
   },
 
   /* ============ 渲染当前条目 ============ */
@@ -321,16 +360,39 @@ Page({
 
   bumpProgress() {
     this.grandDone += 1;
-    this.setData({
+    const patch = {
       done: this.grandDone,
       total: this.grandTotal,
       percent: this._percent()
-    });
+    };
+
+    // 中途里程碑：每 10 屏飘一条，只说"还剩多少"，不打断答题。
+    // 60 屏中间没有任何反馈是枯燥感的主要来源之一。
+    const remain = this.grandTotal - this.grandDone;
+    if (this.grandDone > 0 && this.grandDone % 10 === 0 && remain > 0) {
+      patch.milestone = '已过 ' + this.grandDone + ' 个 · 还剩 ' + remain;
+      this._flashMilestone();
+    }
+
+    this.setData(patch);
+  },
+
+  _flashMilestone() {
+    if (this._mt) clearTimeout(this._mt);
+    this._mt = setTimeout(() => this.setData({ milestone: '' }), 2200);
   },
 
   /* ============ 阶段切换 ============ */
 
   endPhase() {
+    if (this.phase === 'warmup') {
+      // 热身的几个新词做完，接着抽查；没有复习就直接学剩下的
+      if (this.session.reviewItems.length) {
+        return this.enterPhase('review', this.session.reviewItems);
+      }
+      return this.enterPhase('new', this.session.newItems);
+    }
+
     if (this.phase === 'review') {
       const total = this.stats.reviewTotal || 0;
       const acc = total ? Math.round((this.stats.reviewCorrect / total) * 100) : 100;
@@ -402,6 +464,7 @@ Page({
     this.flushLog(true, durationSec);
 
     const log = user.getLog();
+    const overall = user.getOverallStats();
     const report = {
       reviewTotal: this.stats.reviewTotal,
       reviewCorrect: this.stats.reviewCorrect,
@@ -409,6 +472,9 @@ Page({
       wrongCount: this.stats.wrongIds.length,
       durationText: this.formatDuration(durationSec),
       streak: user.getStreak(),
+      // 战报用的两个"讲故事"数据：累计记住了多少、最久的一个多久没忘
+      mastered: overall.mastered,
+      longestDays: user.getLongestRememberedDays(),
       finishedTask: !!(log && log.finished)
     };
 

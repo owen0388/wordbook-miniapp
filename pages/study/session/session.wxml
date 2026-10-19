@@ -3,6 +3,9 @@
   <view class="fx-glow"></view>
   <view class="fx-bg"></view>
 
+  <!-- 中途里程碑：每 10 屏飘一下，不遮挡题目 -->
+  <view class="s-milestone" wx:if="{{milestone}}">{{milestone}}</view>
+
   <!-- ===== 抽查未过关 ===== -->
   <block wx:if="{{phase === 'gate'}}">
     <view class="card gate">

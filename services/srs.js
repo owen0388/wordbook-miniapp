@@ -226,6 +226,23 @@ function applyAnswer(wordId, isCorrect, textbookId, opts) {
 /* ============ 今日队列 ============ */
 
 /**
+ * 今天的实际新词量（自适应减量）。
+ *
+ * 逻辑只有一条：**昨天开了工但没做完，今天就少给一点**。
+ * 之所以不叫"逐步递增"，是因为对正在流失的用户，减量是接住他，递增是加压。
+ * 产品要保护的是"每天都能完成"，而不是"每天学得更多"。
+ *
+ * 递减始终基于计划值计算，不做累积递减，所以不会越减越少到 0。
+ * 昨天压根没来过（比如刚安装）也不减，避免第一天就给个残缺的任务。
+ */
+function effectiveNewCount(plan) {
+  const base = plan.dailyNewCount || 10;
+  const log = user.getLog(yesterday());
+  if (!log || log.finished) return base;
+  return Math.max(4, base - 2);
+}
+
+/**
  * 组装今日学习任务。
  * 复习池 = 昨日新学 ∪ SRS 到期，错词优先。
  * 新词池 = 按书架顺序（主学教材优先）取未学过的词。
@@ -235,6 +252,8 @@ function buildDailySession() {
   const map = user.getProgressMap();
   const t = today();
   const y = yesterday();
+
+  const newLimit = effectiveNewCount(plan);
 
   // --- 复习池 ---
   const pool = [];
@@ -261,10 +280,10 @@ function buildDailySession() {
   const shelf = user.getBookshelf().slice().sort((a, b) => (b.isPrimary ? 1 : 0) - (a.isPrimary ? 1 : 0));
   const newWords = [];
   for (let i = 0; i < shelf.length; i++) {
-    if (newWords.length >= plan.dailyNewCount) break;
+    if (newWords.length >= newLimit) break;
     const words = dict.getWords(shelf[i].textbookId);
     for (let j = 0; j < words.length; j++) {
-      if (newWords.length >= plan.dailyNewCount) break;
+      if (newWords.length >= newLimit) break;
       const w = words[j];
       if (!map[w.id]) newWords.push({ wordId: w.id, textbookId: shelf[i].textbookId });
     }
@@ -276,6 +295,8 @@ function buildDailySession() {
     newWords,
     reviewCount: reviewWords.length,
     newCount: newWords.length,
+    newLimit,                                   // 今天实际给的新词上限
+    reduced: newLimit < (plan.dailyNewCount || 10), // 是否因昨天没做完而减量
     hasShelf: shelf.length > 0
   };
 }
@@ -283,7 +304,12 @@ function buildDailySession() {
 /** 只取数量，供首页轻量展示 */
 function peekDailyCounts() {
   const s = buildDailySession();
-  return { reviewCount: s.reviewCount, newCount: s.newCount, hasShelf: s.hasShelf };
+  return {
+    reviewCount: s.reviewCount,
+    newCount: s.newCount,
+    reduced: s.reduced,
+    hasShelf: s.hasShelf
+  };
 }
 
 /**
@@ -342,6 +368,7 @@ function buildSessionItems() {
     newItems,
     reviewCount: s.reviewWords.length,
     newCount: s.newWords.length,
+    reduced: s.reduced,
     hasShelf: s.hasShelf
   };
 }
@@ -405,6 +432,7 @@ module.exports = {
   meaningSenses,
   matchSense,
   applyAnswer,
+  effectiveNewCount,
   buildDailySession,
   peekDailyCounts,
   buildWrongOnlyItems,
