@@ -15,6 +15,7 @@ Page({
     hasShelf: false,
     primaryBook: null,
     overall: { learned: 0, mastered: 0, streak: 0 },
+    recentDays: [],
     doneToday: false
   },
 
@@ -56,6 +57,7 @@ Page({
         ? Object.assign({}, primary, user.getBookStats(primary.textbookId))
         : null,
       overall,
+      recentDays: user.getRecentDays(7),
       doneToday: !!(log && log.finished)
     });
   },
@@ -72,6 +74,11 @@ Page({
       return;
     }
     wx.navigateTo({ url: '/pages/study/session/session' });
+  },
+
+  goRecords() {
+    sfx.tap();
+    wx.navigateTo({ url: '/pages/records/records' });
   },
 
   goWrongBook() {

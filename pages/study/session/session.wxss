@@ -13,8 +13,8 @@
    再叠一条主色填充 = 已完成。这样未完成的部分一眼能看出
    "接下来是复习还是新词"。 */
 .bar.s-bar {
-  margin-top: 16rpx;
-  height: 10rpx;
+  margin-top: 18rpx;
+  height: 16rpx;
   background: var(--accent-soft);
 }
 
@@ -32,34 +32,52 @@
   transition: width 0.45s var(--ease);
 }
 
-.s-note {
-  display: block;
-  margin-top: 12rpx;
-  font-size: 22rpx;
-  line-height: 1.5;
-  color: var(--muted);
+/* 进度数字：真机上原来太小，看不清 */
+.s-count {
+  font-family: var(--font-display);
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--text-sub);
+  font-variant-numeric: tabular-nums;
 }
 
-/* 中途里程碑：浮在顶部，不占布局、不遮挡题目 */
+/* 结构提示：原来是 22rpx，真机偏小 */
+.s-note {
+  display: block;
+  margin-top: 14rpx;
+  font-size: 28rpx;
+  line-height: 1.5;
+  color: var(--text-sub);
+}
+
+/* 中途鼓励：浮在顶部，不占布局、不遮挡题目 */
 .s-milestone {
   position: fixed;
-  top: 150rpx;
+  top: 170rpx;
   left: 50%;
   z-index: 30;
-  padding: 14rpx 32rpx;
+  padding: 20rpx 40rpx;
   border-radius: var(--r-pill);
-  background: rgba(39, 56, 110, 0.92);
+  background: rgba(39, 56, 110, 0.95);
   color: #FFFFFF;
-  font-size: 24rpx;
+  font-size: 32rpx;
+  font-weight: 700;
   letter-spacing: 1rpx;
   transform: translateX(-50%);
-  animation: msPop 0.28s var(--spring);
+  animation: msPop 0.32s var(--spring);
   pointer-events: none;
+  box-shadow: 0 12rpx 32rpx -10rpx rgba(26, 39, 80, 0.6);
 }
 
 @keyframes msPop {
-  from { opacity: 0; transform: translateX(-50%) translateY(-10rpx) scale(0.94); }
+  from { opacity: 0; transform: translateX(-50%) translateY(-14rpx) scale(0.92); }
   to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+/* 顶部阶段标签：全局 .tag 是 22rpx，真机上偏小，这里覆盖一下 */
+.s-head .tag {
+  font-size: 26rpx;
+  padding: 8rpx 24rpx;
 }
 
 /* 卡片 */
@@ -70,12 +88,12 @@
 
 .s-tag {
   display: inline-block;
-  font-size: 22rpx;
+  font-size: 26rpx;
   font-weight: 700;
   letter-spacing: 0.12em;
   color: #B03D0F;
   background: linear-gradient(135deg, #FFE3D3, #FFD5C0);
-  padding: 6rpx 20rpx;
+  padding: 8rpx 24rpx;
   border-radius: var(--r-pill);
   margin-bottom: 32rpx;
   box-shadow: 0 4rpx 10rpx -4rpx rgba(242, 84, 42, 0.6);
@@ -168,8 +186,8 @@
 }
 
 .s-hint {
-  font-size: 24rpx;
-  color: var(--muted);
+  font-size: 28rpx;
+  color: var(--text-sub);
   margin-top: 32rpx;
 }
 

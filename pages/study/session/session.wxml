@@ -25,7 +25,7 @@
     <view class="s-head">
       <view class="row-between">
         <text class="tag tag-primary">{{phaseLabel}}</text>
-        <text class="muted">{{done}} / {{total}}</text>
+        <text class="s-count">{{done}} / {{total}}</text>
       </view>
       <view class="bar s-bar">
         <view class="bar-seg" wx:if="{{segWidth > 0}}" style="left: {{percent}}%; width: {{segWidth}}%"></view>

@@ -76,6 +76,20 @@
     </block>
   </view>
 
+  <!-- 最近 7 天打卡 + 学习记录入口 -->
+  <view class="card" wx:if="{{hasShelf}}" bindtap="goRecords">
+    <view class="card-title">
+      <text>最近 7 天</text>
+      <text class="days-link">查看记录 ›</text>
+    </view>
+    <view class="days">
+      <view class="day" wx:for="{{recentDays}}" wx:key="date">
+        <view class="day-dot {{item.finished ? 'day-on' : (item.newCount + item.reviewCount > 0 ? 'day-half' : '')}}"></view>
+        <text class="day-label">{{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
   <!-- 当前主学教材 -->
   <view class="card" wx:if="{{primaryBook}}" bindtap="goBookshelf">
     <view class="card-title">

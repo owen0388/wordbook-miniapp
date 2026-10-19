@@ -366,20 +366,30 @@ Page({
       percent: this._percent()
     };
 
-    // 中途里程碑：每 10 屏飘一条，只说"还剩多少"，不打断答题。
-    // 60 屏中间没有任何反馈是枯燥感的主要来源之一。
+    // 中途鼓励：每 10 屏飘一句，只说"走到哪了"，不打断答题。
+    // 之前这里写的是「已过 10 个 · 还剩 20」这种冷冰冰的进度，
+    // 真机上又小又短，几乎注意不到；改成一句有温度的话并放大字号。
     const remain = this.grandTotal - this.grandDone;
     if (this.grandDone > 0 && this.grandDone % 10 === 0 && remain > 0) {
-      patch.milestone = '已过 ' + this.grandDone + ' 个 · 还剩 ' + remain;
+      patch.milestone = this._encourage(this.grandDone, remain);
       this._flashMilestone();
     }
 
     this.setData(patch);
   },
 
+  /** 按进度给一句鼓励，不浮夸、不虚假 —— 真有进度才夸 */
+  _encourage(done, remain) {
+    const pct = Math.round((done / Math.max(this.grandTotal, 1)) * 100);
+    if (pct >= 80) return '就剩 ' + remain + ' 个了，收个尾';
+    if (pct >= 50) return '过半了，还剩 ' + remain + ' 个';
+    if (pct >= 25) return '已经 ' + done + ' 个了，节奏不错';
+    return '开了个头，' + done + ' 个了';
+  },
+
   _flashMilestone() {
     if (this._mt) clearTimeout(this._mt);
-    this._mt = setTimeout(() => this.setData({ milestone: '' }), 2200);
+    this._mt = setTimeout(() => this.setData({ milestone: '' }), 2600);
   },
 
   /* ============ 阶段切换 ============ */

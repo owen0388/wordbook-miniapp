@@ -5,6 +5,7 @@
     "pages/bookshelf/bookshelf",
     "pages/wrongbook/wrongbook",
     "pages/plan/plan",
+    "pages/records/records",
     "pages/study/session/session",
     "pages/study/result/result"
   ],

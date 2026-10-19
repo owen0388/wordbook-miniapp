@@ -1,0 +1,82 @@
+<view class="page-in page">
+
+  <view class="fx-glow"></view>
+  <view class="fx-bg"></view>
+
+  <!-- ===== 今日总结 ===== -->
+  <view class="card">
+    <view class="card-title">
+      <text>今天</text>
+      <text class="muted">{{todayLabel}}</text>
+    </view>
+
+    <block wx:if="{{today}}">
+      <view class="stat-grid">
+        <view class="stat">
+          <view class="stat-num">{{today.newCount}}</view>
+          <view class="stat-label">新词</view>
+        </view>
+        <view class="stat">
+          <view class="stat-num">{{today.reviewCount}}</view>
+          <view class="stat-label">复习</view>
+        </view>
+        <view class="stat">
+          <view class="stat-num">{{today.accuracy}}%</view>
+          <view class="stat-label">正确率</view>
+        </view>
+      </view>
+      <view class="r-foot">
+        <text class="r-foot-text">用时 {{today.durationText}}</text>
+        <text class="r-done" wx:if="{{today.finished}}">今日已完成</text>
+        <text class="r-undone" wx:else>今天还没做完</text>
+      </view>
+    </block>
+
+    <view class="empty" wx:else>
+      <view class="empty-text">今天还没开始\n完成 10 个新词大约 9 分钟</view>
+      <button hover-class="btn-press" class="btn btn-primary btn-sm" bindtap="goStudy">去学习</button>
+    </view>
+  </view>
+
+  <!-- ===== 本月打卡 ===== -->
+  <view class="card">
+    <view class="card-title"><text>{{monthText}}</text></view>
+
+    <view class="cal-head">
+      <text class="cal-wd" wx:for="{{weekDays}}" wx:key="*this">{{item}}</text>
+    </view>
+
+    <view class="cal-grid">
+      <view class="cal-cell" wx:for="{{cells}}" wx:key="index">
+        <view
+          wx:if="{{item.d}}"
+          class="cal-dot cal-{{item.s}} {{item.today ? 'cal-today' : ''}}">{{item.d}}</view>
+      </view>
+    </view>
+
+    <view class="cal-legend">
+      <view class="lg"><view class="lg-dot cal-done"></view><text class="lg-text">完成</text></view>
+      <view class="lg"><view class="lg-dot cal-partial"></view><text class="lg-text">学过没做完</text></view>
+      <view class="lg"><view class="lg-dot cal-none"></view><text class="lg-text">没学</text></view>
+    </view>
+  </view>
+
+  <!-- ===== 累计 ===== -->
+  <view class="card">
+    <view class="card-title"><text>累计</text></view>
+    <view class="row-between r-row">
+      <text class="sub">连续打卡</text>
+      <text class="r-num">{{stats.streak}} 天</text>
+    </view>
+    <view class="row-between r-row">
+      <text class="sub">本月完成</text>
+      <text class="r-num">{{stats.monthDone}} 天</text>
+    </view>
+    <view class="row-between r-row">
+      <text class="sub">已经记住</text>
+      <text class="r-num">{{stats.mastered}} 词</text>
+    </view>
+    <view class="r-hint">「已经记住」指 30 天以上没复习、抽查时还答得出的词</view>
+  </view>
+
+</view>

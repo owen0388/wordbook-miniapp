@@ -1,0 +1,144 @@
+/* 学习记录页 */
+
+/* 今日总结底部一行 */
+.r-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18rpx;
+  padding-top: 18rpx;
+  border-top: 1rpx solid var(--line-soft);
+}
+
+.r-foot-text {
+  font-size: 26rpx;
+  color: var(--text-sub);
+}
+
+.r-done {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--success);
+}
+
+.r-undone {
+  font-size: 26rpx;
+  color: var(--muted);
+}
+
+/* ===== 月历 ===== */
+.cal-head {
+  display: flex;
+  margin-top: 16rpx;
+}
+
+.cal-wd {
+  flex: 1;
+  text-align: center;
+  font-size: 24rpx;
+  color: var(--muted);
+}
+
+.cal-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10rpx;
+}
+
+.cal-cell {
+  width: 14.285%;
+  height: 76rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cal-dot {
+  width: 58rpx;
+  height: 58rpx;
+  border-radius: 50%;
+  line-height: 58rpx;
+  text-align: center;
+  font-size: 26rpx;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 完成了：实心强调色 */
+.cal-done {
+  background: var(--accent);
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+/* 学了但没做完：浅橙底 + 橙字 */
+.cal-partial {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-weight: 700;
+}
+
+/* 没学 */
+.cal-none {
+  color: var(--muted);
+}
+
+/* 未来的日子 */
+.cal-future {
+  color: #CFC8B8;
+}
+
+.cal-blank {
+  background: transparent;
+}
+
+/* 今天：加一圈描边，不管什么状态都认得出 */
+.cal-today {
+  box-shadow: 0 0 0 3rpx var(--primary);
+}
+
+/* 图例 */
+.cal-legend {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 18rpx;
+  padding-top: 18rpx;
+  border-top: 1rpx solid var(--line-soft);
+}
+
+.lg {
+  display: flex;
+  align-items: center;
+  margin-right: 28rpx;
+}
+
+.lg-dot {
+  width: 22rpx;
+  height: 22rpx;
+  border-radius: 50%;
+  margin-right: 10rpx;
+}
+
+.lg-text {
+  font-size: 22rpx;
+  color: var(--muted);
+}
+
+/* ===== 累计 ===== */
+.r-row {
+  padding: 14rpx 0;
+}
+
+.r-num {
+  font-family: var(--font-display);
+  font-size: 34rpx;
+  font-weight: 700;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.r-hint {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  line-height: 1.5;
+  color: var(--muted);
+}

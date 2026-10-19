@@ -109,3 +109,49 @@
 .book-bar {
   margin-top: 4rpx;
 }
+
+/* ===== 最近 7 天打卡 ===== */
+.days-link {
+  font-size: 24rpx;
+  color: var(--accent);
+}
+
+.days {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20rpx;
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.day-dot {
+  width: 46rpx;
+  height: 46rpx;
+  border-radius: 50%;
+  background: var(--line-soft);
+}
+
+/* 完成了：实心强调色 */
+.day-on {
+  background: var(--accent);
+  box-shadow: 0 6rpx 14rpx -6rpx rgba(255, 107, 61, 0.8);
+}
+
+/* 学了但没做完：浅橙底 + 描边 */
+.day-half {
+  background: var(--accent-soft);
+  border: 2rpx solid var(--accent);
+  box-sizing: border-box;
+}
+
+.day-label {
+  margin-top: 10rpx;
+  font-size: 20rpx;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
