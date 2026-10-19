@@ -294,7 +294,12 @@ function addLog(date, delta, finished) {
   cur.correct += delta.correct || 0;
   cur.wrong += delta.wrong || 0;
   cur.durationSec += delta.durationSec || 0;
-  if (finished !== undefined) cur.finished = finished;
+
+  // finished 只升不降：今天一旦完成过，就一直算完成。
+  // 之前写成直接赋值，导致"完成后又点进学习页、中途退出"会把标记改回 false，
+  // 日历上就从「完成」退回「学过没做完」——完成这件事不该被后来的半途而废撤销。
+  if (finished === true) cur.finished = true;
+
   all[d] = cur;
   storage.set(K.DAILY_LOG, all);
   return cur;

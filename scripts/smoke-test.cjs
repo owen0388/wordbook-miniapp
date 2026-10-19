@@ -259,6 +259,10 @@ section('6. 统计与日志');
 user.addLog(null, { newCount: 5, reviewCount: 10, correct: 13, wrong: 2, durationSec: 120 }, true);
 const log = user.getLog();
 check('日志累加', log.newCount === 5 && log.reviewCount === 10);
+
+// finished 只升不降：完成后再进学习页、中途退出，不能把完成标记撤销
+user.addLog(null, { newCount: 1 }, false);
+check('完成后中途退出不清掉完成标记', user.getLog().finished === true);
 check('打卡连续天数 = 1', user.getStreak() === 1, 'streak=' + user.getStreak());
 const stats = user.getBookStats(books[0].id);
 check('教材统计可用', stats.total > 0 && stats.learned >= 0);

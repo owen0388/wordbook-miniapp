@@ -13,6 +13,7 @@ Page({
     reduced: false,
     estimateText: '',
     hasShelf: false,
+    todaySummary: null,
     primaryBook: null,
     overall: { learned: 0, mastered: 0, streak: 0 },
     recentDays: [],
@@ -44,6 +45,25 @@ Page({
     const screens = s.reviewCount + s.newCount * perWord;
     const minutes = Math.max(1, Math.round((screens * 18) / 60));
 
+    // 今日已完成：任务卡切换成"完成态"，把结算页那句情绪文案搬到首页。
+    // 结算页只在学完那一刻出现一次，之后找不到了；把这句话留在首页，
+    // 用户每次打开都能看到"我今天做到了什么"。
+    const doneToday = !!(log && log.finished);
+    let todaySummary = null;
+    if (doneToday) {
+      const correct = log.correct || 0;
+      const wrong = log.wrong || 0;
+      const answered = correct + wrong;
+      const newN = log.newCount || 0;
+      todaySummary = {
+        newCount: newN,
+        reviewCount: log.reviewCount || 0,
+        accuracy: answered ? Math.round((correct / answered) * 100) : 0,
+        durationText: this.fmtSec(log.durationSec || 0),
+        title: newN > 0 ? '拿下 ' + newN + ' 个新词' : '把旧词又过了一遍'
+      };
+    }
+
     this.setData({
       dateText: (d.getMonth() + 1) + ' 月 ' + d.getDate() + ' 日',
       weekdayText: '星期' + week,
@@ -53,13 +73,22 @@ Page({
       reduced: !!s.reduced,
       estimateText: screens > 0 ? minutes + ' 分钟' : '',
       hasShelf: s.hasShelf,
+      todaySummary,
       primaryBook: primary
         ? Object.assign({}, primary, user.getBookStats(primary.textbookId))
         : null,
       overall,
       recentDays: user.getRecentDays(7),
-      doneToday: !!(log && log.finished)
+      doneToday
     });
+  },
+
+  fmtSec(sec) {
+    if (!sec) return '0 分钟';
+    if (sec < 60) return sec + ' 秒';
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return s ? m + ' 分 ' + s + ' 秒' : m + ' 分钟';
   },
 
   startStudy() {
@@ -79,6 +108,11 @@ Page({
   goRecords() {
     sfx.tap();
     wx.navigateTo({ url: '/pages/records/records' });
+  },
+
+  goResult() {
+    sfx.tap();
+    wx.navigateTo({ url: '/pages/study/result/result' });
   },
 
   goWrongBook() {

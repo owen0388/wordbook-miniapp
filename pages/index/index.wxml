@@ -35,37 +35,60 @@
     </view>
 
     <block wx:if="{{hasShelf}}">
-      <view class="stat-grid">
-        <view class="stat">
-          <view class="stat-num">{{reviewCount}}</view>
-          <view class="stat-label">待抽查</view>
-        </view>
-        <view class="stat">
-          <view class="stat-num">{{newCount}}</view>
-          <view class="stat-label">待新学</view>
-        </view>
-        <view class="stat">
-          <view class="stat-num">{{estimateText || '—'}}</view>
-          <view class="stat-label">预计用时</view>
-        </view>
-      </view>
 
-      <button
-        hover-class="btn-press" class="btn btn-primary task-btn"
-        bindtap="startStudy"
-        disabled="{{reviewCount + newCount === 0}}">
-        {{reviewCount + newCount === 0 ? '今日任务已完成' : '开始学习'}}
-      </button>
+      <!-- 已完成：显示今天做到了什么 + 结算页那句情绪文案 -->
+      <block wx:if="{{doneToday && todaySummary}}">
+        <view class="done-box">
+          <view class="done-badge">今天已完成</view>
+          <view class="done-title">{{todaySummary.title}}</view>
+          <view class="done-sub">连续第 {{overall.streak}} 天 · 用时 {{todaySummary.durationText}}</view>
+          <view class="done-stats">
+            <text class="done-stat">新词 {{todaySummary.newCount}}</text>
+            <text class="done-sep">·</text>
+            <text class="done-stat">复习 {{todaySummary.reviewCount}}</text>
+            <text class="done-sep">·</text>
+            <text class="done-stat">正确率 {{todaySummary.accuracy}}%</text>
+          </view>
+        </view>
+        <button hover-class="btn-press" class="btn btn-primary task-btn" bindtap="goResult">查看今日总结</button>
+        <view class="muted center task-hint">今天该做的做完了，明天见</view>
+      </block>
 
-      <view class="muted center task-hint" wx:if="{{reduced}}">
-        昨天没做完，今天给你减到 {{newCount}} 个新词
-      </view>
-      <view class="muted center task-hint" wx:elif="{{reviewCount > 0}}">
-        抽查正确率达 {{plan.passRate}}% 才会开始今日新词
-      </view>
-      <view class="muted center task-hint" wx:else>
-        今日无待复习内容，直接开始新词
-      </view>
+      <!-- 未完成：正常任务卡 -->
+      <block wx:else>
+        <view class="stat-grid">
+          <view class="stat">
+            <view class="stat-num">{{reviewCount}}</view>
+            <view class="stat-label">待抽查</view>
+          </view>
+          <view class="stat">
+            <view class="stat-num">{{newCount}}</view>
+            <view class="stat-label">待新学</view>
+          </view>
+          <view class="stat">
+            <view class="stat-num">{{estimateText || '—'}}</view>
+            <view class="stat-label">预计用时</view>
+          </view>
+        </view>
+
+        <button
+          hover-class="btn-press" class="btn btn-primary task-btn"
+          bindtap="startStudy"
+          disabled="{{reviewCount + newCount === 0}}">
+          {{reviewCount + newCount === 0 ? '今天没有要学的了' : '开始学习'}}
+        </button>
+
+        <view class="muted center task-hint" wx:if="{{reduced}}">
+          昨天没做完，今天给你减到 {{newCount}} 个新词
+        </view>
+        <view class="muted center task-hint" wx:elif="{{reviewCount > 0}}">
+          抽查正确率达 {{plan.passRate}}% 才会开始今日新词
+        </view>
+        <view class="muted center task-hint" wx:elif="{{reviewCount + newCount > 0}}">
+          今日无待复习内容，直接开始新词
+        </view>
+      </block>
+
     </block>
 
     <block wx:else>
