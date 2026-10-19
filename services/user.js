@@ -178,6 +178,22 @@ function getOverallStats() {
   };
 }
 
+/**
+ * 最长的一次「多久没看还记得」（天）。
+ *
+ * 结算页用它讲一句人话："最久的一个词，你 45 天没忘"。
+ * 比"正确率 87%"更能让人感觉到自己在积累东西 —— 这是产品的价值证明。
+ */
+function getLongestRememberedDays() {
+  const map = getProgressMap();
+  let max = 0;
+  Object.keys(map).forEach((id) => {
+    const v = map[id].lastInterval || 0;
+    if (v > max) max = v;
+  });
+  return max;
+}
+
 /* ============ 错词本 ============ */
 
 function getWrongBook() {
@@ -337,7 +353,7 @@ module.exports = {
   getPlan, savePlan,
   // 进度
   getProgressMap, getWordProgress, saveWordProgress, initWordProgress,
-  getBookStats, getOverallStats,
+  getBookStats, getOverallStats, getLongestRememberedDays,
   // 错词本
   getWrongBook, recordWrong, clearWrong, getWrongList,
   // 日志

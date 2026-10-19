@@ -45,8 +45,8 @@
           <view class="stat-label">待新学</view>
         </view>
         <view class="stat">
-          <view class="stat-num">{{plan.dailyNewCount}}</view>
-          <view class="stat-label">每日计划</view>
+          <view class="stat-num">{{estimateText || '—'}}</view>
+          <view class="stat-label">预计用时</view>
         </view>
       </view>
 
@@ -57,7 +57,10 @@
         {{reviewCount + newCount === 0 ? '今日任务已完成' : '开始学习'}}
       </button>
 
-      <view class="muted center task-hint" wx:if="{{reviewCount > 0}}">
+      <view class="muted center task-hint" wx:if="{{reduced}}">
+        昨天没做完，今天给你减到 {{newCount}} 个新词
+      </view>
+      <view class="muted center task-hint" wx:elif="{{reviewCount > 0}}">
         抽查正确率达 {{plan.passRate}}% 才会开始今日新词
       </view>
       <view class="muted center task-hint" wx:else>

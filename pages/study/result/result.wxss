@@ -59,11 +59,40 @@
   opacity: 0.8;
 }
 
+/* 第二行副文案（一句人话点评），和上一行拉开一点 */
+.hero-note {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  opacity: 0.7;
+}
+
 .acc {
   font-size: 44rpx;
   font-weight: 700;
   color: var(--primary);
   font-variant-numeric: tabular-nums;
+}
+
+/* 累计区块：把"我变强了"讲成一句话，而不是再摆一排数字 */
+.acc-line {
+  font-size: 28rpx;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.acc-num {
+  font-size: 42rpx;
+  font-weight: 700;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+  margin: 0 6rpx;
+}
+
+.acc-hint {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  line-height: 1.5;
+  color: var(--muted);
 }
 
 .mt {

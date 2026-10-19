@@ -8,9 +8,12 @@ Page({
       newPassed: 0,
       wrongCount: 0,
       durationText: '0 秒',
-      streak: 0
+      streak: 0,
+      mastered: 0,
+      longestDays: 0
     },
     accuracy: 0,
+    title: '',
     remark: ''
   },
 
@@ -27,12 +30,17 @@ Page({
       ? Math.round(((report.reviewTotal - report.wrongCount + report.newPassed) / answered) * 100)
       : 100;
 
-    let remark = '完成今日任务';
-    if (report.newPassed === 0 && report.reviewTotal > 0) remark = '今天只做了复习，明天再试新词';
-    else if (report.wrongCount === 0 && answered > 0) remark = '全部答对，状态很好';
+    // 标题说"做到了什么"，不说"正确率多少" —— 成就感来自具体的事，不是百分比
+    let title;
+    if (report.newPassed > 0) title = '拿下 ' + report.newPassed + ' 个新词';
+    else if (report.reviewTotal > 0) title = '把 ' + report.reviewTotal + ' 个旧词过了一遍';
+    else title = '今天到这里';
+
+    let remark = '';
+    if (report.wrongCount === 0 && answered > 0) remark = '一个都没错，状态很好';
     else if (accuracy < 70) remark = '错得有点多，明天抽查会重点照顾这些词';
 
-    this.setData({ report, accuracy, remark });
+    this.setData({ report, accuracy, title, remark });
   },
 
   onShow() {
