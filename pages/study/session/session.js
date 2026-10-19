@@ -28,6 +28,8 @@ Page({
     done: 0,
     total: 0,
     percent: 0,
+    segWidth: 0,              // 复习段在整条进度里的宽度占比（用于分段上色）
+    phaseNote: '',            // 「先复习 N 个，做完就学新词」这类结构提示
 
     // 复习抽查结果
     reviewCorrect: 0,
@@ -83,6 +85,13 @@ Page({
     this.newItems = session.newItems;
     this.setData({ passRate: session.plan.passRate });
 
+    // 全局进度：复习块与新词块合并成一条。
+    // 之前进度是按"当前阶段"算的，复习走完 20/20 后进新词块又从 1/60 开始，
+    // 用户会以为"怎么又从头来、永远走不完"。合并成一条才符合直觉。
+    this.grandTotal = session.reviewItems.length + session.newItems.length;
+    this.grandDone = 0;
+    this.reviewLen = session.reviewItems.length;
+
     // 统计每个新词需要答对几道题
     this.newItems.forEach((it) => {
       if (it.kind === 'new') {
@@ -102,16 +111,46 @@ Page({
     this.queue = items.slice();
     this.idx = 0;
     this.phase = phase;
+
+    // 复习段在整条进度里的占比。只在复习阶段展示：
+    // 进入新词段后，剩余的整段都是新词，不需要再分色。
+    const segWidth = (phase === 'review' && this.grandTotal)
+      ? Math.round((items.length / this.grandTotal) * 100)
+      : 0;
+
     this.setData({
       loading: false,
       phase,
       phaseLabel: this.isWrongOnly ? '错词专项' : (phase === 'review' ? '抽查复习' : '新词学习'),
-      total: this.queue.length,
-      done: 0,
-      percent: 0,
+      phaseNote: this._phaseNote(phase, items.length),
+      total: this.grandTotal,
+      done: this.grandDone,
+      percent: this._percent(),
+      segWidth,
       round: this.round
     });
     this.render();
+  },
+
+  /** 全局完成百分比（跨阶段累计，不随阶段重置） */
+  _percent() {
+    const total = Math.max(this.grandTotal, 1);
+    return Math.min(100, Math.round((this.grandDone / total) * 100));
+  },
+
+  /**
+   * 顶部那句结构提示。
+   * 目的是把"还剩什么"提前告诉用户 —— 知道后面是新词，比看见任何动效都提气。
+   */
+  _phaseNote(phase, count) {
+    if (this.isWrongOnly) return '只做错词，做完就结束';
+    if (phase === 'review') {
+      if (this.round > 1) return `再巩固这 ${count} 个错词`;
+      const n = (this.session && this.session.newItems.length) || 0;
+      return n ? `先复习 ${count} 个，做完就学新词` : '今天只复习，没有新词';
+    }
+    const n = (this.session && this.session.newItems.length) || 0;
+    return n ? `最后一段了，新词 ${n} 个` : '最后一段了';
   },
 
   /* ============ 渲染当前条目 ============ */
@@ -271,7 +310,8 @@ Page({
         textbookId: item.textbookId,
         mode: srs.pickModes(1, this.session.plan)[0]
       });
-      this.setData({ total: this.queue.length });
+      // 总量跟着涨一屏，否则进度条会在还剩题时提前走满
+      this.grandTotal += 1;
     }
 
     this.idx++;
@@ -280,12 +320,11 @@ Page({
   },
 
   bumpProgress() {
-    const done = this.data.done + 1;
-    const total = Math.max(this.queue.length, 1);
+    this.grandDone += 1;
     this.setData({
-      done,
-      total: this.queue.length,
-      percent: Math.min(100, Math.round((done / total) * 100))
+      done: this.grandDone,
+      total: this.grandTotal,
+      percent: this._percent()
     });
   },
 
@@ -337,6 +376,9 @@ Page({
     });
     if (!items.length) return this.finish();
 
+    // 巩固轮也要计入全局总量，否则进度条会倒退
+    this.grandTotal += items.length;
+    this.reviewLen = items.length;
     this.round++;
     this.stats.reviewCorrect = 0;
     this.stats.reviewTotal = 0;

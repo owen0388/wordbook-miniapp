@@ -8,9 +8,36 @@
   margin-bottom: 24rpx;
 }
 
-.s-bar {
+/* 进度条：一条走完全程，但按阶段分色。
+   底色 = 新词段（淡珊瑚），左侧叠一段 = 复习段（淡靛蓝），
+   再叠一条主色填充 = 已完成。这样未完成的部分一眼能看出
+   "接下来是复习还是新词"。 */
+.bar.s-bar {
   margin-top: 16rpx;
   height: 10rpx;
+  background: var(--accent-soft);
+}
+
+.bar-seg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: var(--r-pill);
+  background: #E1E8F7;
+}
+
+/* 填充要盖在分段之上 */
+.s-bar .bar-fill {
+  z-index: 2;
+  transition: width 0.45s var(--ease);
+}
+
+.s-note {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 22rpx;
+  line-height: 1.5;
+  color: var(--muted);
 }
 
 /* 卡片 */

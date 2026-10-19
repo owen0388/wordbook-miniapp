@@ -25,8 +25,10 @@
         <text class="muted">{{done}} / {{total}}</text>
       </view>
       <view class="bar s-bar">
+        <view class="bar-seg" wx:if="{{segWidth > 0}}" style="left: {{percent}}%; width: {{segWidth}}%"></view>
         <view class="bar-fill" style="width: {{percent}}%"></view>
       </view>
+      <text class="s-note" wx:if="{{phaseNote}}">{{phaseNote}}</text>
     </view>
 
     <!-- ===== 学习卡（新词首次出现） ===== -->

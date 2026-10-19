@@ -14,7 +14,7 @@
 
 const { today, yesterday, diffDays } = require('./date');
 
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
 
 const KEYS = {
   SCHEMA: 'wb_schema_ver',
@@ -56,7 +56,10 @@ function remove(key) {
 /* ===== 默认值 ===== */
 
 const DEFAULT_PLAN = {
-  dailyNewCount: 20,        // 每日新词量
+  // 每日新词量：一个词要过「1 张卡 + passModeCount 道题」= 3 屏，
+  // 10 个词就是 30 屏（约 9 分钟），落在小学生单次注意力窗口内。
+  // 之前是 20（60 屏 / 约 18 分钟），实测几乎没人能坚持做完。
+  dailyNewCount: 10,        // 每日新词量
   dailyReviewLimit: 100,    // 每日复习上限
   passModeCount: 2,         // 每个词需要通过的题型数
   modes: ['choice', 'en2cn', 'cn2en', 'spell'], // 参与出题的题型
@@ -78,6 +81,12 @@ function migrate() {
   } else {
     // 补全后续新增的配置项，避免老用户缺字段
     const plan = Object.assign({}, DEFAULT_PLAN, get(KEYS.PLAN, {}));
+
+    // v1 → v2：每日新词默认值 20 → 10。
+    // 老用户的 plan 里躺着的是旧默认值 20（Object.assign 会让它盖住新默认值），
+    // 所以这里要主动下调一次。只动「恰好等于旧默认值」的，用户自己调过的（如 15/30）不碰。
+    if (ver < 2 && plan.dailyNewCount === 20) plan.dailyNewCount = 10;
+
     set(KEYS.PLAN, plan);
   }
 

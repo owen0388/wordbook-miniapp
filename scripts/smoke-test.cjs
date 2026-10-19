@@ -70,7 +70,8 @@ if (books.length > 1) {
 } else {
   console.log('  - 跳过：书架多教材排序测试需要 2 本以上');
 }
-check('计划默认值', user.getPlan().dailyNewCount === 20);
+// 默认新词量 10：一个词 3 屏（1 卡 + 2 题），30 屏约 9 分钟，落在小学生注意力窗口内
+check('计划默认值', user.getPlan().dailyNewCount === 10);
 user.savePlan({ dailyNewCount: 10, passModeCount: 2 });
 check('计划可保存', user.getPlan().dailyNewCount === 10);
 
