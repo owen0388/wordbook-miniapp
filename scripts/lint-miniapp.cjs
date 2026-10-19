@@ -134,8 +134,33 @@ jsonFiles.forEach((f) => {
 });
 ok(jsonFiles.length + ' 个 JSON 文件已检查');
 
-/* ---------- 5. 音效资源 ---------- */
-console.log('\n[5] 资源完整性');
+/* ---------- 5. JS 里的 require 路径 ---------- */
+console.log('\n[5] require 路径');
+const jsFiles = walk(ROOT, [], (n) => n.endsWith('.js'))
+  .filter((f) => rel(f).indexOf('assets/') !== 0);
+let requireCount = 0;
+jsFiles.forEach((f) => {
+  const src = fs.readFileSync(f, 'utf8');
+  const re = /require\(\s*['"]([^'"]+)['"]\s*\)/g;
+  let m;
+  while ((m = re.exec(src)) !== null) {
+    const spec = m[1];
+    if (spec.charAt(0) !== '.') continue;      // 只查相对路径
+    requireCount++;
+    const base = path.resolve(path.dirname(f), spec);
+    const hit = ['', '.js', '.json', '/index.js']
+      .map((ext) => base + ext)
+      .some((p) => fs.existsSync(p) && fs.statSync(p).isFile());
+    if (!hit) {
+      err(rel(f) + ' require("' + spec + '") 指向的文件不存在'
+        + '（相对当前文件解析为 ' + rel(base) + '）');
+    }
+  }
+});
+ok(requireCount + ' 条相对 require 路径有效');
+
+/* ---------- 6. 音效资源 ---------- */
+console.log('\n[6] 资源完整性');
 ['tap', 'correct', 'wrong', 'finish'].forEach((n) => {
   const f = path.join(ROOT, 'assets', 'sfx', n + '.mp3');
   if (!fs.existsSync(f)) err('缺少音效 assets/sfx/' + n + '.mp3（运行 node scripts/build-sfx 前需先跑 build-sfx.py）');

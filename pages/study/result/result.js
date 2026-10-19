@@ -1,4 +1,4 @@
-const sfx = require('../../services/sfx');
+const sfx = require('../../../services/sfx');
 
 Page({
   data: {
