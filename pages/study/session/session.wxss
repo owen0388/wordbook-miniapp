@@ -50,6 +50,13 @@
   color: var(--text-sub);
 }
 
+/* 复习来源拆分：比主提示再轻一档，属于"想了解就看得见"的补充信息 */
+.s-note-sub {
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  color: var(--muted);
+}
+
 /* 中途鼓励：浮在顶部，不占布局、不遮挡题目 */
 .s-milestone {
   position: fixed;
@@ -254,6 +261,15 @@
   text-align: center;
   margin-bottom: 24rpx;
   box-shadow: inset 0 2rpx 6rpx rgba(26, 39, 80, 0.04);
+}
+
+/* "这题只能填英文"的即时提示，2 秒消失，不打断答题 */
+.ans-warn {
+  margin: -12rpx 0 16rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  text-align: center;
+  color: #B03D0F;
 }
 
 /* 判分反馈 */

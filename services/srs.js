@@ -42,8 +42,50 @@ function shuffle(arr) {
   return a;
 }
 
+/** 字符串 → 32 位整数种子（FNV-1a） */
+function seedOf(str) {
+  let h = 2166136261;
+  const s = String(str || '');
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+/**
+ * 确定性洗牌（线性同余）。
+ *
+ * 为什么要确定性而不是 Math.random：
+ * 首页会调一次算数量、进学习页又会调一次算条目，中途退出再进还会调。
+ * 纯随机会让"今天学哪 10 个"每次都变 —— 用户昨天看到词表里有 apple，
+ * 今天再进就没了，会以为丢数据。用日期做种子，同一天永远是同一批、同一顺序，
+ * 跨天才换一批，既打散了字母序又保证了可预期。
+ */
+function seededShuffle(arr, seed) {
+  const a = arr.slice();
+  let s = (seed >>> 0) || 1;
+  for (let i = a.length - 1; i > 0; i--) {
+    s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
+    const j = s % (i + 1);
+    const t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
 function normalizeEn(s) {
   return String(s || '').toLowerCase().trim().replace(/[^a-z]/g, '');
+}
+
+/**
+ * 英文题输入框的字符过滤：只留英文字母、空格、连字符、撇号。
+ *
+ * 小程序没有"切换系统输入法"的 API，所以"只能输英文"只能在字符层做：
+ * 用户用中文键盘敲进来的汉字会被直接丢掉。输不进去，比任何提示都管用。
+ * （唯一拦不住的：中文输入法组字阶段的拼音字母——那些本身就是 a-z。）
+ */
+function sanitizeEnInput(s) {
+  return String(s === undefined || s === null ? '' : s).replace(/[^A-Za-z' -]/g, '');
 }
 
 function normalizeCn(s) {
@@ -244,8 +286,8 @@ function effectiveNewCount(plan) {
 
 /**
  * 组装今日学习任务。
- * 复习池 = 昨日新学 ∪ SRS 到期，错词优先。
- * 新词池 = 按书架顺序（主学教材优先）取未学过的词。
+ * 复习池 = 昨日新学 ∪ SRS 到期，错词优先，**且只取当前书架里的教材**。
+ * 新词池 = 打乱书架内未学过的词，主学教材优先占名额。
  */
 function buildDailySession() {
   const plan = user.getPlan();
@@ -255,37 +297,58 @@ function buildDailySession() {
 
   const newLimit = effectiveNewCount(plan);
 
+  // 书架上的教材集合。
+  // 复习池必须按它过滤：进度记录是永久的，教材从书架移除后记录仍在，
+  // 不过滤的话这些"幽灵词"会一直排进复习——用户在当前教材里翻不到它们，
+  // 就会觉得"复习里冒出大量没见过的新词"。这正是本轮反馈的根因。
+  const shelf = user.getBookshelf().slice()
+    .sort((a, b) => (b.isPrimary ? 1 : 0) - (a.isPrimary ? 1 : 0));
+  const shelfSet = {};
+  shelf.forEach((b) => { shelfSet[b.textbookId] = 1; });
+
   // --- 复习池 ---
   const pool = [];
+  let fromYesterdayNew = 0;
+  let fromDue = 0;
   Object.keys(map).forEach((wordId) => {
     const p = map[wordId];
     if (!p || p.status === 'new') return;
+    // 老数据可能没有 textbookId，放行；有值但不在书架上则跳过
+    if (p.textbookId && !shelfSet[p.textbookId]) return;
+
     const isDue = p.nextReviewAt && p.nextReviewAt <= t; // YYYY-MM-DD 可直接字符串比较
     const isYesterdayNew = p.learnedAt === y;
-    if (isDue || isYesterdayNew) pool.push({ wordId, progress: p });
+    if (!isDue && !isYesterdayNew) return;
+
+    if (isYesterdayNew) fromYesterdayNew++;
+    else fromDue++;
+    pool.push({ wordId, progress: p });
   });
 
-  pool.sort((a, b) => {
-    if (b.progress.wrongCount !== a.progress.wrongCount) return b.progress.wrongCount - a.progress.wrongCount;
-    return a.progress.nextReviewAt < b.progress.nextReviewAt ? -1 : 1;
-  });
+  // 先按"有没有错过"分成两档：错过的优先加强，档内打乱，
+  // 避免每天都是同一个顺序（原来严格按日期排，前几个永远是同一批）。
+  const wrongFirst = pool.filter((x) => (x.progress.wrongCount || 0) > 0);
+  const rest = pool.filter((x) => !(x.progress.wrongCount || 0));
+  const orderedPool = shuffle(wrongFirst).concat(shuffle(rest));
 
-  const reviewWords = pool.slice(0, plan.dailyReviewLimit).map((x) => ({
+  const reviewWords = orderedPool.slice(0, plan.dailyReviewLimit).map((x) => ({
     wordId: x.wordId,
     textbookId: x.progress.textbookId || '',
     wrongCount: x.progress.wrongCount || 0
   }));
 
   // --- 新词池 ---
-  const shelf = user.getBookshelf().slice().sort((a, b) => (b.isPrimary ? 1 : 0) - (a.isPrimary ? 1 : 0));
+  // 不再按词库数组顺序（那是字母序，每天都是 apple/banana/cat 开头，很枯燥）。
+  // 用「日期 + 教材」做种子打乱，同一天稳定、跨天轮换。
   const newWords = [];
   for (let i = 0; i < shelf.length; i++) {
     if (newWords.length >= newLimit) break;
-    const words = dict.getWords(shelf[i].textbookId);
+    const tid = shelf[i].textbookId;
+    const words = seededShuffle(dict.getWords(tid), seedOf(t + '|' + tid));
     for (let j = 0; j < words.length; j++) {
       if (newWords.length >= newLimit) break;
       const w = words[j];
-      if (!map[w.id]) newWords.push({ wordId: w.id, textbookId: shelf[i].textbookId });
+      if (!map[w.id]) newWords.push({ wordId: w.id, textbookId: tid });
     }
   }
 
@@ -295,6 +358,12 @@ function buildDailySession() {
     newWords,
     reviewCount: reviewWords.length,
     newCount: newWords.length,
+    // 复习来源拆分：让"为什么今天有这么多复习"变成可见的事
+    reviewFrom: {
+      yesterdayNew: fromYesterdayNew,
+      due: fromDue,
+      total: pool.length
+    },
     newLimit,                                   // 今天实际给的新词上限
     reduced: newLimit < (plan.dailyNewCount || 10), // 是否因昨天没做完而减量
     hasShelf: shelf.length > 0
@@ -308,6 +377,7 @@ function peekDailyCounts() {
     reviewCount: s.reviewCount,
     newCount: s.newCount,
     reduced: s.reduced,
+    reviewFrom: s.reviewFrom,
     hasShelf: s.hasShelf
   };
 }
@@ -368,6 +438,7 @@ function buildSessionItems() {
     newItems,
     reviewCount: s.reviewWords.length,
     newCount: s.newWords.length,
+    reviewFrom: s.reviewFrom,
     reduced: s.reduced,
     hasShelf: s.hasShelf
   };
@@ -399,24 +470,108 @@ function judge(mode, word, input) {
   return !!u && u === normalizeEn(word.word);
 }
 
-/** 词义选择题的选项：正确项 + 3 个同教材干扰项 */
-function buildChoiceOptions(word, pool) {
-  const correct = word.meaningCn;
-  const others = shuffle(
-    (pool || [])
-      .filter((w) => w.id !== word.id && normalizeCn(w.meaningCn) !== normalizeCn(correct))
-      .map((w) => w.meaningCn)
-  );
-  const uniq = [];
-  others.forEach((m) => {
-    if (uniq.length < 3 && uniq.indexOf(m) < 0) uniq.push(m);
-  });
-  // 词库太小时用占位保证 4 个选项
-  const filler = ['（无）', '（空）', '（略）'];
-  let fi = 0;
-  while (uniq.length < 3) uniq.push(filler[fi++ % filler.length]);
+/**
+ * 判断一个释义是否适合当干扰项。
+ *
+ * 三类要挡掉：
+ *   1. 纯符号/占位（"（无）"、"—"）—— 一眼假，等于送分
+ *   2. 不含汉字（音标、英文）—— 与中文释义不在同一平面
+ *   3. 过短（单字）—— 和"苹果""动物"这种两字词不在一个粒度上
+ */
+function isBadMeaning(m) {
+  const s = String(m || '').trim();
+  if (s.length < 2) return true;
+  if (!/[\u4e00-\u9fff]/.test(s)) return true;
+  if (/^[（(【\[][^）)】\]]{0,3}[）)】\]]$/.test(s)) return true;
+  return false;
+}
 
-  return shuffle([correct].concat(uniq));
+/**
+ * 干扰项"迷惑度"打分。
+ *
+ * 目标是让孩子真的要想一下，而不是扫一眼就排除。词库没有语义标签，
+ * 所以只能用三个可计算的信号：
+ *   - 错题本里的词（+50）     用户自己曾经搞混过的，最真实的混淆证据
+ *   - 释义首字相同（+30）     "上午/下午""这/那"这类，中文里最容易看错
+ *   - 长度接近（最高 +20）    避免"苹果"旁边站着一个九字长释义
+ *   - 汉字有交集（最高 +15）  "时间 / 次数" 这种共享字，天然易混
+ */
+function confusingScore(cand, word, wrongIds) {
+  const a = String(word.meaningCn || '');
+  const b = String(cand.meaningCn || '');
+  let score = 0;
+
+  if (wrongIds && wrongIds[cand.id]) score += 50;
+
+  if (a.charAt(0) && a.charAt(0) === b.charAt(0)) score += 30;
+
+  const dl = Math.abs(a.length - b.length);
+  // 长度权重给得最重：错题和首字相同都是"锦上添花"，
+  // 但选项间长度悬殊是最致命的破绽——"兔"旁边站着 16 个字的释义，
+  // 孩子根本不用想就能排除。词库里释义粒度差别很大（1 字到十几个字），
+  // 所以只能靠排序尽量贴住，正解实在找不到同粒度的就接受。
+  score += Math.max(0, 24 - dl * 6);
+
+  let shared = 0;
+  for (let i = 0; i < b.length; i++) {
+    const ch = b.charAt(i);
+    if (ch !== b.charAt(0) && a.indexOf(ch) >= 0) shared++;
+  }
+  score += Math.min(15, shared * 5);
+
+  return score;
+}
+
+/**
+ * 词义选择题的选项：正确项 + 3 个干扰项。
+ *
+ * 干扰项不再纯随机，改为「同教材候选 → 迷惑度打分 → 取高分池里随机抽 3 个」。
+ * 不直接取 top3，是为了避免同一道题每次都长一样（孩子会记位置）。
+ *
+ * @param {object} word   当前词
+ * @param {object[]} pool 候选词（同教材）
+ * @param {string[]} [wrongIds] 错题本的词 id，用于加权
+ */
+function buildChoiceOptions(word, pool, wrongIds) {
+  const correct = word.meaningCn;
+  const wrongSet = {};
+  (wrongIds || []).forEach((id) => { wrongSet[id] = 1; });
+
+  const cands = (pool || []).filter((w) =>
+    w && w.id !== word.id
+    && normalizeCn(w.meaningCn) !== normalizeCn(correct)
+    && !isBadMeaning(w.meaningCn));
+
+  // 释义去重，避免两个选项文字完全相同
+  const seen = {};
+  const unique = [];
+  cands.forEach((w) => {
+    const k = normalizeCn(w.meaningCn);
+    if (seen[k]) return;
+    seen[k] = 1;
+    unique.push(w);
+  });
+
+  const ranked = unique
+    .map((w) => ({ w, s: confusingScore(w, word, wrongSet) }))
+    .sort((x, y) => y.s - x.s);
+
+  // 从高分池里随机取，池子大小随候选数自适应
+  const topN = Math.min(ranked.length, Math.max(3, Math.min(8, Math.ceil(ranked.length / 2))));
+  const picked = shuffle(ranked.slice(0, topN)).slice(0, 3).map((x) => x.w.meaningCn);
+
+  // 候选不足（教材词太少）时，从词库全局补，仍然避开占位符
+  if (picked.length < 3) {
+    const global = shuffle(dict.getAllWords());
+    for (let i = 0; i < global.length && picked.length < 3; i++) {
+      const m = global[i].meaningCn;
+      if (!m || isBadMeaning(m) || normalizeCn(m) === normalizeCn(correct)) continue;
+      if (picked.some((p) => normalizeCn(p) === normalizeCn(m))) continue;
+      picked.push(m);
+    }
+  }
+
+  return shuffle([correct].concat(picked));
 }
 
 module.exports = {
@@ -426,7 +581,10 @@ module.exports = {
   MODES,
   MODE_KEYS,
   shuffle,
+  seedOf,
+  seededShuffle,
   normalizeEn,
+  sanitizeEnInput,
   normalizeCn,
   meaningKeywords,
   meaningSenses,
@@ -439,5 +597,7 @@ module.exports = {
   pickModes,
   buildSessionItems,
   judge,
+  isBadMeaning,
+  confusingScore,
   buildChoiceOptions
 };

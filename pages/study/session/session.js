@@ -30,7 +30,11 @@ Page({
     percent: 0,
     segWidth: 0,              // 复习段在整条进度里的宽度占比（用于分段上色）
     phaseNote: '',            // 「先复习 N 个，做完就学新词」这类结构提示
+    sourceNote: '',           // 复习来源拆分：「昨天学的 8 个 · 到期 12 个」
     milestone: '',            // 中途飘一句「还剩多少」，2 秒后自动消失
+
+    // 输入
+    inputWarn: '',            // 英文题里输了中文时的即时提示
 
     // 复习抽查结果
     reviewCorrect: 0,
@@ -160,6 +164,7 @@ Page({
       phase,
       phaseLabel: label,
       phaseNote: this._phaseNote(phase, items.length),
+      sourceNote: (phase === 'review' && this.round === 1) ? this._sourceNote(items.length) : '',
       total: this.grandTotal,
       done: this.grandDone,
       percent: this._percent(),
@@ -167,6 +172,23 @@ Page({
       round: this.round
     });
     this.render();
+  },
+
+  /**
+   * 复习词的来源拆分。
+   * 用户之前反馈"复习里冒出大量没见过的词"，本质是两种来源混在一个数字里：
+   * 昨天刚学的（理应抽查）和更早该复习的（算法排期）。拆开显示，
+   * 用户才知道每个词为什么在这儿，而不是怀疑数据错乱。
+   */
+  _sourceNote(shown) {
+    const f = this.session && this.session.reviewFrom;
+    if (!f || !f.total) return '';
+    const parts = [];
+    if (f.yesterdayNew) parts.push('昨天学的 ' + f.yesterdayNew + ' 个');
+    if (f.due) parts.push('到期该复习的 ' + f.due + ' 个');
+    if (!parts.length) return '';
+    const head = '这 ' + shown + ' 个里有 ' + parts.join('、');
+    return f.total > shown ? head + '（共 ' + f.total + ' 个，今天先做一部分）' : head;
   },
 
   /** 全局完成百分比（跨阶段累计，不随阶段重置） */
@@ -207,7 +229,12 @@ Page({
 
     let options = [];
     if (!isCard && mode === 'choice') {
-      options = srs.buildChoiceOptions(word, dict.getWords(this._bookOf(item)));
+      // 干扰项优先从"自己答错过的词"里挑 —— 那是最真实的混淆证据。
+      // 错词本每次重算太浪费，本轮会话缓存一次。
+      if (!this._wrongIds) {
+        this._wrongIds = user.getWrongList().map((w) => w.id);
+      }
+      options = srs.buildChoiceOptions(word, dict.getWords(this._bookOf(item)), this._wrongIds);
     }
 
     // 只有"题面是英文"的题才给喇叭并自动朗读。
@@ -268,8 +295,31 @@ Page({
     this.render();
   },
 
+  /**
+   * 输入框内容变化。
+   *
+   * 英文题（中译英 / 拼写）只接受英文字母：中文、数字、符号直接丢掉。
+   * 这是"限制输入框"能做到的最强效果 —— 小程序没有切换系统输入法的 API，
+   * 但"打不进去"比任何文案提示都清楚：用户一敲中文发现没反应，自然切回英文键盘。
+   * 中文题（英译中）反过来没法强制，只能靠 placeholder 说清楚。
+   */
   onInput(e) {
-    this.setData({ input: e.detail.value });
+    const item = this.queue[this.idx];
+    const mode = item && item.mode;
+    const raw = (e && e.detail && e.detail.value !== undefined && e.detail.value !== null)
+      ? String(e.detail.value) : '';
+
+    if (mode === 'cn2en' || mode === 'spell') {
+      const cleaned = srs.sanitizeEnInput(raw);
+      if (cleaned !== raw) {
+        this.setData({ input: cleaned, inputWarn: '这一题只能填英文字母' });
+        if (this._wt) clearTimeout(this._wt);
+        this._wt = setTimeout(() => this.setData({ inputWarn: '' }), 2000);
+        return;
+      }
+    }
+
+    this.setData({ input: raw, inputWarn: '' });
   },
 
   onPickOption(e) {

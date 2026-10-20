@@ -254,6 +254,73 @@ check('选择题 4 个选项', opts.length === 4, '实际 ' + opts.length);
 check('选项包含正确答案', opts.indexOf(apple.meaningCn) >= 0);
 check('选项无重复', new Set(opts).size === opts.length);
 
+/* ---------- 5b. 复习池来源与顺序 ---------- */
+section('5b. 复习池来源、新词顺序、干扰项质量');
+
+// 复习来源拆分：界面上要能说清"这些复习词从哪来"
+check('复习来源有拆分字段', !!session.reviewFrom
+  && typeof session.reviewFrom.yesterdayNew === 'number'
+  && typeof session.reviewFrom.due === 'number',
+  JSON.stringify(session.reviewFrom));
+
+// 移出书架的教材不该继续排复习 —— 否则会冒出"在当前教材里找不到"的幽灵词
+const ghostBook = books.length > 1 ? books[1].id : null;
+if (ghostBook) {
+  const gw = dict.getWords(ghostBook)[0];
+  srs.applyAnswer(gw.id, true, ghostBook);
+  const gp = user.getWordProgress(gw.id);
+  gp.nextReviewAt = dt.today();
+  user.saveWordProgress(gw.id, gp);
+
+  const before = srs.buildDailySession().reviewWords.map((x) => x.wordId);
+  check('在书架上的教材会进复习', before.indexOf(gw.id) >= 0);
+
+  user.removeBook(ghostBook);
+  const after = srs.buildDailySession().reviewWords.map((x) => x.wordId);
+  check('移出书架后不再进复习池', after.indexOf(gw.id) < 0);
+  user.addBook(ghostBook);
+}
+
+// 新词不再按字母序（源表是字母排序单词表，原样取就是 A/B/C 开头）
+const nw1 = srs.buildDailySession().newWords.map((x) => x.wordId);
+const nw2 = srs.buildDailySession().newWords.map((x) => x.wordId);
+check('同一天新词顺序稳定（可预期、可续学）', JSON.stringify(nw1) === JSON.stringify(nw2));
+const rawOrder = dict.getWords(books[0].id).filter((w) => !user.getWordProgress(w.id))
+  .slice(0, nw1.length).map((w) => w.id);
+check('新词顺序已打乱，不是字母原序', JSON.stringify(nw1) !== JSON.stringify(rawOrder));
+
+// 干扰项：不能出现占位符，不能与答案重复，长度要和答案贴得住
+const allPool = dict.getWords(books[0].id);
+let hasFiller = false;
+let badLen = 0;
+let lenSamples = 0;
+let lenSum = 0;
+let missAnswer = 0;
+const wrongIdsNow = user.getWrongList().map((w) => w.id);
+allPool.forEach((w) => {
+  const o = srs.buildChoiceOptions(w, allPool, wrongIdsNow);
+  if (o.some((x) => /（无）|（空）|（略）/.test(x))) hasFiller = true;
+  if (o.length !== 4 || o.indexOf(w.meaningCn) < 0) missAnswer++;
+  o.filter((x) => x !== w.meaningCn).forEach((x) => {
+    const d = Math.abs(x.length - w.meaningCn.length);
+    lenSamples++;
+    lenSum += d;
+    if (d > 6) badLen++;
+  });
+});
+const avgLenDiff = lenSamples ? lenSum / lenSamples : 0;
+check('干扰项不含占位符', !hasFiller);
+check('每题都是 4 项且含正确答案', missAnswer === 0, missAnswer + ' 题异常');
+// 词库里释义粒度差异很大（1 字"兔"到十几个字），完全同长不可能，
+// 所以看平均数：平均差小就说明选项之间没有"一眼能排除"的长短破绽。
+check('干扰项平均长度差 <= 2', avgLenDiff <= 2, '平均 ' + avgLenDiff.toFixed(2));
+check('极端长度差只是少数', badLen <= lenSamples * 0.05, badLen + '/' + lenSamples);
+
+// 英文输入过滤
+check('英文输入过滤掉中文', srs.sanitizeEnInput('苹果') === '');
+check('英文输入保留字母与连字符', srs.sanitizeEnInput("ice-cream") === 'ice-cream');
+check('英文输入混输时只留字母', srs.sanitizeEnInput('ap苹果ple') === 'apple');
+
 /* ---------- 6. 统计与日志 ---------- */
 section('6. 统计与日志');
 user.addLog(null, { newCount: 5, reviewCount: 10, correct: 13, wrong: 2, durationSec: 120 }, true);

@@ -32,6 +32,7 @@
         <view class="bar-fill" style="width: {{percent}}%"></view>
       </view>
       <text class="s-note" wx:if="{{phaseNote}}">{{phaseNote}}</text>
+      <text class="s-note s-note-sub" wx:if="{{sourceNote}}">{{sourceNote}}</text>
     </view>
 
     <!-- ===== 学习卡（新词首次出现） ===== -->
@@ -99,8 +100,10 @@
           bindinput="onInput"
           bindconfirm="onSubmitInput"
           confirm-type="done"
+          maxlength="40"
           disabled="{{answered}}"
-          placeholder="{{mode === 'en2cn' ? '输入中文意思' : '输入英文单词'}}" />
+          placeholder="{{mode === 'en2cn' ? '输入中文意思' : '只能填英文字母'}}" />
+        <view class="ans-warn" wx:if="{{inputWarn}}">{{inputWarn}}</view>
         <button hover-class="btn-press" class="btn btn-primary s-btn" bindtap="onSubmitInput" disabled="{{answered}}">确 认</button>
       </view>
     </block>

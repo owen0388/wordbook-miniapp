@@ -127,6 +127,15 @@ function getTotalWordCount() {
   return Object.keys(_index()).length;
 }
 
+/**
+ * 全库去重词条（wordId 维度）。
+ * 给"同教材候选不够时跨教材补干扰项"用，不要在页面里遍历它渲染列表。
+ */
+function getAllWords() {
+  const idx = _index();
+  return Object.keys(idx).map((id) => idx[id]);
+}
+
 module.exports = {
   getVersion,
   getTextbooks,
@@ -138,5 +147,6 @@ module.exports = {
   getWord,
   getWordsByIds,
   searchWords,
+  getAllWords,
   getTotalWordCount
 };

@@ -115,6 +115,35 @@ Page({
 
   /* ===== 危险操作 ===== */
 
+  /**
+   * 只清学习进度，保留书架和设置。
+   *
+   * 和下面的 clearAll 是两种用途：
+   *   - 清全部：相当于重装
+   *   - 只清进度：换了教材、或开发测试期攒了一堆脏记录时用。
+   *     典型症状是"复习里冒出一堆我没印象的词"——那些词确实学过，
+   *     只是记录还留着。清掉进度能让学习从当前教材第一课重新开始。
+   */
+  clearProgress() {
+    wx.showModal({
+      title: '清除学习进度',
+      content: '会删掉已学记录、复习排期、错词本和打卡记录，书架和设置保留。不可恢复。',
+      confirmText: '清除',
+      confirmColor: '#C0392B',
+      success: (res) => {
+        if (!res.confirm) return;
+        // 直接写成空值而不是 remove：migrate() 看到版本号没变会提前返回，
+        // 只有 remove 的话这些 key 会一直是"缺失"状态。
+        storage.set(storage.KEYS.PROGRESS, {});
+        storage.set(storage.KEYS.DAILY_LOG, {});
+        storage.set(storage.KEYS.WRONG_BOOK, {});
+        storage.remove(storage.KEYS.SESSION_TMP);
+        this.onShow();
+        wx.showToast({ title: '已重置进度', icon: 'success' });
+      }
+    });
+  },
+
   clearData() {
     wx.showModal({
       title: '清除全部学习数据',
