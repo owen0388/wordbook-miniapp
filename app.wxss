@@ -1,16 +1,14 @@
 /* ===================== 字体 =====================
  * Baloo 2 ExtraBold：圆润、宽厚，接近儿童绘本标题字。
- * 只含拉丁字母（约 18KB，base64 内联），中文回落到系统字体——
+ * 只含拉丁字母（约 23KB base64），中文回落到系统字体——
  * 中文字库动辄几 MB，塞进主包会直接撞上 2MB 上限。
  * 效果上英文单词、数字、按钮文案都是圆胖体，中文保持系统字重，混排层次更清楚。
+ *
+ * 字体本身放在 assets/font.wxss：那是一条约 23KB 的超长单行，
+ * 混在本文件里，任何一次整体重写都有把它截断的风险（踩过一次，编译报
+ * unexpected token）。独立成文件后，改样式不用再碰它。
  */
-@font-face {
-  font-family: 'WBDisplay';
-  src: url('data:font/woff2;base64,d09GMgABAAAAAEV0ABAAAAAAqTQAAEURAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGmAb+x4cjQoGYD9TVEFUKgCCEBEICoGxGIGKaAuEMAABNgIkA4hcBCAFhDAHIAwHG76SJeOYpbgdoMIf+tWDbcPe7aDWMa81sxERbBwgIPFzzP7/c3JjDK0B66sfzChlLhsDtFGONjTv8BRWGJjePu/ynMNFwtgGo/BhRL1YGf87WRWesDusO52tBNNi/wMbNH6lnwpk0HjAqBYm7PDinolkytiunP2nL3uwraimwxWYMyohyT6LALeJH5HwnojwX+33eXre9IP+QLMAoNEv21UbKh9j0Ch0OhE+sREuMrnD83PrbSxgLPIvgxUbGxs1BgvYRm0DRowKyTDADMDAKs4CPTDw7vTujFOMOj29FvXa7FMk/uF+fHPu+596o5vLoqmTCtdXF6QAG2hpDSuulbp/V2ZZ5zPJRA8A6p+kr1NlAlOcQKek+YXJ//+/mb8XnBMOJxcOcoBcktxYhaxFRqJYJ6PQ1CNGpkPV0joT0dp7L2ZEHIhZJSuz+p2KjQk1yMfPE7dUS130pZvCTXF1nlddADZCoM3DPGs7hIXxs5EyWd5QTnDML1ThMpWD0YG8Q3Nm9N6O1BSwBtJkC0LO2M7ubTkpBy7ccpiLuaB6KZzx/sfPb3ylM3cnqfbaE/tZZDsEcOD/y8y9X4USLtOmKYFbIpB0qEuld1F6mNoJgU66JA5wiYblb5XWtx/ssKEEMKVdhhL/m/s8GobRykDQCGlZb/51muv/lv9VTik+dMvHOcBhKvCUsR3GDpv09U0Cx/qOZVCSqxVo7LB9ycs5h869PrsYKhBPZR2xLyWkiWGiscPYfevYifah/zet2f2XG0of6HIfClk9XXZhSxPmNpkwJH+H7LUSepU9M3OQyYbSi5CtO1CtKLRDIeyhkGjg+X7pK90TeePd9E06y5uJJiMowNJ5A8yE6O0+fc3V/evS18/u6Hnd9BUBuVX9n9ZdgktnDSmlFJwJCmIBKDSUhZLAv5pmeeRYafa0D4cYMIIgOIJOW9pxd76fTg6c9wrkKGm7RwjBCGOMEEIITRgT+rWvDdJpSH7q3rlT2Z8ggjGHECbLanMDMzEKuYlRXNbPY2y20u90jYEFRx6lu50YODzAIoAncDCXXQOHh8R4zBCgubq5AIMAy1JwKBiwtIPV/wcwZQ0DEsDAAFowYImugi+cmhr4vx6wkXCgv7dbG4Ee4pA71Qc013ennnIDpZX33/bGXnN6DJuE0KYRxuHPFHnDz7zW9bAAD4ehD8yvOAmcTsjH2ccsDKX6KAPL+VP5k0NPSI6KjiqJ/H7NLdUN5XP9Q/EWiZx+0J6FDCzEkRdw5/Heym4w67kM9jDvIOMG7Sfmn/x/Wf9yGWESQRT3GCNVGEF7adjA0+vmCPtZWDZDLIem0MO4b5kroUB6RYSX8Z6eDDmgSVBvXQvRk7lvWSk7mSlgNDKW0ybY3awlioj9e6PdYUVAO6Cj0FX6Vdp9SClYAkUxHayvoH8FN2U83luYiD3MrGcP74XLmIj+mNdMe7lvYT89LFzBXCkCHSAHq0T4XOSj4ISJGFjuW9oEy+7mjlX28BCmCxz4xc93OPdssO9w3QlLptJnNOGDnISbCe007QLtKn2dtN5vFkR2XyQ7AQic/3eLfEcAlKP+dslqB8IlbAugEO1rB3g4Lv21dc44quIprfa2sp6dkkrdcgDFzeevBZUeHvLm9NyIVxU624TlaoTCaRSB6S1g14OJk0q2CH0C0lD6j6rUC6rxUjbmw3ogq9wePlEBcjXAPeJaVk4FkNA6h6ICxNjINm4GQTAUCJXxfZVrmOK1XHWO0dY2ZJswKUy1g1JXbH+NJd0s6/KemoeHkhZSQq25CUJfddVDLZbu9U0e1bJJhRwqZJbRs3maqIMy48AqASAJQLDAF... [truncated]
-  font-weight: 400 900;
-  font-style: normal;
-  font-display: swap;
-}
+@import "assets/font.wxss";
 
 /* ===================== 设计令牌：积木世界 =====================
  * 一套色 = 6 个变量（正面板 c / 斜面亮 ft / 斜面 fb / 斜面暗 fb2 / 厚度 sd / 描边 e）。

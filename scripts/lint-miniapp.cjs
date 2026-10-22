@@ -102,6 +102,54 @@ wxssFiles.forEach((f) => {
       warn(name + ' @font-face 引用了本地文件路径，小程序不支持，需转 base64 或放网络');
     }
   });
+
+  /* ---- 以下三条是为了拦住"超长行被工具截断后写回文件"这类事故 ---- */
+
+  // 1) 截断标记：说明文件是工具输出被原样重建的，内容已经残缺
+  if (raw.indexOf('truncated') >= 0) {
+    err(name + ' 含 "truncated" 字样，疑似被工具截断后写回，内容不完整');
+  }
+
+  // 2) 单引号必须成对。base64 那种超长行被腰斩时，结尾的引号和分号会一起丢，
+  //    字符串不闭合，WXSS 编译器一路往下吃到奇怪字符才报 unexpected token
+  const sq = (s.match(/'/g) || []).length;
+  if (sq % 2 !== 0) {
+    err(name + ' 单引号数量为奇数（' + sq + '），存在未闭合的字符串');
+  }
+  const dq = (s.match(/"/g) || []).length;
+  if (dq % 2 !== 0) {
+    warn(name + ' 双引号数量为奇数（' + dq + '），请确认没有未闭合字符串');
+  }
+
+  // 3) base64 字体必须"url('data:...')"完整闭合。截断后这里匹配不上
+  if (fontFaces.length) {
+    fontFaces.forEach((ff) => {
+      if (ff.indexOf('data:') >= 0 && !/url\(\s*['"]data:[^'"]+['"]\s*\)/.test(ff)) {
+        err(name + ' 的 @font-face base64 未正确闭合（引号或括号丢失）');
+      }
+    });
+  }
+
+  // 4) 超长单行：改这种文件必须用脚本，别手工复制粘贴。
+  //    字体文件本身就是一条 base64 长行，属正常，不提示
+  if (!/font\.wxss$/.test(name)) {
+    raw.split('\n').forEach((line, i) => {
+      if (line.length > 5000) {
+        warn(name + ':' + (i + 1) + ' 有 ' + line.length + ' 字符的长行（base64 等），'
+          + '重写该文件时必须用脚本处理，不能依赖工具回显后手工复制');
+      }
+    });
+  }
+
+  // 5) @import 指向的文件必须存在
+  (s.match(/@import\s+['"][^'"]+['"]/g) || []).forEach((line) => {
+    const m = /@import\s+['"]([^'"]+)['"]/.exec(line);
+    if (!m) return;
+    const target = path.resolve(path.dirname(f), m[1]);
+    if (!fs.existsSync(target)) {
+      err(name + ' 的 @import 指向不存在的文件：' + m[1]);
+    }
+  });
 });
 ok(wxssFiles.length + ' 个 WXSS 文件已检查');
 
