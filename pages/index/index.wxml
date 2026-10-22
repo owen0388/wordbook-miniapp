@@ -10,6 +10,13 @@
       <view class="pt"></view><view class="pt"></view>
     </view>
 
+    <!-- 顶部压印品牌：刻在积木顶面上的字，不是第二个标题 -->
+    <view class="hero-brand">
+      <view class="hb-rule"></view>
+      <text class="hb-cn">单词秒记</text>
+      <view class="hb-rule"></view>
+    </view>
+
     <!-- 日期条 -->
     <view class="datebar">
       <view class="studs thin">

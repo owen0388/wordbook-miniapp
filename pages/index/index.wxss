@@ -30,10 +30,46 @@
 /* 关键：.brick > view 默认被抬成 relative，这里逐个改回 absolute */
 .hero > .datebar,
 .hero > .hero-pup,
+.hero > .hero-brand,
 .hero > .hero-h1,
 .hero > .hero-tip {
   position: absolute;
   z-index: 5;
+}
+
+/* --- 顶部压印品牌 ---
+ * 这块是积木的顶面斜面，原本空着 125rpx。
+ * 没有放大标题：下面 60rpx 处已经有「今天也要记单词！」，两个大字会互相抢；
+ * 也没有放日期：日期条就在正下方。所以做成"刻在塑料上"的印字 ——
+ * 低对比 + 拉开字距 + 底下一条浅高光，观感是被压进去的，不是浮在上面的另一行字。
+ *
+ * 两侧短线是必要的：单独四个字漂在斜面上像没写完，加两条等长的线就成"款识"。
+ * 不写英文副标 —— 15rpx 折到手机上是 7px，读不出内容，只是噪点。
+ */
+.hero > .hero-brand {
+  left: 0;
+  right: 0;
+  top: 54rpx;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20rpx;
+}
+.hb-rule {
+  width: 68rpx;
+  height: 3rpx;
+  border-radius: 2rpx;
+  background: rgba(112, 38, 8, .34);
+  box-shadow: 0 2rpx 0 rgba(255, 248, 236, .5);
+}
+.hb-cn {
+  font-size: 38rpx;
+  font-weight: 900;
+  letter-spacing: 14rpx;
+  text-indent: 14rpx;   /* 补掉字距在尾部多出的那一格，视觉才真居中 */
+  color: rgba(106, 35, 6, .58);
+  text-shadow: 0 2rpx 0 rgba(255, 248, 236, .6);
 }
 
 /* --- 日期条 --- */
