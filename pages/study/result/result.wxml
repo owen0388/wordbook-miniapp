@@ -3,25 +3,44 @@
   <view class="fx-glow"></view>
   <view class="fx-bg"></view>
 
-  <view class="hero">
-    <view class="hero-emoji" wx:if="{{accuracy >= 80}}">完成</view>
-    <view class="hero-emoji" wx:else>加油</view>
-    <view class="hero-title">{{title}}</view>
-    <view class="hero-sub">连续第 {{report.streak}} 天 · 用时 {{report.durationText}}</view>
-    <view class="hero-sub hero-note" wx:if="{{remark}}">{{remark}}</view>  </view>
+  <!-- ===== 大星星 ===== -->
+  <view class="star-wrap">
+    <view class="halo"></view>
+    <view class="bigstar">
+      <view class="bigstar-in">
+        <view class="star-face">
+          <view class="sf-eye l"></view>
+          <view class="sf-eye r"></view>
+          <view class="sf-mouth"></view>
+        </view>
+      </view>
+    </view>
+  </view>
 
-  <view class="card">
-    <view class="card-title"><text>本轮</text></view>
+  <view class="res-title">{{title}}</view>
+  <view class="res-sub">连续第 {{report.streak}} 天 · 用时 {{report.durationText}}</view>
+  <view class="res-note" wx:if="{{remark}}">{{remark}}</view>
+
+  <!-- ===== 本轮成绩 ===== -->
+  <view class="card plate">
+    <view class="studs">
+      <view class="pt"></view><view class="pt"></view>
+      <view class="pt"></view><view class="pt"></view>
+    </view>
+    <view class="card-title"><text>本轮战报</text></view>
     <view class="stat-grid">
       <view class="stat">
+        <view class="studs sm"><view class="pt"></view><view class="pt"></view></view>
         <view class="stat-num">{{report.newPassed}}</view>
         <view class="stat-label">新词</view>
       </view>
       <view class="stat">
+        <view class="studs sm"><view class="pt"></view><view class="pt"></view></view>
         <view class="stat-num">{{report.reviewTotal}}</view>
         <view class="stat-label">复习</view>
       </view>
       <view class="stat">
+        <view class="studs sm"><view class="pt"></view><view class="pt"></view></view>
         <view class="stat-num">{{report.wrongCount}}</view>
         <view class="stat-label">要回头</view>
       </view>
@@ -35,8 +54,12 @@
     </view>
   </view>
 
-  <!-- 累计：把"我变强了"这件事讲出来，比罗列本轮数字更有说服力 -->
-  <view class="card" wx:if="{{report.mastered > 0}}">
+  <!-- ===== 累计：把"我变强了"讲出来 ===== -->
+  <view class="card plate offset" wx:if="{{report.mastered > 0}}">
+    <view class="studs">
+      <view class="pt"></view><view class="pt"></view>
+      <view class="pt"></view><view class="pt"></view>
+    </view>
     <view class="card-title"><text>你积累的</text></view>
     <view class="acc-line">
       已经记住 <text class="acc-num">{{report.mastered}}</text> 个词
@@ -47,15 +70,19 @@
     </view>
   </view>
 
-  <view class="card" wx:if="{{report.wrongCount > 0}}">
+  <!-- ===== 错词提示 ===== -->
+  <view class="card plate" wx:if="{{report.wrongCount > 0}}">
+    <view class="studs">
+      <view class="pt"></view><view class="pt"></view>
+      <view class="pt"></view><view class="pt"></view>
+    </view>
     <view class="card-title"><text>错词已记录</text></view>
     <view class="sub">
       答错的词已进入错词本，明天的抽查会优先安排它们。
-      现在也可以直接去错词本专项复习。
     </view>
   </view>
 
-  <button hover-class="btn-press" class="btn btn-primary" bindtap="goHome">返回首页</button>
-  <button hover-class="btn-press" class="btn btn-ghost mt" bindtap="goWrongBook" wx:if="{{report.wrongCount > 0}}">去错词本</button>
+  <button hover-class="btn-press" class="btn btn-primary res-btn" bindtap="goHome">收下奖励</button>
+  <button hover-class="btn-press" class="btn btn-ghost res-btn res-btn-2" bindtap="goWrongBook" wx:if="{{report.wrongCount > 0}}">去错词本看看</button>
 
 </view>

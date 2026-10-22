@@ -3,23 +3,28 @@
   <view class="fx-glow"></view>
   <view class="fx-bg"></view>
 
-  <!-- 搜索 -->
+  <!-- 搜索：做成"凹槽"，面板比斜面亮，暗示往里填 -->
   <view class="search">
+    <text class="search-ico">🔍</text>
     <input
       class="search-input"
       value="{{keyword}}"
       bindinput="onKeyword"
-      placeholder="搜单词或中文释义"
+      placeholder="搜一个单词，比如 apple"
       confirm-type="search" />
-    <view class="search-clear" wx:if="{{keyword}}" bindtap="clearSearch">清空</view>
+    <view class="search-clear" wx:if="{{keyword}}" bindtap="clearSearch">×</view>
   </view>
 
   <!-- 搜索结果 -->
   <block wx:if="{{searching}}">
-    <view class="card">
-      <view class="card-title">
-        <text>搜索结果</text>
-        <text class="muted">{{searchResults.length}} 条</text>
+    <view class="card plate">
+      <view class="studs">
+        <view class="pt"></view><view class="pt"></view>
+        <view class="pt"></view><view class="pt"></view>
+      </view>
+      <view class="sec-head">
+        <text class="sec-title">搜索结果</text>
+        <text class="sec-link">{{searchResults.length}} 条</text>
       </view>
       <view class="sr" wx:for="{{searchResults}}" wx:key="id">
         <view class="sr-left">
@@ -28,7 +33,7 @@
         </view>
         <view class="sr-right">
           <view class="sr-meaning">{{item.pos}} {{item.meaningCn}}</view>
-          <view class="muted sr-book">{{item.textbookName}}</view>
+          <view class="sr-book">{{item.textbookName}}</view>
         </view>
       </view>
       <view class="empty" wx:if="{{searchResults.length === 0}}">
@@ -39,10 +44,14 @@
 
   <!-- 筛选 + 教材列表 -->
   <block wx:else>
-    <view class="card">
-      <view class="card-title">
-        <text>筛选教材</text>
-        <text class="muted" bindtap="resetFilter">重置</text>
+    <view class="card plate">
+      <view class="studs">
+        <view class="pt"></view><view class="pt"></view>
+        <view class="pt"></view><view class="pt"></view>
+      </view>
+      <view class="sec-head">
+        <text class="sec-title">筛选教材</text>
+        <text class="sec-link" bindtap="resetFilter">重置</text>
       </view>
 
       <view class="filter-label">教材版本</view>
@@ -76,17 +85,21 @@
       </view>
     </view>
 
-    <view class="card">
-      <view class="card-title">
-        <text>教材列表</text>
-        <text class="muted">共 {{textbooks.length}} 本</text>
+    <view class="card plate offset">
+      <view class="studs">
+        <view class="pt"></view><view class="pt"></view>
+        <view class="pt"></view><view class="pt"></view>
+      </view>
+      <view class="sec-head">
+        <text class="sec-title">教材列表</text>
+        <text class="sec-link">共 {{textbooks.length}} 本</text>
       </view>
 
       <view class="book" wx:for="{{textbooks}}" wx:key="id">
         <view class="row-between">
           <view class="book-main" data-id="{{item.id}}" bindtap="goDetail">
             <view class="book-name">{{item.name}}</view>
-            <view class="muted book-meta">{{item.unitCount}} 单元 · {{item.wordCount}} 词 · {{item.publisher}}</view>
+            <view class="book-meta">{{item.unitCount}} 单元 · {{item.wordCount}} 词 · {{item.publisher}}</view>
           </view>
           <button
             hover-class="btn-press" class="btn btn-sm {{item.inShelf ? 'btn-ghost' : 'btn-accent'}}"
@@ -97,7 +110,7 @@
         <view class="bar book-bar" wx:if="{{item.inShelf}}">
           <view class="bar-fill" style="width: {{item.percent}}%"></view>
         </view>
-        <view class="muted book-progress" wx:if="{{item.inShelf}}">
+        <view class="book-progress" wx:if="{{item.inShelf}}">
           已学 {{item.learned}} / {{item.total}} 词（{{item.percent}}%）
         </view>
       </view>
@@ -107,7 +120,7 @@
       </view>
     </view>
 
-    <view class="muted center version">词库版本 {{dictVersion}}</view>
+    <view class="version">词库版本 {{dictVersion}}</view>
   </block>
 
 </view>

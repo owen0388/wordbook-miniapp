@@ -1,201 +1,269 @@
-/* 首页 */
+/* ============ 首页 · 积木世界 ============ */
 
+/* --- 顶部英雄积木 ---
+ * 高度固定、内部全绝对定位，是为了让吉祥物能"越出"日期条压住它，
+ * 用 flex 流式排版做不到这种叠压关系。
+ */
 .hero {
   position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(120% 140% at 0% 0%, #40569C 0%, rgba(64, 86, 156, 0) 56%),
-    linear-gradient(158deg, #2D4079 0%, #19264D 100%);
-  border-radius: var(--r-lg);
-  padding: 40rpx 36rpx 36rpx;
-  margin-bottom: 24rpx;
-  color: #fff;
-  box-shadow: 0 20rpx 44rpx -22rpx rgba(25, 38, 77, 0.8);
+  --c: var(--red-c); --ft: var(--red-ft); --fb: var(--red-fb);
+  --fb2: var(--red-fb2); --sd: var(--red-sd); --e: var(--red-e);
+  height: 581rpx;
+  margin-top: 62rpx;
+  padding: 0;
+  border-radius: 46rpx / 11%;
+  transform: rotate(-1.2deg);
+  background-image: linear-gradient(180deg, var(--ft) 0 22%, var(--fb) 55%, var(--fb2) 100%);
+  box-shadow:
+    0 0 0 9rpx var(--e),
+    0 15rpx 0 var(--sd),
+    0 15rpx 26rpx rgba(60,25,8,.32),
+    0 30rpx 46rpx -20rpx rgba(60,25,8,.45);
 }
-
-/* 装饰光环：头部的深色块需要一点空间层次，否则像一块色板 */
-.hero::after {
-  content: '';
-  position: absolute;
-  width: 300rpx;
-  height: 300rpx;
-  right: -100rpx;
-  top: -160rpx;
-  border-radius: 50%;
-  border: 2rpx solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 0 0 36rpx rgba(255, 255, 255, 0.045), 0 0 0 78rpx rgba(255, 255, 255, 0.028);
-  pointer-events: none;
-}
-
-
-/* 深色区撒一层星点：浅底上看不见，深底上才成为"空气感" */
+/* 正面板从 38% 开始，上半留给日期条与吉祥物 */
 .hero::before {
-  content: '';
+  top: 38%;
+  left: 5%; right: 5%; bottom: 5%;
+  border-radius: 0 0 23rpx 23rpx / 0 0 10% 10%;
+}
+
+/* 关键：.brick > view 默认被抬成 relative，这里逐个改回 absolute */
+.hero > .datebar,
+.hero > .hero-pup,
+.hero > .hero-h1,
+.hero > .hero-tip {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  pointer-events: none;
-  background-image:
-    radial-gradient(circle, rgba(255, 255, 255, 0.9) 0 2rpx, transparent 3rpx),
-    radial-gradient(circle, rgba(255, 255, 255, 0.5) 0 1rpx, transparent 2rpx);
-  background-size: 132rpx 132rpx, 80rpx 80rpx;
-  background-position: 0 0, 40rpx 56rpx;
-  opacity: 0.3;
+  z-index: 5;
 }
 
-.hero .mascot {
-  margin: 0 10rpx 0 18rpx;
+/* --- 日期条 --- */
+.datebar {
+  left: 31rpx; right: 31rpx;
+  top: 185rpx;
+  height: 112rpx;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 35rpx;
+  border-radius: 27rpx / 22%;
+  --c: var(--red-c); --ft: var(--red-ft); --fb: var(--red-fb);
+  --fb2: var(--red-fb2); --sd: var(--red-sd); --e: var(--red-e);
+  background-image: linear-gradient(180deg, var(--ft) 0 22%, var(--fb) 55%, var(--fb2) 100%);
+  box-shadow: 0 0 0 6rpx var(--e), 0 7rpx 0 var(--sd);
+}
+.datebar > .studs {
+  position: absolute;
+  top: -17rpx; height: 17rpx;
+  left: 8%; right: 8%; gap: 6%;
+  display: flex;
+  z-index: 3;
+}
+.datebar > .studs .pt { box-shadow: 0 0 0 4rpx var(--e), 0 3rpx 5rpx rgba(60,25,8,.24); }
+.dt { font-size: 21rpx; font-weight: 900; color: #fff; }
+.sk { font-size: 18rpx; font-weight: 800; color: #FFF1DC; text-shadow: 0 2rpx 0 rgba(110,24,10,.5); }
+.sk-num { font-size: 29rpx; font-weight: 900; color: var(--btn-yellow-num); margin: 0 3rpx; }
+
+/* --- 吉祥物：压在日期条上沿 --- */
+.hero > .hero-pup {
+  right: 31rpx;
+  top: 15rpx;
+  z-index: 6;
+  filter: drop-shadow(0 10rpx 13rpx rgba(120,75,0,.32));
 }
 
-.hero-date {
-  position: relative;
-  font-size: 24rpx;
-  opacity: 0.72;
-  margin-bottom: 10rpx;
-  letter-spacing: 0.06em;
+/* --- 标题 --- */
+.hero > .hero-h1 {
+  left: 35rpx;
+  top: 331rpx;
+  right: 190rpx;
+  font-size: 46rpx;
+  font-weight: 900;
+  line-height: 1.24;
+  color: #fff;
+}
+.hero-h1-b {
+  display: block;
+  color: var(--btn-yellow-num);
 }
 
-.hero-title {
-  position: relative;
-  font-size: 38rpx;
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: -0.01em;
+/* --- 提示胶囊 --- */
+.hero > .hero-tip {
+  left: 31rpx;
+  bottom: 29rpx;
+  max-width: 400rpx;
+  padding: 9rpx 22rpx;
+  border-radius: 999rpx;
+  background: rgba(255,255,255,.2);
+  font-size: 20rpx;
+  font-weight: 800;
+  line-height: 1.5;
+  color: #FFF1DC;
 }
 
-.streak {
-  position: relative;
-  text-align: center;
-  min-width: 130rpx;
+/* --- 内容卡片：给顶部凸点留 40rpx --- */
+.plate {
+  margin-top: 40rpx;
+  margin-bottom: 32rpx;
+  padding: 32rpx 6.5% 6.5%;
 }
 
-.streak-num {
-  font-size: 56rpx;
-  font-weight: 700;
-  line-height: 1.1;
-  font-variant-numeric: tabular-nums;
+/* --- 区块标题 --- */
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22rpx;
 }
+.sec-title { font-size: 29rpx; font-weight: 900; color: var(--ink); }
+.sec-link { font-size: 22rpx; font-weight: 800; color: var(--accent-deep); }
 
-.streak-label {
-  font-size: 22rpx;
-  opacity: 0.75;
-  margin-top: 4rpx;
-}
-
-.task-card {
-  margin-top: -12rpx;
-}
-
+/* --- 任务卡 --- */
 .task-btn {
-  margin-top: 32rpx;
+  width: 100%;
+  margin-top: 30rpx;
+  transform: rotate(-1deg);
 }
-
-.task-hint {
-  margin-top: 20rpx;
+.task-btn.btn-press { transform: rotate(-1deg) translateY(7rpx) scale(.992); }
+.task-note {
+  margin-top: 18rpx;
+  font-size: 21rpx;
+  text-align: center;
+  color: var(--ink-mute);
 }
+.stat-num-sm { font-size: 36rpx; }
 
-.book-name {
-  font-size: 32rpx;
-  font-weight: 600;
+/* --- 已完成态 --- */
+.done-box {
+  padding: 26rpx 22rpx;
+  border-radius: 26rpx;
+  background: rgba(255,249,236,.6);
+  box-shadow: inset 0 0 0 3rpx rgba(140,88,20,.28);
+  text-align: center;
+}
+.done-badge {
+  display: inline-block;
+  font-size: 20rpx;
+  font-weight: 900;
+  padding: 5rpx 20rpx;
+  border-radius: 999rpx;
+  background: var(--green-c);
   margin-bottom: 16rpx;
+  --sk: #0A3A10;
+  text-shadow: -1rpx -1rpx 0 var(--sk), 1rpx -1rpx 0 var(--sk), -1rpx 1rpx 0 var(--sk), 1rpx 1rpx 0 var(--sk);
 }
+.done-title { font-size: 38rpx; font-weight: 900; color: var(--ink); line-height: 1.3; }
+.done-sub { font-size: 23rpx; color: var(--ink-3); margin-top: 8rpx; }
+.done-stats { margin-top: 16rpx; font-size: 22rpx; color: var(--ink-2); font-weight: 800; }
+.done-sep { margin: 0 8rpx; color: var(--ink-mute); }
 
-.book-meta {
-  margin-bottom: 16rpx;
-}
-
-.book-bar {
-  margin-top: 4rpx;
-}
-
-/* ===== 最近 7 天打卡 ===== */
-.days-link {
-  font-size: 24rpx;
-  color: var(--accent);
-}
-
+/* --- 最近 7 天 --- */
 .days {
   display: flex;
-  justify-content: space-between;
-  margin-top: 20rpx;
+  gap: 6rpx;
+  padding-top: 10rpx;
 }
-
 .day {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 1;
+  gap: 8rpx;
 }
-
 .day-dot {
-  width: 46rpx;
-  height: 46rpx;
+  width: 63rpx;
+  height: 63rpx;
   border-radius: 50%;
-  background: var(--line-soft);
+  background: #FFF0D2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 5rpx rgba(140,88,20,.72), 0 6rpx 0 var(--cream-sd);
 }
-
-/* 完成了：实心强调色 */
+.day:nth-child(2n) .day-dot { transform: translateY(4rpx); }
+.day:nth-child(3n) .day-dot { transform: translateY(-4rpx); }
 .day-on {
-  background: var(--accent);
-  box-shadow: 0 6rpx 14rpx -6rpx rgba(255, 107, 61, 0.8);
+  background: #FF7A4D;
+  box-shadow: 0 0 0 5rpx rgba(110,24,10,.9), 0 6rpx 0 var(--red-sd);
 }
-
-/* 学了但没做完：浅橙底 + 描边 */
 .day-half {
-  background: var(--accent-soft);
-  border: 2rpx solid var(--accent);
-  box-sizing: border-box;
+  background: #FFD9C4;
+  box-shadow: 0 0 0 5rpx rgba(176,72,46,.65), 0 6rpx 0 #D0836A;
 }
-
+.day-star { font-size: 30rpx; color: #fff; line-height: 1; }
 .day-label {
-  margin-top: 10rpx;
-  font-size: 20rpx;
-  color: var(--muted);
+  font-size: 18rpx;
+  color: var(--ink-mute);
   font-variant-numeric: tabular-nums;
 }
 
-/* ===== 今日已完成 ===== */
-.done-box {
-  text-align: center;
-  padding: 12rpx 0 10rpx;
+/* --- 主学教材 --- */
+.book-row { display: flex; align-items: center; gap: 20rpx; }
+.book-cover {
+  width: 85rpx;
+  height: 108rpx;
+  flex: none;
+  border-radius: 10rpx;
+  background: #D9563C;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 0 4rpx rgba(110,24,10,.8), 0 8rpx 0 #A63A26;
 }
-
-.done-badge {
-  display: inline-block;
-  font-size: 24rpx;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #FFFFFF;
-  padding: 8rpx 26rpx;
-  border-radius: var(--r-pill);
-  background: linear-gradient(135deg, #FF9A5E, #F2542A);
-  box-shadow: 0 6rpx 0 #C7431C, 0 14rpx 26rpx -12rpx rgba(242, 84, 42, 0.9);
-  margin-bottom: 24rpx;
+.book-cover-lines {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.16) 0 3rpx, transparent 3rpx 11rpx);
 }
-
-.done-title {
-  font-family: var(--font-display);
-  font-size: 46rpx;
-  font-weight: 800;
-  line-height: 1.3;
-  color: var(--text);
+.book-cover-lines::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 6rpx;
+  background: rgba(255,255,255,.42);
 }
-
-.done-sub {
-  margin-top: 12rpx;
+.book-info { flex: 1; min-width: 0; }
+.book-name {
   font-size: 26rpx;
-  color: var(--text-sub);
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1.35;
+}
+.book-meta {
+  font-size: 21rpx;
+  color: var(--ink-mute);
+  margin: 6rpx 0 12rpx;
+}
+.book-bar { height: 21rpx; }
+.pctb {
+  flex: none;
+  font-size: 22rpx;
+  font-weight: 900;
+  padding: 8rpx 16rpx;
+  border-radius: 15rpx / 30%;
+  background: var(--green-c);
+  color: #fff;
+  --sk: #0A3A10;
+  text-shadow: -1rpx -1rpx 0 var(--sk), 1rpx -1rpx 0 var(--sk), -1rpx 1rpx 0 var(--sk), 1rpx 1rpx 0 var(--sk);
+  box-shadow: 0 0 0 5rpx var(--green-e), 0 5rpx 0 var(--green-sd);
 }
 
-.done-stats {
-  margin-top: 22rpx;
-  font-size: 24rpx;
-  color: var(--muted);
+/* --- 快捷入口列表 --- */
+.li-left { display: flex; align-items: center; gap: 18rpx; }
+.li-ic {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  font-weight: 900;
+  color: #fff;
+  --sk: #3A2408;
+  text-shadow: -1rpx -1rpx 0 var(--sk), 1rpx -1rpx 0 var(--sk), -1rpx 1rpx 0 var(--sk), 1rpx 1rpx 0 var(--sk);
+  box-shadow: 0 0 0 4rpx rgba(110,60,10,.7), 0 5rpx 0 rgba(110,60,10,.45);
 }
-
-.done-sep {
-  margin: 0 12rpx;
-  color: var(--line);
-}
+.ic-yellow { background: linear-gradient(180deg, #FFD976, #FFC53D 60%, #F0AE22); }
+.ic-red { background: linear-gradient(180deg, #FF9B6E, #F2603C 60%, #D94726); }
+.li-title { font-size: 27rpx; font-weight: 800; color: var(--ink); }
+.li-right { font-size: 21rpx; color: var(--ink-mute); }

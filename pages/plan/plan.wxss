@@ -1,127 +1,148 @@
-/* 学习计划 */
+/* ============ 学习计划 · 积木世界 ============ */
 
-.item {
-  margin-top: 32rpx;
+.plate {
+  margin-top: 40rpx;
+  margin-bottom: 32rpx;
+  padding: 32rpx 6.5% 6.5%;
 }
 
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14rpx;
+}
+.sec-title { font-size: 29rpx; font-weight: 900; color: var(--ink); }
+
+.item { margin-top: 30rpx; }
+
 .item-label {
-  font-size: 30rpx;
-  font-weight: 500;
+  font-size: 28rpx;
+  font-weight: 800;
+  color: var(--ink);
 }
 
 .item-hint {
-  font-size: 24rpx;
-  margin-top: 6rpx;
+  font-size: 22rpx;
+  margin-top: 5rpx;
   line-height: 1.5;
+  color: var(--ink-mute);
 }
 
-.mb { margin-bottom: 24rpx; }
-.mt { margin-top: 32rpx; }
+.mb { margin-bottom: 22rpx; }
+.mt { margin-top: 30rpx; }
 
 .val {
-  font-size: 40rpx;
-  font-weight: 600;
-  color: var(--primary);
+  font-size: 42rpx;
+  font-weight: 900;
+  color: var(--accent-deep);
   min-width: 90rpx;
   text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 slider {
-  margin: 8rpx 0 0;
+  margin: 6rpx 0 0;
 }
 
-/* 题型多选 */
+/* --- 题型多选：小米白积木，选中的变绿 --- */
 .mode {
   display: flex;
   align-items: center;
-  gap: 20rpx;
-  padding: 24rpx 24rpx;
-  border-radius: 16rpx;
-  border: 1rpx solid var(--line);
-  margin-bottom: 16rpx;
+  gap: 18rpx;
+  padding: 18rpx 20rpx;
+  border-radius: 22rpx / 20%;
+  margin-bottom: 14rpx;
+  background-image: linear-gradient(180deg, var(--cream-ft) 0 26%, var(--cream-fb) 58%, var(--cream-fb2) 100%);
+  box-shadow: 0 0 0 5rpx var(--cream-e), 0 5rpx 0 var(--cream-sd);
 }
-
 .mode-on {
-  background: var(--primary-soft);
-  border-color: var(--primary);
+  background-image: linear-gradient(180deg, var(--green-ft) 0 26%, var(--green-fb) 58%, var(--green-fb2) 100%);
+  box-shadow: 0 0 0 5rpx var(--green-e), 0 5rpx 0 var(--green-sd);
 }
 
+/* 勾选框做成一枚小凸点，呼应积木语言 */
 .mode-check {
-  width: 40rpx;
-  height: 40rpx;
-  border-radius: 20rpx;
-  border: 1rpx solid var(--line);
-  background: #fff;
-  color: var(--primary);
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50% / 40%;
+  background: #FFF6E4;
+  color: transparent;
   font-size: 24rpx;
+  font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: inset 0 3rpx 6rpx rgba(120,80,30,.22), 0 0 0 4rpx rgba(140,88,20,.55);
 }
-
 .mode-on .mode-check {
-  background: var(--primary);
+  background: var(--green-c);
   color: #fff;
-  border-color: var(--primary);
+  box-shadow: 0 0 0 4rpx var(--green-e), 0 3rpx 0 var(--green-sd);
 }
 
-/* 步进器 */
+/* --- 步进器 --- */
 .stepper {
   display: flex;
   align-items: center;
-  gap: 8rpx;
+  gap: 10rpx;
 }
-
 .step-btn {
-  width: 64rpx;
-  height: 64rpx;
-  border-radius: 32rpx;
-  background: var(--primary-soft);
-  color: var(--primary);
+  width: 68rpx;
+  height: 68rpx;
+  border-radius: 22rpx / 30%;
+  background-image: linear-gradient(180deg, var(--cream-ft) 0 26%, var(--cream-fb) 58%, var(--cream-fb2) 100%);
+  box-shadow: 0 0 0 5rpx var(--cream-e), 0 5rpx 0 var(--cream-sd);
+  color: var(--ink);
   font-size: 36rpx;
+  font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
+.step-btn:active { transform: translateY(4rpx); box-shadow: 0 0 0 5rpx var(--cream-e), 0 1rpx 0 var(--cream-sd); }
 .step-val {
   font-size: 36rpx;
-  font-weight: 600;
+  font-weight: 900;
   min-width: 72rpx;
   text-align: center;
-  color: var(--primary);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
 }
 
-/* 选项块 */
+/* --- 选项块 --- */
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 16rpx;
+  gap: 16rpx 14rpx;
 }
-
 .chip {
-  font-size: 28rpx;
-  padding: 16rpx 40rpx;
-  border-radius: 32rpx;
-  background: var(--bg);
-  color: var(--text-sub);
-  border: 1rpx solid transparent;
+  font-size: 26rpx;
+  font-weight: 900;
+  padding: 13rpx 36rpx;
+  border-radius: 22rpx / 34%;
+  color: var(--ink-2);
+  background-image: linear-gradient(180deg, var(--cream-ft) 0 26%, var(--cream-fb) 58%, var(--cream-fb2) 100%);
+  box-shadow: 0 0 0 5rpx var(--cream-e), 0 5rpx 0 var(--cream-sd);
 }
-
 .chip-on {
-  background: var(--primary-soft);
-  color: var(--primary);
-  border-color: var(--primary);
-  font-weight: 600;
+  color: #fff;
+  background-image: linear-gradient(180deg, var(--red-ft) 0 26%, var(--red-fb) 58%, var(--red-fb2) 100%);
+  --sk: #6B2408;
+  text-shadow: -1rpx -1rpx 0 var(--sk), 1rpx -1rpx 0 var(--sk), -1rpx 1rpx 0 var(--sk), 1rpx 1rpx 0 var(--sk);
+  box-shadow: 0 0 0 5rpx var(--red-e), 0 5rpx 0 var(--red-sd);
 }
 
+/* --- 提示块 --- */
 .tip {
-  margin-top: 24rpx;
-  background: var(--warn-soft);
-  color: var(--warn);
-  font-size: 24rpx;
+  margin-top: 22rpx;
+  background: rgba(255,233,166,.72);
+  color: #7A4E08;
+  font-size: 23rpx;
+  font-weight: 700;
   line-height: 1.6;
-  padding: 24rpx;
-  border-radius: 14rpx;
+  padding: 20rpx;
+  border-radius: 18rpx;
+  box-shadow: inset 0 0 0 3rpx rgba(118,66,8,.22);
 }

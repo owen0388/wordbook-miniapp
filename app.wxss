@@ -1,136 +1,109 @@
-/* ===== 字体 =====
- * Baloo 2 ExtraBold：圆润、宽厚、笔画末端带弧度，接近儿童绘本标题字。
- * 只含拉丁字母（约 18KB，base64 内联），中文自动回落到系统字体——
- * 这是刻意的：中文字库动辄几 MB，塞进主包会直接撞上 2MB 上限。
- * 效果上英文单词、数字、按钮文案都变成圆胖体，中文保持系统字重，
- * 混排时反而层次更清楚。
+/* ===================== 字体 =====================
+ * Baloo 2 ExtraBold：圆润、宽厚，接近儿童绘本标题字。
+ * 只含拉丁字母（约 18KB，base64 内联），中文回落到系统字体——
+ * 中文字库动辄几 MB，塞进主包会直接撞上 2MB 上限。
+ * 效果上英文单词、数字、按钮文案都是圆胖体，中文保持系统字重，混排层次更清楚。
  */
 @font-face {
   font-family: 'WBDisplay';
-  src: url('data:font/woff2;base64,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') format('woff2');
+  src: url('data:font/woff2;base64,d09GMgABAAAAAEV0ABAAAAAAqTQAAEURAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGmAb+x4cjQoGYD9TVEFUKgCCEBEICoGxGIGKaAuEMAABNgIkA4hcBCAFhDAHIAwHG76SJeOYpbgdoMIf+tWDbcPe7aDWMa81sxERbBwgIPFzzP7/c3JjDK0B66sfzChlLhsDtFGONjTv8BRWGJjePu/ynMNFwtgGo/BhRL1YGf87WRWesDusO52tBNNi/wMbNH6lnwpk0HjAqBYm7PDinolkytiunP2nL3uwraimwxWYMyohyT6LALeJH5HwnojwX+33eXre9IP+QLMAoNEv21UbKh9j0Ch0OhE+sREuMrnD83PrbSxgLPIvgxUbGxs1BgvYRm0DRowKyTDADMDAKs4CPTDw7vTujFOMOj29FvXa7FMk/uF+fHPu+596o5vLoqmTCtdXF6QAG2hpDSuulbp/V2ZZ5zPJRA8A6p+kr1NlAlOcQKek+YXJ//+/mb8XnBMOJxcOcoBcktxYhaxFRqJYJ6PQ1CNGpkPV0joT0dp7L2ZEHIhZJSuz+p2KjQk1yMfPE7dUS130pZvCTXF1nlddADZCoM3DPGs7hIXxs5EyWd5QTnDML1ThMpWD0YG8Q3Nm9N6O1BSwBtJkC0LO2M7ubTkpBy7ccpiLuaB6KZzx/sfPb3ylM3cnqfbaE/tZZDsEcOD/y8y9X4USLtOmKYFbIpB0qEuld1F6mNoJgU66JA5wiYblb5XWtx/ssKEEMKVdhhL/m/s8GobRykDQCGlZb/51muv/lv9VTik+dMvHOcBhKvCUsR3GDpv09U0Cx/qOZVCSqxVo7LB9ycs5h869PrsYKhBPZR2xLyWkiWGiscPYfevYifah/zet2f2XG0of6HIfClk9XXZhSxPmNpkwJH+H7LUSepU9M3OQyYbSi5CtO1CtKLRDIeyhkGjg+X7pK90TeePd9E06y5uJJiMowNJ5A8yE6O0+fc3V/evS18/u6Hnd9BUBuVX9n9ZdgktnDSmlFJwJCmIBKDSUhZLAv5pmeeRYafa0D4cYMIIgOIJOW9pxd76fTg6c9wrkKGm7RwjBCGOMEEIITRgT+rWvDdJpSH7q3rlT2Z8ggjGHECbLanMDMzEKuYlRXNbPY2y20u90jYEFRx6lu50YODzAIoAncDCXXQOHh8R4zBCgubq5AIMAy1JwKBiwtIPV/wcwZQ0DEsDAAFowYImugi+cmhr4vx6wkXCgv7dbG4Ee4pA71Qc013ennnIDpZX33/bGXnN6DJuE0KYRxuHPFHnDz7zW9bAAD4ehD8yvOAmcTsjH2ccsDKX6KAPL+VP5k0NPSI6KjiqJ/H7NLdUN5XP9Q/EWiZx+0J6FDCzEkRdw5/Heym4w67kM9jDvIOMG7Sfmn/x/Wf9yGWESQRT3GCNVGEF7adjA0+vmCPtZWDZDLIem0MO4b5kroUB6RYSX8Z6eDDmgSVBvXQvRk7lvWSk7mSlgNDKW0ybY3awlioj9e6PdYUVAO6Cj0FX6Vdp9SClYAkUxHayvoH8FN2U83luYiD3MrGcP74XLmIj+mNdMe7lvYT89LFzBXCkCHSAHq0T4XOSj4ISJGFjuW9oEy+7mjlX28BCmCxz4xc93OPdssO9w3QlLptJnNOGDnISbCe007QLtKn2dtN5vFkR2XyQ7AQic/3eLfEcAlKP+dslqB8IlbAugEO1rB3g4Lv21dc44quIprfa2sp6dkkrdcgDFzeevBZUeHvLm9NyIVxU624TlaoTCaRSB6S1g14OJk0q2CH0C0lD6j6rUC6rxUjbmw3ogq9wePlEBcjXAPeJaVk4FkNA6h6ICxNjINm4GQTAUCJXxfZVrmOK1XHWO0dY2ZJswKUy1g1JXbH+NJd0s6/KemoeHkhZSQq25CUJfddVDLZbu9U0e1bJJhRwqZJbRs3maqIMy48AqASAJQLDAF... [truncated]
   font-weight: 400 900;
   font-style: normal;
   font-display: swap;
 }
 
-/* ===== 全局设计令牌 =====
- * 方向：玩趣玩具（糖果手账），给 6-12 岁孩子用，但要家长看着放心。
- *   主色   深靛蓝（学院感）
- *   强调色 珊瑚橙（全站唯一强调色，只留给关键动作与正向反馈）
- *   底色   温暖米白，不用冷灰——冷灰会让界面像后台管理系统
- * 所有组件只引用变量，不在页面里硬编码色值。
+/* ===================== 设计令牌：积木世界 =====================
+ * 一套色 = 6 个变量（正面板 c / 斜面亮 ft / 斜面 fb / 斜面暗 fb2 / 厚度 sd / 描边 e）。
+ * 换色只换变量，不动结构。页面里通过 style="--c:var(--red-c);..." 或
+ * class="brick red" 切换。
  */
 page {
-  --primary: #27386E;
-  --primary-soft: #E7EBF7;
-  --accent: #FF6B3D;
-  --accent-ink: #3B1608;      /* 橙底上的文字色：深棕黑，对比度 5.9:1 */
-  --accent-soft: #FFEDE4;
-  --bg: #F8F3E9;
-  --card: #FFFFFF;
-  --text: #1C2333;
-  --text-sub: #5A6377;
-  --muted: #6E7789;           /* 小字也满足 4.5:1，不用更浅的灰 */
-  --line: #E6DCCB;
-  --line-soft: #F1EADD;
-  --success: #0C9A6C;
-  --success-soft: #DEF6EC;
-  --warn: #B87400;
-  --warn-soft: #FDF2DC;
-  --danger: #D8474A;
-  --danger-soft: #FBEAEA;
+  --red-c:#F23A23;    --red-ft:#FEC298;  --red-fb:#FEA475;  --red-fb2:#FE9A6B;  --red-sd:#B23A1E;  --red-e:rgba(110,24,10,.92);
+  --blue-c:#2F8FE0;   --blue-ft:#BFE4FB; --blue-fb:#6FBAF0; --blue-fb2:#4EA3E4; --blue-sd:#1864AC; --blue-e:rgba(8,48,96,.92);
+  --yellow-c:#F5B722; --yellow-ft:#FFE9A6;--yellow-fb:#FFD46E;--yellow-fb2:#F7C246;--yellow-sd:#C78D12;--yellow-e:rgba(118,66,8,.92);
+  --green-c:#43B24A;  --green-ft:#C9EDBF;--green-fb:#7FD46E; --green-fb2:#57BE52;--green-sd:#2F8C36; --green-e:rgba(12,62,18,.92);
+  --purple-c:#8E55D0; --purple-ft:#DEC7F7;--purple-fb:#B887EC;--purple-fb2:#9A66DC;--purple-sd:#5F35A0;--purple-e:rgba(40,18,80,.92);
+  --orange-c:#F58220; --orange-ft:#FFD3A2;--orange-fb:#FEA860;--orange-fb2:#F58F3C;--orange-sd:#C46A1E;--orange-e:rgba(122,60,8,.92);
+  --cream-c:#EFD9B4;  --cream-ft:#FFF8E9;--cream-fb:#F3DCB6; --cream-fb2:#E8CFA4;--cream-sd:#C79A64;--cream-e:rgba(140,88,20,.85);
+  --brown-c:#B0703C;  --brown-ft:#E8C49A;--brown-fb:#CC9462; --brown-fb2:#B77C48;--brown-sd:#7A4A22;--brown-e:rgba(74,40,12,.92);
 
-  /* 荧光色：只用在"发光"上，不做填充色，否则界面会变脏 */
-  --glow-coral: rgba(255, 107, 61, 0.55);
-  --glow-indigo: rgba(86, 116, 214, 0.45);
-  --glow-mint: rgba(78, 205, 196, 0.4);
+  /* 文字与辅助 */
+  --ink: #4A3524;             /* 主文字：深棕，不用纯黑 */
+  --ink-2: #7A5732;
+  --ink-3: #8A6A48;
+  --ink-mute: #A98A62;
+  --ink-mute-2: #9A7A54;
+  --accent-hot: #F2603C;
+  --accent-deep: #C0563C;
+  --btn-yellow-num: #FFE07A;
+  --dash: rgba(140,85,10,.22);
+  --desk: #EFD9B4;            /* 木桌面 / 页面底 */
+  --screen: #F7E7CB;          /* 手机屏底 */
 
-  --r-lg: 34rpx;
-  --r-md: 24rpx;
+  /* 语义色，沿用旧名以免页面里的引用失效 */
+  --primary: #4A3524;
+  --primary-soft: #F3DCB6;
+  --accent: #F2603C;
+  --accent-ink: #4A1608;
+  --accent-soft: #FFE3D3;
+  --bg: #EFD9B4;
+  --card: #EFD9B4;
+  --text: #4A3524;
+  --text-sub: #7A5732;
+  --muted: #8A6A48;
+  --line: #C79A64;
+  --line-soft: #E8CFA4;
+  --success: #2F8C36;
+  --success-soft: #C9EDBF;
+  --warn: #B58322;
+  --warn-soft: #FFE9A6;
+  --danger: #B23A1E;
+  --danger-soft: #FFD5C0;
+
+  --glow-coral: rgba(242,96,60,.4);
+  --glow-indigo: rgba(47,143,224,.3);
+  --glow-mint: rgba(67,178,74,.28);
+
+  --r-lg: 38rpx;
+  --r-md: 28rpx;
   --r-pill: 999rpx;
-  --shadow-1: 0 2rpx 4rpx rgba(26, 39, 80, 0.04), 0 16rpx 40rpx -18rpx rgba(26, 39, 80, 0.3);
-  --shadow-2: 0 30rpx 60rpx -24rpx rgba(26, 39, 80, 0.35);
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --font-display: 'WBDisplay', -apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  --font-display: 'WBDisplay', 'Yuanti SC', 'YouYuan', '幼圆', 'PingFang SC',
+                  'Microsoft YaHei UI Rounded', 'Microsoft YaHei', system-ui, sans-serif;
 
-  background: var(--bg);
-  color: var(--text);
+  background-color: #EFD9B4;
+  color: var(--ink);
   font-family: var(--font-display);
-  font-size: 28rpx;
+  font-size: 26rpx;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ===== 氛围背景 =====
- * 两层：
- *   .fx-bg   漂浮的颗粒（径向渐变平铺 + 缓慢位移，看起来像空气中浮尘）
- *   .fx-glow 三团大范围荧光，压在四角，给画面纵深
- * 都是纯 CSS，不占包体积、不用图片、不影响滚动性能（只动 background-position）。
+/* ===================== 木桌面底纹 =====================
+ * 纯 CSS：横向细木纹 + 两团暖色斑。不用图片，不占包体积。
+ * 旧的 .fx-bg / .fx-glow 保留为空壳，页面 WXML 不需要改。
  */
-.fx-bg {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: -1;
-  pointer-events: none;
-  overflow: hidden;
-}
-.fx-bg::before,
-.fx-bg::after {
-  content: '';
-  position: absolute;
-  left: -20%;
-  top: -20%;
-  width: 140%;
-  height: 140%;
-  background-repeat: repeat;
-}
-/* 近景颗粒：大一点、亮一点、动得快 */
-.fx-bg::before {
-  background-image:
-    radial-gradient(circle, rgba(255, 107, 61, 0.5) 0 3rpx, transparent 4rpx),
-    radial-gradient(circle, rgba(39, 56, 110, 0.28) 0 2rpx, transparent 3rpx);
-  background-size: 190rpx 190rpx, 130rpx 130rpx;
-  background-position: 0 0, 40rpx 70rpx;
-  opacity: 0.55;
-  animation: fxDriftA 34s linear infinite;
-}
-/* 远景颗粒：小、淡、慢，形成前后视差 */
-.fx-bg::after {
-  background-image:
-    radial-gradient(circle, rgba(78, 205, 196, 0.42) 0 2rpx, transparent 3rpx),
-    radial-gradient(circle, rgba(255, 176, 58, 0.42) 0 3rpx, transparent 4rpx);
-  background-size: 260rpx 260rpx, 330rpx 330rpx;
-  background-position: 90rpx 20rpx, 200rpx 120rpx;
-  opacity: 0.42;
-  animation: fxDriftB 52s linear infinite reverse;
-}
-
-/* 荧光团：不参与动画，只做"光打进来"的静态氛围 */
+.fx-bg,
 .fx-glow {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  top: 0; right: 0; bottom: 0; left: 0;
   z-index: -1;
   pointer-events: none;
-  background:
-    radial-gradient(420rpx 420rpx at 8% -4%, rgba(255, 107, 61, 0.2), transparent 72%),
-    radial-gradient(520rpx 520rpx at 104% 12%, rgba(86, 116, 214, 0.18), transparent 70%),
-    radial-gradient(600rpx 600rpx at 46% 108%, rgba(78, 205, 196, 0.14), transparent 74%);
 }
-
-@keyframes fxDriftA {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-190rpx, -190rpx, 0); }
+.fx-bg {
+  background-color: var(--desk);
+  background-image:
+    repeating-linear-gradient(180deg,
+      rgba(150,100,40,.055) 0 1rpx, transparent 1rpx 14rpx),
+    repeating-linear-gradient(90deg,
+      rgba(150,100,40,.03) 0 2rpx, transparent 2rpx 190rpx);
 }
-@keyframes fxDriftB {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(260rpx, -260rpx, 0); }
+.fx-glow {
+  background-image:
+    radial-gradient(460rpx 460rpx at 6% 2%, rgba(255,236,196,.5), transparent 70%),
+    radial-gradient(560rpx 560rpx at 104% 18%, rgba(206,160,96,.28), transparent 72%),
+    radial-gradient(700rpx 700rpx at 40% 106%, rgba(178,120,52,.22), transparent 74%);
 }
 
 .page {
@@ -140,143 +113,428 @@ page {
   padding: 24rpx 28rpx 60rpx;
   box-sizing: border-box;
 }
+/* 手机屏底：首页那层略亮的纸 */
+.page-screen {
+  background: var(--screen);
+  border-radius: 44rpx 44rpx 0 0;
+}
 
-/* ===== 卡片 =====
- * 荧光版：边框用渐变描边（mask 太贵，这里用双层 box-shadow 近似），
- * 顶部一道高光让卡片看起来是"微微凸起的糖片"。
+/* ===================== 贴纸字 =====================
+ * 规格书用 -webkit-text-stroke + paint-order，部分安卓 WebView 不支持
+ * paint-order，描边会压在字上面把字变细。这里统一用 8 方向 text-shadow 模拟，
+ * 全平台一致、零兼容风险，粗描边下视觉差别很小。
  */
+.sticker {
+  color: #fff;
+  text-shadow:
+    -1.5rpx -1.5rpx 0 var(--sk, #6B2408),  1.5rpx -1.5rpx 0 var(--sk, #6B2408),
+    -1.5rpx  1.5rpx 0 var(--sk, #6B2408),  1.5rpx  1.5rpx 0 var(--sk, #6B2408),
+     0      -1.5rpx 0 var(--sk, #6B2408),  0       1.5rpx 0 var(--sk, #6B2408),
+    -1.5rpx  0     0 var(--sk, #6B2408),  1.5rpx  0     0 var(--sk, #6B2408),
+     1rpx    2rpx  0 rgba(110,24,10,.55);
+}
+.sticker-lg { text-shadow:
+    -2rpx -2rpx 0 var(--sk, #6B2408),  2rpx -2rpx 0 var(--sk, #6B2408),
+    -2rpx  2rpx 0 var(--sk, #6B2408),  2rpx  2rpx 0 var(--sk, #6B2408),
+     0    -2rpx 0 var(--sk, #6B2408),  0     2rpx 0 var(--sk, #6B2408),
+    -2rpx  0    0 var(--sk, #6B2408),  2rpx  0    0 var(--sk, #6B2408),
+     1rpx  3rpx 0 rgba(110,24,10,.5); }
+.sticker-yellow { color: var(--btn-yellow-num); }
+/* 米白积木上的字：深棕，不描边 */
+.on-cream { color: var(--ink); text-shadow: none; }
+
+/* ===================== 积木基类 =====================
+ * 三层：斜面外壳（自身） + 内嵌正面板（::before） + 顶部凸点（.studs）
+ * 宽度/高度全用 rpx（设计稿 390px × 1.923 = 750rpx 体系），
+ * 不用 clamp：rpx 本身已按屏宽等比缩放，再套 clamp 反而在部分安卓 WebView 上失效。
+ */
+.brick {
+  position: relative;
+  padding: 35rpx 6.5% 6.5%;
+  border-radius: 38rpx / 14%;
+  background-image: linear-gradient(180deg, var(--ft) 0 22%, var(--fb) 55%, var(--fb2) 100%);
+  box-shadow:
+    0 0 0 7rpx var(--e),
+    0 10rpx 0 var(--sd),
+    0 10rpx 19rpx rgba(60,25,8,.3),
+    0 25rpx 38rpx -19rpx rgba(60,25,8,.42);
+}
+.brick::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 5.5%; right: 5.5%;
+  top: 25rpx; bottom: 5.5%;
+  border-radius: 0 0 17rpx 17rpx / 0 0 12% 12%;
+  background: var(--c);
+  box-shadow: inset 0 0 0 3rpx var(--e);
+  pointer-events: none;
+}
+/* 正面板是 ::before，文字必须抬到面板之上；凸点要留在 absolute 层 */
+.brick > view,
+.brick > text,
+.brick > button,
+.brick > input,
+.brick > scroll-view { position: relative; z-index: 2; }
+.brick > .studs { position: absolute; z-index: 3; }
+
+/* ===================== 凸点 ===================== */
+.studs {
+  position: absolute;
+  top: -23rpx; left: 16%; right: 16%;
+  height: 23rpx;
+  display: flex;
+  gap: 12%;
+  justify-content: space-between;
+  z-index: 3;
+  pointer-events: none;
+}
+.studs .pt {
+  flex: 1 1 0;
+  min-width: 0;
+  position: relative;
+  border-radius: 50% / 30%;
+  background-image: linear-gradient(180deg,
+    var(--ft) 0%, var(--ft) 40%,
+    var(--fb) 48%,
+    var(--fb2) 100%);
+  box-shadow: 0 0 0 6rpx var(--e), 0 6rpx 10rpx rgba(60,25,8,.28);
+}
+/* 中央凹孔：没有这个就不像乐高 */
+.studs .pt::before {
+  content: "";
+  position: absolute;
+  left: 21%; right: 21%; top: 8%; height: 24%;
+  border-radius: 50%;
+  background: var(--e);
+}
+/* 小号凸点：小尺寸要放大凹孔才看得见 */
+.studs.sm { top: -17rpx; height: 19rpx; left: 20%; right: 20%; gap: 24%; }
+.studs.sm .pt { box-shadow: 0 0 0 4rpx var(--e), 0 4rpx 7rpx rgba(60,25,8,.26); }
+.studs.sm .pt::before { left: 26%; right: 26%; top: 10%; height: 32%; }
+/* 细条凸点（日期条用） */
+.studs.thin { top: -17rpx; height: 17rpx; left: 8%; right: 8%; gap: 6%; }
+.studs.thin .pt { box-shadow: 0 0 0 4rpx var(--e), 0 3rpx 5rpx rgba(60,25,8,.24); }
+/* 大号凸点（hero 用） */
+.studs.lg { top: -46rpx; height: 46rpx; left: 20%; right: 20%; gap: 12%; }
+
+/* ===================== B 类按钮：三层 background-clip =====================
+ * ② 层不透明且只画在 padding-box，正好遮住 ③ 层在内侧的部分，
+ * 于是 border 区露出 ③ 层的斜面 → 内嵌效果。border-radius 自动给两层分别裁角。
+ * 比伪元素方案好：文字永远在最上层，不会被面板遮。
+ */
+.btn-brick {
+  position: relative;
+  border: 10rpx solid transparent;
+  border-radius: 29rpx / 30%;
+  background-color: var(--c);
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,0) 42%, rgba(0,0,0,.05)),
+    linear-gradient(180deg, var(--c), var(--c)),
+    linear-gradient(180deg, var(--ft) 0 24%, var(--fb) 56%, var(--fb2) 100%);
+  background-clip: padding-box, padding-box, border-box;
+  background-origin: padding-box, padding-box, border-box;
+  box-shadow:
+    inset 0 0 0 3rpx rgba(70,35,10,.2),
+    0 0 0 6rpx var(--e),
+    0 8rpx 0 var(--sd),
+    0 10rpx 19rpx rgba(60,25,8,.28),
+    0 25rpx 38rpx -19rpx rgba(60,25,8,.4);
+}
+/* 按钮按压：必须保留 rotate，否则积木会瞬间摆正，破坏"摆歪"的整体感 */
+.btn-brick-press {
+  transform: translateY(6rpx) scale(.992);
+  filter: brightness(.97);
+}
+
+/* ===================== 兼容层：把旧类名映射到积木 =====================
+ * 页面 WXML 沿用 .card / .btn / .tag / .stat 等旧类名，
+ * 这样换肤不用重写每个页面的结构，只需补 .studs 凸点。
+ */
+
+/* --- .card → plate 内容卡片 --- */
 .card {
   position: relative;
-  background: linear-gradient(180deg, #FFFFFF 0%, #FFFDF8 100%);
-  border-radius: var(--r-lg);
-  padding: 32rpx;
-  margin-bottom: 22rpx;
-  border: 1rpx solid var(--line-soft);
+  margin-top: 26rpx;
+  margin-bottom: 26rpx;
+  padding: 35rpx 6.5% 6.5%;
+  border-radius: 38rpx / 14%;
+  --c: var(--cream-c); --ft: var(--cream-ft); --fb: var(--cream-fb);
+  --fb2: var(--cream-fb2); --sd: var(--cream-sd); --e: var(--cream-e);
+  background-image: linear-gradient(180deg, var(--ft) 0 22%, var(--fb) 55%, var(--fb2) 100%);
   box-shadow:
-    0 2rpx 4rpx rgba(26, 39, 80, 0.04),
-    0 16rpx 40rpx -18rpx rgba(26, 39, 80, 0.3);
-  overflow: hidden;
+    0 0 0 7rpx var(--e),
+    0 10rpx 0 var(--sd),
+    0 10rpx 19rpx rgba(60,25,8,.28),
+    0 25rpx 38rpx -19rpx rgba(60,25,8,.4);
+  overflow: visible;
 }
-/* 卡片顶部一缕高光，模拟塑料/糖果表面反光 */
 .card::before {
-  content: '';
+  content: "";
   position: absolute;
-  left: 6%;
-  right: 6%;
-  top: 0;
-  height: 2rpx;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent);
+  z-index: 1;
+  left: 5.5%; right: 5.5%;
+  top: 25rpx; bottom: 5.5%;
+  border-radius: 0 0 17rpx 17rpx / 0 0 12% 12%;
+  background: var(--c);
+  box-shadow: inset 0 0 0 3rpx var(--e);
+  pointer-events: none;
 }
+.card > view,
+.card > text,
+.card > button,
+.card > input,
+.card > scroll-view { position: relative; z-index: 2; }
+.card > .studs { position: absolute; z-index: 3; }
+
+/* 卡片错位：交替轻移，制造"手放在桌上"的不齐感 */
+.card.offset { margin-left: 13rpx; margin-right: -6rpx; transform: rotate(.6deg); }
 
 .card-title {
   font-size: 30rpx;
-  font-weight: 800;
-  color: var(--text);
-  margin-bottom: 20rpx;
+  font-weight: 900;
+  color: var(--ink);
+  margin-bottom: 18rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  letter-spacing: 0.01em;
 }
 
-/* ===== 文字 ===== */
-.h1 { font-size: 46rpx; font-weight: 800; letter-spacing: -0.015em; }
-.h2 { font-size: 34rpx; font-weight: 800; }
-.sub { font-size: 26rpx; color: var(--text-sub); }
-.muted { font-size: 24rpx; color: var(--muted); }
-.strong { font-weight: 800; }
-.center { text-align: center; }
-.tip-link { color: var(--accent); font-weight: 700; }
+/* --- 彩色卡片变体 --- */
+.card-red    { --c: var(--red-c);    --ft: var(--red-ft);    --fb: var(--red-fb);    --fb2: var(--red-fb2);    --sd: var(--red-sd);    --e: var(--red-e); }
+.card-blue   { --c: var(--blue-c);   --ft: var(--blue-ft);   --fb: var(--blue-fb);   --fb2: var(--blue-fb2);   --sd: var(--blue-sd);   --e: var(--blue-e); }
+.card-yellow { --c: var(--yellow-c); --ft: var(--yellow-ft); --fb: var(--yellow-fb); --fb2: var(--yellow-fb2); --sd: var(--yellow-sd); --e: var(--yellow-e); }
+.card-green  { --c: var(--green-c);  --ft: var(--green-ft);  --fb: var(--green-fb);  --fb2: var(--green-fb2);  --sd: var(--green-sd);  --e: var(--green-e); }
+.card-purple { --c: var(--purple-c); --ft: var(--purple-ft); --fb: var(--purple-fb); --fb2: var(--purple-fb2); --sd: var(--purple-sd); --e: var(--purple-e); }
 
-/* ===== 按钮 =====
- * 立体按压是整套界面的手感核心：底部实心投影当"厚度"，
- * 按下时按钮真的往下沉、投影收掉，像按一颗糖。
- */
+/* --- .btn → 积木按钮 --- */
 .btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 92rpx;
-  border-radius: 28rpx;
+  height: 96rpx;
+  border: 10rpx solid transparent;
+  border-radius: 29rpx / 28%;
   font-family: var(--font-display);
   font-size: 32rpx;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  border: none;
+  font-weight: 900;
+  letter-spacing: 1rpx;
   line-height: 1;
-  transition: transform 0.12s var(--ease), box-shadow 0.12s var(--ease), filter 0.12s;
+  --c: var(--red-c); --ft: var(--red-ft); --fb: var(--red-fb);
+  --fb2: var(--red-fb2); --sd: var(--red-sd); --e: var(--red-e);
+  background-color: var(--c);
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,0) 42%, rgba(0,0,0,.05)),
+    linear-gradient(180deg, var(--c), var(--c)),
+    linear-gradient(180deg, var(--ft) 0 24%, var(--fb) 56%, var(--fb2) 100%);
+  background-clip: padding-box, padding-box, border-box;
+  background-origin: padding-box, padding-box, border-box;
+  box-shadow:
+    inset 0 0 0 3rpx rgba(70,35,10,.2),
+    0 0 0 6rpx var(--e),
+    0 8rpx 0 var(--sd),
+    0 10rpx 19rpx rgba(60,25,8,.28),
+    0 25rpx 38rpx -19rpx rgba(60,25,8,.4);
+  color: #fff;
+  --sk: #6B2408;
+  text-shadow:
+    -1.5rpx -1.5rpx 0 var(--sk),  1.5rpx -1.5rpx 0 var(--sk),
+    -1.5rpx  1.5rpx 0 var(--sk),  1.5rpx  1.5rpx 0 var(--sk),
+     0      -1.5rpx 0 var(--sk),  0       1.5rpx 0 var(--sk),
+    -1.5rpx  0     0 var(--sk),  1.5rpx  0     0 var(--sk);
 }
 .btn::after { border: none; }
-
-/* 主动作：珊瑚橙 */
-.btn-primary {
-  background: linear-gradient(180deg, #FF9B6E 0%, #FF6B3D 52%, #F5582A 100%);
-  color: var(--accent-ink);
-  box-shadow: 0 6rpx 0 #C7431C, 0 20rpx 36rpx -16rpx rgba(242, 84, 42, 0.8);
+.btn:active {
+  transform: translateY(7rpx);
+  box-shadow: inset 0 0 0 3rpx rgba(70,35,10,.2), 0 0 0 6rpx var(--e), 0 3rpx 0 var(--sd), 0 5rpx 10rpx -6rpx rgba(90,30,10,.5);
 }
+
+/* 主按钮：红（与原 .btn-primary 语义一致） */
+.btn-primary { }
 .btn-primary:active {
-  transform: translateY(6rpx);
-  box-shadow: 0 0 0 #C7431C, 0 8rpx 16rpx -8rpx rgba(242, 84, 42, 0.5);
+  transform: translateY(7rpx);
+  box-shadow: inset 0 0 0 3rpx rgba(70,35,10,.2), 0 0 0 6rpx var(--red-e), 0 3rpx 0 var(--red-sd), 0 5rpx 10rpx -6rpx rgba(90,30,10,.5);
 }
 
-/* 次动作：深靛。答错后的"下一题"用它，比橙色冷静 */
+/* 次按钮：蓝。答错后的"下一题"用它，比红色冷静 */
 .btn-accent {
-  background: linear-gradient(180deg, #3B4F91 0%, #27386E 100%);
-  color: #fff;
-  box-shadow: 0 6rpx 0 #16224A, 0 20rpx 36rpx -16rpx rgba(39, 56, 110, 0.7);
+  --c: var(--blue-c); --ft: var(--blue-ft); --fb: var(--blue-fb);
+  --fb2: var(--blue-fb2); --sd: var(--blue-sd); --e: var(--blue-e);
+  --sk: #062A52;
 }
 .btn-accent:active {
-  transform: translateY(6rpx);
-  box-shadow: 0 0 0 #16224A, 0 8rpx 16rpx -8rpx rgba(39, 56, 110, 0.45);
+  transform: translateY(7rpx);
+  box-shadow: inset 0 0 0 3rpx rgba(70,35,10,.2), 0 0 0 6rpx var(--blue-e), 0 3rpx 0 var(--blue-sd), 0 5rpx 10rpx -6rpx rgba(10,30,70,.5);
 }
 
+/* 幽灵按钮：米白积木，深棕字不描边 */
 .btn-ghost {
-  background: #fff;
-  color: var(--primary);
-  border: 2rpx solid #D6DEEE;
-  box-shadow: 0 4rpx 0 rgba(26, 39, 80, 0.06);
+  --c: var(--cream-c); --ft: var(--cream-ft); --fb: var(--cream-fb);
+  --fb2: var(--cream-fb2); --sd: var(--cream-sd); --e: var(--cream-e);
+  color: var(--ink);
+  text-shadow: none;
 }
-.btn-ghost:active { transform: translateY(4rpx); box-shadow: 0 0 0 rgba(26, 39, 80, 0.06); }
+.btn-ghost:active {
+  transform: translateY(6rpx);
+  box-shadow: inset 0 0 0 3rpx rgba(70,35,10,.18), 0 0 0 6rpx var(--cream-e), 0 3rpx 0 var(--cream-sd), 0 5rpx 10rpx -6rpx rgba(90,60,20,.35);
+}
 
+/* 危险按钮：棕红，仅用于"清除数据"这类操作 */
 .btn-danger-ghost {
-  background: #fff;
-  color: var(--danger);
-  border: 2rpx solid rgba(216, 71, 74, 0.28);
-  box-shadow: 0 4rpx 0 rgba(216, 71, 74, 0.1);
+  --c: #FFF1E8; --ft: #FFE2CE; --fb: #FFD5C0; --fb2: #F8C6AE;
+  --sd: #C4785C; --e: rgba(150,40,20,.85);
+  color: #A5321A;
+  text-shadow: none;
 }
-.btn-danger-ghost:active { transform: translateY(4rpx); box-shadow: 0 0 0 rgba(216, 71, 74, 0.1); }
+.btn-danger-ghost:active {
+  transform: translateY(6rpx);
+  box-shadow: inset 0 0 0 3rpx rgba(150,40,20,.2), 0 0 0 6rpx rgba(150,40,20,.85), 0 2rpx 0 #C4785C;
+}
 
-.btn-sm { height: 66rpx; font-size: 27rpx; padding: 0 32rpx; border-radius: 22rpx; }
+.btn-sm { height: 78rpx; font-size: 27rpx; padding: 0 30rpx; border-width: 8rpx; }
 
-/* 禁用：灰阶下沉，不能有"厚度"，否则会被误认为可点 */
+/* 禁用：抽掉斜面和厚度，看起来"沉进桌面"，不再像可点的积木 */
 .btn[disabled] {
-  background: #DCE1EA;
-  color: #8B93A3;
-  box-shadow: 0 6rpx 0 #B5BDCB;
+  --c: #E3D3B6; --ft: #F0E3CB; --fb: #E3D3B6; --fb2: #D6C3A2;
+  --sd: #BCA582; --e: rgba(140,110,70,.6);
+  color: #A08E70;
+  text-shadow: none;
+  box-shadow: inset 0 0 0 3rpx rgba(140,110,70,.25), 0 0 0 6rpx rgba(140,110,70,.6), 0 3rpx 0 #BCA582;
   opacity: 1;
   transform: none;
 }
 
-/* 真机上 :active 对自定义按钮并不可靠，按压感统一交给 hover-class="btn-press"。
- * 表现与 :active 一致：整体下沉、投影收掉，像真的按下去。 */
-.btn-press {
-  transform: translateY(6rpx) scale(0.985);
-  filter: brightness(0.97);
-}
-.btn-press.btn-primary {
-  box-shadow: 0 0 0 #C7431C, 0 8rpx 16rpx -8rpx rgba(242, 84, 42, 0.5);
-}
+/* 真机上 :active 对自定义按钮不可靠，按压感统一交给 hover-class */
+.btn-press { transform: translateY(7rpx); filter: brightness(.97); }
+.btn-press.btn-primary,
 .btn-press.btn-accent {
-  box-shadow: 0 0 0 #16224A, 0 8rpx 16rpx -8rpx rgba(39, 56, 110, 0.45);
+  box-shadow: inset 0 0 0 3rpx rgba(70,35,10,.2), 0 0 0 6rpx var(--e), 0 3rpx 0 var(--sd), 0 5rpx 10rpx -6rpx rgba(90,30,10,.5);
 }
 .btn-press.btn-ghost {
-  box-shadow: 0 0 0 rgba(26, 39, 80, 0.06);
+  box-shadow: inset 0 0 0 3rpx rgba(70,35,10,.18), 0 0 0 6rpx var(--cream-e), 0 3rpx 0 var(--cream-sd);
 }
 .btn-press.btn-danger-ghost {
-  box-shadow: 0 0 0 rgba(216, 71, 74, 0.1);
+  box-shadow: inset 0 0 0 3rpx rgba(150,40,20,.2), 0 0 0 6rpx rgba(150,40,20,.85), 0 2rpx 0 #C4785C;
 }
 
-/* ===== 布局 ===== */
+/* --- .tag → 小号 chip --- */
+.tag {
+  display: inline-block;
+  font-size: 22rpx;
+  font-weight: 900;
+  padding: 5rpx 18rpx;
+  border-radius: 20rpx / 34%;
+  background: var(--red-c);
+  color: #fff;
+  line-height: 1.6;
+  --sk: #6B2408;
+  text-shadow: -1rpx -1rpx 0 var(--sk), 1rpx -1rpx 0 var(--sk), -1rpx 1rpx 0 var(--sk), 1rpx 1rpx 0 var(--sk);
+  box-shadow: 0 0 0 5rpx var(--red-e), 0 5rpx 0 var(--red-sd);
+}
+.tag-primary { background: var(--blue-c); box-shadow: 0 0 0 5rpx var(--blue-e), 0 5rpx 0 var(--blue-sd); --sk: #062A52; }
+.tag-success { background: var(--green-c); box-shadow: 0 0 0 5rpx var(--green-e), 0 5rpx 0 var(--green-sd); --sk: #0A3A10; }
+.tag-warn {
+  background: var(--yellow-c); color: var(--ink); text-shadow: none;
+  box-shadow: 0 0 0 5rpx var(--yellow-e), 0 5rpx 0 var(--yellow-sd);
+}
+
+/* --- .stat → st 小积木 --- */
+.stat-grid { display: flex; gap: 18rpx; }
+.stat {
+  flex: 1;
+  position: relative;
+  padding: 22rpx 8rpx 18rpx;
+  border-radius: 30rpx / 16%;
+  text-align: center;
+  --c: var(--red-c); --ft: var(--red-ft); --fb: var(--red-fb);
+  --fb2: var(--red-fb2); --sd: var(--red-sd); --e: var(--red-e);
+  background-image: linear-gradient(180deg, var(--ft) 0 22%, var(--fb) 55%, var(--fb2) 100%);
+  box-shadow: 0 0 0 6rpx var(--e), 0 7rpx 0 var(--sd), 0 10rpx 16rpx -10rpx rgba(60,25,8,.5);
+}
+.stat::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 5.5%; right: 5.5%; top: 15rpx; bottom: 5.5%;
+  border-radius: 0 0 13rpx 13rpx / 0 0 12% 12%;
+  background: var(--c);
+  box-shadow: inset 0 0 0 3rpx var(--e);
+  pointer-events: none;
+}
+.stat > view, .stat > text { position: relative; z-index: 2; }
+/* 凸点必须留在绝对定位层，否则会被上面那条规则拉回文档流 */
+.stat > .studs { position: absolute; z-index: 3; }
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 46rpx;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+  --sk: #6B2408;
+  text-shadow: -1.5rpx -1.5rpx 0 var(--sk), 1.5rpx -1.5rpx 0 var(--sk), -1.5rpx 1.5rpx 0 var(--sk), 1.5rpx 1.5rpx 0 var(--sk), 0 3rpx 0 rgba(110,24,10,.45);
+}
+.stat-label {
+  position: relative;
+  z-index: 2;
+  font-size: 21rpx;
+  font-weight: 800;
+  color: #FFF1DC;
+  margin-top: 6rpx;
+  --sk: none;
+  text-shadow: 0 1.5rpx 0 rgba(110,24,10,.55);
+}
+/* 三连块配色与角度：写死但每块不同，形成"随意摆放"的手感 */
+.stat:nth-child(1) { transform: rotate(-2.4deg) translateY(3rpx); }
+.stat:nth-child(2) {
+  transform: rotate(1.6deg) translateY(-2rpx);
+  --c: var(--blue-c); --ft: var(--blue-ft); --fb: var(--blue-fb);
+  --fb2: var(--blue-fb2); --sd: var(--blue-sd); --e: var(--blue-e);
+}
+.stat:nth-child(2) .stat-num { --sk: #062A52; }
+.stat:nth-child(3) {
+  transform: rotate(-1deg) translateY(2rpx);
+  --c: var(--yellow-c); --ft: var(--yellow-ft); --fb: var(--yellow-fb);
+  --fb2: var(--yellow-fb2); --sd: var(--yellow-sd); --e: var(--yellow-e);
+}
+.stat:nth-child(3) .stat-num { color: var(--btn-yellow-num); --sk: #765008; }
+.stat:nth-child(3) .stat-label { color: var(--ink); text-shadow: none; }
+
+/* --- .bar → 分段进度条 --- */
+.bar {
+  position: relative;
+  height: 26rpx;
+  border-radius: 8rpx;
+  background: #E3CBA6;
+  overflow: hidden;
+  box-shadow: inset 0 3rpx 5rpx rgba(120,80,30,.2);
+}
+.bar-fill {
+  position: relative;
+  height: 100%;
+  border-radius: 8rpx;
+  background: linear-gradient(180deg, #FFD976, #FFC53D 60%, #F0AE22);
+  transition: width .45s var(--ease);
+  box-shadow: inset 0 -3rpx 0 rgba(190,140,20,.35), 0 0 14rpx rgba(255,197,61,.7);
+}
+.bar-fill::after { display: none; }
+.bar-seg {
+  position: absolute;
+  top: 0; bottom: 0;
+  border-radius: 8rpx;
+  background: rgba(47,143,224,.28);
+}
+
+/* ===================== 文字 ===================== */
+.h1 { font-size: 44rpx; font-weight: 900; letter-spacing: -0.01em; }
+.h2 { font-size: 34rpx; font-weight: 900; }
+.sub { font-size: 26rpx; color: var(--ink-2); }
+.muted { font-size: 24rpx; color: var(--ink-mute); }
+.strong { font-weight: 900; }
+.center { text-align: center; }
+.tip-link { color: var(--accent-hot); font-weight: 800; }
+
+/* ===================== 布局 ===================== */
 .row { display: flex; align-items: center; }
 .row-between { display: flex; align-items: center; justify-content: space-between; }
 .gap-sm { gap: 16rpx; }
@@ -284,115 +542,33 @@ page {
 .flex1 { flex: 1; }
 .wrap { flex-wrap: wrap; }
 
-/* ===== 标签 ===== */
-.tag {
-  display: inline-block;
-  font-size: 22rpx;
-  padding: 4rpx 16rpx;
-  border-radius: var(--r-pill);
-  background: var(--accent-soft);
-  color: #B03D0F;
-  line-height: 1.6;
-  font-weight: 700;
-}
-.tag-primary { background: var(--primary-soft); color: var(--primary); }
-.tag-success { background: var(--success-soft); color: var(--success); }
-.tag-warn { background: var(--warn-soft); color: var(--warn); }
-
-/* ===== 统计格 ===== */
-.stat-grid {
-  display: flex;
-  gap: 20rpx;
-}
-.stat {
-  flex: 1;
-  position: relative;
-  background: linear-gradient(180deg, #FBF7EE, #F6EFE1);
-  border-radius: var(--r-md);
-  padding: 24rpx 20rpx;
-  text-align: center;
-  border: 1rpx solid rgba(255, 255, 255, 0.9);
-  box-shadow: inset 0 1rpx 0 rgba(255, 255, 255, 0.9);
-  overflow: hidden;
-}
-.stat-num {
-  font-family: var(--font-display);
-  font-size: 48rpx;
-  font-weight: 800;
-  color: var(--primary);
-  line-height: 1.05;
-  font-variant-numeric: tabular-nums;
-}
-.stat-label {
-  font-size: 22rpx;
-  color: var(--muted);
-  margin-top: 6rpx;
-}
-
-/* ===== 列表行 ===== */
+/* ===================== 列表行 ===================== */
 .list-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 26rpx 0;
-  border-bottom: 1rpx solid var(--line-soft);
+  padding: 24rpx 0;
+  border-bottom: 3rpx dashed var(--dash);
 }
 .list-item:last-child { border-bottom: none; }
 
-/* ===== 进度条 =====
- * 渐变 + 一道白光循环流过，让"进度"这件事有生命感
- */
-.bar {
-  position: relative;
-  height: 14rpx;
-  border-radius: var(--r-pill);
-  background: var(--line-soft);
-  overflow: hidden;
-}
-.bar-fill {
-  position: relative;
-  height: 100%;
-  border-radius: var(--r-pill);
-  background: linear-gradient(90deg, #FFC24A, #FF6B3D 70%, #F2542A);
-  box-shadow: 0 0 16rpx rgba(255, 107, 61, 0.65);
-  transition: width 0.55s var(--ease);
-  overflow: hidden;
-}
-.bar-fill::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.85) 50%, transparent 80%);
-  animation: barShine 2.4s linear infinite;
-}
-@keyframes barShine {
-  from { transform: translateX(-110%); }
-  to { transform: translateX(110%); }
-}
+/* ===================== 空状态 ===================== */
+.empty { padding: 90rpx 40rpx; text-align: center; }
+.empty-text { font-size: 28rpx; color: var(--ink-mute); margin-bottom: 32rpx; line-height: 1.9; }
 
-/* ===== 空状态 ===== */
-.empty {
-  padding: 96rpx 40rpx;
-  text-align: center;
-}
-.empty-text { font-size: 28rpx; color: var(--muted); margin-bottom: 32rpx; line-height: 1.9; }
+/* ===================== 分隔 ===================== */
+.divider { height: 3rpx; background: var(--dash); margin: 24rpx 0; border-radius: 3rpx; }
 
-/* ===== 分隔 ===== */
-.divider { height: 1rpx; background: var(--line-soft); margin: 24rpx 0; }
-
-/* ===== 动效 ===== */
+/* ===================== 动效 ===================== */
 @keyframes wbRiseIn {
   from { opacity: 0; transform: translateY(24rpx); }
-  to { opacity: 1; transform: none; }
+  to { opacity: 1; }
 }
 @keyframes wbPopIn {
-  0% { opacity: 0; transform: scale(0.9); }
+  0% { opacity: 0; transform: scale(.9); }
   22% { opacity: 1; }
   62% { transform: scale(1.025); }
-  100% { opacity: 1; transform: scale(1); }
+  100% { transform: scale(1); }
 }
 @keyframes wbShake {
   0%, 100% { transform: translateX(0); }
@@ -402,78 +578,68 @@ page {
   60% { transform: translateX(6rpx); }
   76% { transform: translateX(-4rpx); }
 }
+.rise { animation: wbRiseIn .46s var(--ease) both; }
+.pop { animation: wbPopIn .42s var(--spring) both; }
+.shake { animation: wbShake .5s var(--ease) both; }
+@keyframes wbSpin { to { transform: rotate(360deg); } }
+@keyframes wbPulse {
+  0%, 100% { transform: scale(1); opacity: .9; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
 
-/* 只在需要时给单个容器加入场，列表类页面不加，避免每次 setData 都重播 */
-.rise { animation: wbRiseIn 0.46s var(--ease) both; }
-.pop { animation: wbPopIn 0.42s var(--spring) both; }
-.shake { animation: wbShake 0.5s var(--ease) both; }
-
-/* ===== 页面转场 =====
- * 小程序的 navigateTo/navigateBack 动画由系统控制，改不了。
- * 所以在"内容层"补一段入场：整页从下方浮起 + 轻微缩放，卡片再错峰跟上。
- * 三个方向对应三种去向，和用户在浏览器预览版看到的一致：
- *   page-in       普通进入（从下浮起）
- *   page-in-side  进入学习（从右推入，呼应 navigateTo 的方向）
- *   page-in-up    到达结算（从下弹起，强调"完成"）
+/* ===================== 页面转场 =====================
+ * navigateTo 的动画由系统控制改不了，所以在内容层补入场。
  */
 @keyframes wbPageIn {
-  from { opacity: 0; transform: translateY(48rpx) scale(0.992); }
-  to { opacity: 1; transform: none; }
+  from { opacity: 0; transform: translateY(48rpx) scale(.992); }
+  to { opacity: 1; }
 }
 @keyframes wbPageInSide {
-  from { opacity: 0; transform: translateX(120rpx) scale(0.985); }
-  to { opacity: 1; transform: none; }
+  from { opacity: 0; transform: translateX(120rpx) scale(.985); }
+  to { opacity: 1; }
 }
 @keyframes wbPageInUp {
-  from { opacity: 0; transform: translateY(120rpx) scale(0.94); }
+  from { opacity: 0; transform: translateY(120rpx) scale(.94); }
   60% { opacity: 1; }
-  to { opacity: 1; transform: none; }
+  to { opacity: 1; }
 }
+.page-in { animation: wbPageIn .48s var(--ease) both; }
+.page-in-side { animation: wbPageInSide .5s var(--ease) both; }
+.page-in-up { animation: wbPageInUp .62s var(--spring) both; }
 
-.page-in { animation: wbPageIn 0.48s var(--ease) both; }
-.page-in-side { animation: wbPageInSide 0.5s var(--ease) both; }
-.page-in-up { animation: wbPageInUp 0.62s var(--spring) both; }
-
-/* 卡片错峰：只作用在页面直接子级，避免深层重排 */
+/* 卡片错峰：只作用于直接子级。前两个子级是氛围层，延迟从第 3 个算起。
+ * 注意 WXSS 不支持 `*` 通配符，用标签选择器等价替代。 */
 .page-in > .card,
 .page-in-side > .card,
 .page-in-up > .card,
-.page-in > .hero,
-.page-in-side > .hero,
-.page-in-up > .hero {
-  animation: wbRiseIn 0.5s var(--ease) both;
-}
-/* 前两个子级是氛围层（.fx-glow / .fx-bg），没有动画也不该占位，
- * 所以错峰延迟从第 3 个子级开始算。
- * 注意：WXSS 不支持 `*` 通配符（编译会直接报错），这里用 view 标签选择器等价替代。 */
+.page-in > .brick,
+.page-in-side > .brick,
+.page-in-up > .brick { animation: wbRiseIn .5s var(--ease) both; }
 .page-in > view:nth-child(3),
 .page-in-side > view:nth-child(3),
-.page-in-up > view:nth-child(3) { animation-delay: 0.03s; }
+.page-in-up > view:nth-child(3) { animation-delay: .03s; }
 .page-in > view:nth-child(4),
 .page-in-side > view:nth-child(4),
-.page-in-up > view:nth-child(4) { animation-delay: 0.08s; }
+.page-in-up > view:nth-child(4) { animation-delay: .08s; }
 .page-in > view:nth-child(5),
 .page-in-side > view:nth-child(5),
-.page-in-up > view:nth-child(5) { animation-delay: 0.13s; }
+.page-in-up > view:nth-child(5) { animation-delay: .13s; }
 .page-in > view:nth-child(6),
 .page-in-side > view:nth-child(6),
-.page-in-up > view:nth-child(6) { animation-delay: 0.18s; }
+.page-in-up > view:nth-child(6) { animation-delay: .18s; }
 .page-in > view:nth-child(7),
 .page-in-side > view:nth-child(7),
-.page-in-up > view:nth-child(7) { animation-delay: 0.23s; }
-
-/* 答对时卡片扫过一道光：把"对了"这件事做得有质感 */
+.page-in-up > view:nth-child(7) { animation-delay: .23s; }
 @keyframes wbSweep {
   from { transform: translateX(-120%); }
   to { transform: translateX(120%); }
 }
 
-/* ===== 吉祥物（纯 CSS 绘制） =====
- * 不用图片的原因：
- *   1) 主包已用掉 72%，一张像样的插画 PNG 至少 60KB，而这个是 0 字节
- *   2) 矢量级的圆角在任意 DPR 下都不糊，真机不会出现锯齿
- *   3) 颜色直接引用设计令牌，改主题色时它会跟着变
- * 结构：耳朵 ×2 + 身体 + 肚皮 + 眼睛 ×2（含瞳孔）+ 喙
+/* ===================== 吉祥物：积木小鸟 =====================
+ * 全部纯 CSS，0 字节、任意 DPR 不糊、颜色跟随令牌。
+ * 造型：方块身体 + 顶部两个凸点 + 圆眼 + 三角嘴，呼应积木语言。
+ * 结构对应 WXML：
+ *   .mascot > .m-stud ×2 / .m-body > .m-eye ×2 > .m-pupil / .m-beak
  */
 .mascot {
   position: relative;
@@ -482,81 +648,67 @@ page {
   flex: none;
   animation: mascotBob 3.6s ease-in-out infinite;
 }
-
 @keyframes mascotBob {
-  0%, 100% { transform: translateY(0) rotate(-4deg); }
-  50% { transform: translateY(-10rpx) rotate(4deg); }
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-9rpx) rotate(3deg); }
 }
-
-/* 尖耳朵在小尺寸下会被读成猫/狐狸，改成头顶一撮呆毛，更像小鸟 */
-.m-ear {
+.m-stud {
   position: absolute;
-  top: 6rpx;
-  width: 16rpx;
+  top: 2rpx;
+  width: 22rpx;
   height: 16rpx;
-  border-radius: 50%;
-  background: #FF8A5C;
-  opacity: 0.95;
+  border-radius: 50% / 40%;
+  background-image: linear-gradient(180deg, #FFC48F 0 40%, #FF8A5C 70%, #E85A2C 100%);
+  box-shadow: 0 0 0 4rpx rgba(150,50,20,.75);
 }
-.m-ear.l { left: 26rpx; }
-.m-ear.r { left: 56rpx; top: 2rpx; transform: scale(0.78); }
-
+.m-stud.l { left: 20rpx; }
+.m-stud.r { right: 20rpx; }
 .m-body {
   position: absolute;
-  left: 3rpx;
-  right: 3rpx;
-  top: 12rpx;
-  bottom: 0;
-  border-radius: 52% 52% 46% 46%;
-  background: linear-gradient(160deg, #FFB47E 0%, #FF6B3D 58%, #E14E28 100%);
+  left: 4rpx; right: 4rpx;
+  top: 14rpx; bottom: 0;
+  border-radius: 26rpx / 22%;
+  background-image: linear-gradient(160deg, #FFC08A 0%, #FF8A5C 46%, #E85A2C 100%);
   box-shadow:
-    inset 0 -10rpx 16rpx rgba(150, 40, 10, 0.28),
-    inset 0 6rpx 10rpx rgba(255, 255, 255, 0.4),
-    0 10rpx 20rpx -10rpx rgba(242, 84, 42, 0.75);
+    inset 0 -8rpx 0 rgba(190,70,30,.35),
+    inset 0 0 0 4rpx rgba(150,50,20,.7),
+    0 8rpx 14rpx -6rpx rgba(150,50,20,.6);
   overflow: hidden;
 }
-
 .m-belly {
   position: absolute;
-  left: 24%;
-  right: 24%;
-  bottom: 5%;
-  height: 34%;
-  border-radius: 50% 50% 46% 46%;
-  background: linear-gradient(180deg, rgba(255, 249, 236, 0.72), rgba(255, 236, 210, 0.9));
+  left: 26%; right: 26%; bottom: 6%;
+  height: 30%;
+  border-radius: 40% 40% 46% 46%;
+  background: linear-gradient(180deg, rgba(255,249,236,.75), rgba(255,236,210,.92));
 }
-
 .m-eye {
   position: absolute;
-  top: 20%;
-  width: 29rpx;
-  height: 29rpx;
+  top: 24%;
+  width: 26rpx; height: 26rpx;
   border-radius: 50%;
   background: #FFF9F0;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 -3rpx 5rpx rgba(120, 60, 20, 0.22);
+  box-shadow: inset 0 -3rpx 5rpx rgba(120,60,20,.2);
 }
-.m-eye.l { left: 15%; }
-.m-eye.r { right: 15%; }
-
+.m-eye.l { left: 16%; }
+.m-eye.r { right: 16%; }
 .m-pupil {
-  width: 14rpx;
-  height: 14rpx;
+  width: 13rpx; height: 13rpx;
   border-radius: 50%;
-  background: var(--primary);
-  box-shadow: inset 3rpx -3rpx 0 rgba(255, 255, 255, 0.55);
+  background: #4A3524;
+  box-shadow: inset 3rpx -3rpx 0 rgba(255,255,255,.5);
 }
-
 .m-beak {
   position: absolute;
   left: 50%;
-  top: 56%;
-  margin-left: -9rpx;
-  width: 0;
-  height: 0;
-  border-left: 9rpx solid transparent;
-  border-right: 9rpx solid transparent;
-  border-top: 14rpx solid #FFC24A;
+  top: 54%;
+  margin-left: -10rpx;
+  width: 0; height: 0;
+  border-left: 10rpx solid transparent;
+  border-right: 10rpx solid transparent;
+  border-top: 15rpx solid #FFC24A;
+  filter: drop-shadow(0 2rpx 0 rgba(150,90,10,.45));
 }

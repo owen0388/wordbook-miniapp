@@ -3,28 +3,32 @@
   <view class="fx-glow"></view>
   <view class="fx-bg"></view>
 
-  <view class="card">
-    <view class="card-title">
-      <text>错词本</text>
-      <text class="muted" wx:if="{{total > 0}}" bindtap="clearAll">清空</text>
+  <view class="card plate">
+    <view class="studs">
+      <view class="pt"></view><view class="pt"></view>
+      <view class="pt"></view><view class="pt"></view>
+    </view>
+    <view class="sec-head">
+      <text class="sec-title">错词本</text>
+      <text class="sec-link" wx:if="{{total > 0}}" bindtap="clearAll">清空</text>
     </view>
 
     <block wx:if="{{total > 0}}">
       <view class="sub mb">
         共 {{total}} 个词。答错过的词会自动进入这里，明天的抽查会优先安排。
       </view>
-      <button hover-class="btn-press" class="btn btn-primary btn-sm" bindtap="startWrongOnly">开始错词专项（最多 30 个）</button>
+      <button hover-class="btn-press" class="btn btn-primary btn-sm wb-start" bindtap="startWrongOnly">开始错词专项（最多 30 个）</button>
 
       <view class="divider"></view>
 
       <view class="wb" wx:for="{{list}}" wx:key="id">
         <view class="wb-main">
-          <view class="row gap-sm">
+          <view class="row gap-sm wb-head">
             <text class="wb-word">{{item.word}}</text>
             <text class="wb-phonetic">{{item.phonetic}}</text>
           </view>
           <view class="wb-meaning">{{item.pos}} {{item.meaningCn}}</view>
-          <view class="muted wb-meta">错 {{item.wrongCount}} 次 · 最近 {{item.lastWrongAt}}</view>
+          <view class="wb-meta">错 {{item.wrongCount}} 次 · 最近 {{item.lastWrongAt}}</view>
         </view>
         <view class="wb-op" data-id="{{item.id}}" bindtap="removeOne">移除</view>
       </view>

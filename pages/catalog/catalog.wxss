@@ -1,132 +1,132 @@
-/* 词库检索 */
+/* ============ 词库页 · 积木世界 ============ */
 
+/* --- 搜索：凹槽积木 ---
+ * 唯一"面板比斜面亮"的组件 —— 输入框在物理世界是凹进去的，
+ * 视觉上必须和凸起的积木相反，否则用户会以为它是个按钮。
+ */
 .search {
   display: flex;
   align-items: center;
-  background: #fff;
-  border-radius: 44rpx;
-  padding: 0 32rpx;
-  height: 88rpx;
-  margin-bottom: 24rpx;
-  box-shadow: 0 2rpx 12rpx rgba(27, 58, 107, 0.05);
+  gap: 12rpx;
+  height: 86rpx;
+  margin-top: 26rpx;
+  padding: 0 24rpx;
+  border-radius: 26rpx / 42%;
+  background-color: #FFF6E4;
+  background-image: linear-gradient(180deg, var(--cream-ft) 0 24%, var(--cream-fb) 56%, var(--cream-fb2) 100%);
+  box-shadow:
+    inset 0 4rpx 8rpx rgba(120,80,30,.18),
+    0 0 0 6rpx var(--cream-e),
+    0 6rpx 0 var(--cream-sd);
 }
-
+.search-ico { font-size: 26rpx; opacity: .7; }
 .search-input {
   flex: 1;
-  font-size: 28rpx;
-  height: 88rpx;
+  font-size: 27rpx;
+  font-weight: 700;
+  color: var(--ink);
+  height: 86rpx;
 }
-
+.search-placeholder { color: var(--ink-mute); }
+/* 清空做成一颗小积木 */
 .search-clear {
-  font-size: 26rpx;
-  color: var(--muted);
-  padding-left: 20rpx;
+  width: 46rpx;
+  height: 46rpx;
+  line-height: 42rpx;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 900;
+  color: #B0402A;
+  background: #F8D8C6;
+  border-radius: 15rpx / 34%;
+  box-shadow: 0 0 0 4rpx rgba(176,72,46,.75), 0 4rpx 0 rgba(150,58,34,.5);
 }
 
+/* --- 筛选标签 chips --- */
 .filter-label {
-  font-size: 24rpx;
-  color: var(--muted);
-  margin: 24rpx 0 16rpx;
+  margin: 22rpx 0 12rpx;
+  font-size: 23rpx;
+  font-weight: 900;
+  color: var(--ink-2);
 }
+.filter-label:first-child { margin-top: 6rpx; }
 
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 16rpx;
+  gap: 14rpx 12rpx;
 }
-
 .chip {
-  font-size: 26rpx;
-  padding: 12rpx 28rpx;
-  border-radius: 32rpx;
-  background: var(--bg);
-  color: var(--text-sub);
-  border: 1rpx solid transparent;
+  padding: 12rpx 22rpx;
+  border-radius: 20rpx / 34%;
+  font-size: 23rpx;
+  font-weight: 900;
+  color: var(--ink-2);
+  background-image: linear-gradient(180deg, var(--cream-ft) 0 26%, var(--cream-fb) 58%, var(--cream-fb2) 100%);
+  box-shadow: 0 0 0 5rpx var(--cream-e), 0 5rpx 0 var(--cream-sd);
 }
-
 .chip-on {
-  background: var(--primary-soft);
-  color: var(--primary);
-  border-color: var(--primary);
-  font-weight: 600;
+  color: #fff;
+  background-image: linear-gradient(180deg, var(--red-ft) 0 26%, var(--red-fb) 58%, var(--red-fb2) 100%);
+  --sk: #6B2408;
+  text-shadow: -1rpx -1rpx 0 var(--sk), 1rpx -1rpx 0 var(--sk), -1rpx 1rpx 0 var(--sk), 1rpx 1rpx 0 var(--sk);
+  box-shadow: 0 0 0 5rpx var(--red-e), 0 5rpx 0 var(--red-sd);
 }
 
-/* 教材条目 */
-.book {
-  padding: 28rpx 0;
-  border-bottom: 1rpx solid var(--line);
+/* --- 区块标题 --- */
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18rpx;
+}
+.sec-title { font-size: 29rpx; font-weight: 900; color: var(--ink); }
+.sec-link { font-size: 22rpx; font-weight: 800; color: var(--accent-deep); }
+
+/* --- 卡片 --- */
+.plate {
+  margin-top: 40rpx;
+  margin-bottom: 32rpx;
+  padding: 32rpx 6.5% 6.5%;
 }
 
-.book:last-child {
-  border-bottom: none;
-}
-
-.book-main {
-  flex: 1;
-  padding-right: 20rpx;
-}
-
-.book-name {
-  font-size: 30rpx;
-  font-weight: 600;
-  margin-bottom: 8rpx;
-  line-height: 1.4;
-}
-
-.book-meta {
-  font-size: 24rpx;
-}
-
-.book-bar {
-  margin-top: 20rpx;
-}
-
-.book-progress {
-  margin-top: 12rpx;
-}
-
-/* 搜索结果 */
+/* --- 搜索结果行 --- */
 .sr {
   display: flex;
   align-items: flex-start;
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid var(--line);
+  gap: 20rpx;
+  padding: 20rpx 0;
+  border-bottom: 3rpx dashed var(--dash);
 }
+.sr:last-child { border-bottom: none; }
+.sr-left { flex: 0 0 40%; min-width: 0; }
+.sr-word { font-size: 30rpx; font-weight: 900; color: var(--ink); word-break: break-all; }
+.sr-phonetic { font-size: 21rpx; color: var(--ink-mute); margin-top: 4rpx; }
+.sr-right { flex: 1; min-width: 0; }
+.sr-meaning { font-size: 25rpx; font-weight: 700; color: var(--ink-2); line-height: 1.5; }
+.sr-book { font-size: 20rpx; color: var(--ink-mute); margin-top: 6rpx; }
 
-.sr:last-child {
-  border-bottom: none;
+/* --- 教材列表 --- */
+.book {
+  padding: 22rpx 0;
+  border-bottom: 3rpx dashed var(--dash);
 }
-
-.sr-left {
-  width: 240rpx;
-  flex-shrink: 0;
+.book:last-child { border-bottom: none; }
+.book-main { flex: 1; min-width: 0; padding-right: 16rpx; }
+.book-name {
+  font-size: 27rpx;
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1.35;
 }
-
-.sr-word {
-  font-size: 32rpx;
-  font-weight: 600;
-  color: var(--primary);
-}
-
-.sr-phonetic {
-  font-size: 24rpx;
-  color: var(--muted);
-  margin-top: 4rpx;
-}
-
-.sr-right {
-  flex: 1;
-}
-
-.sr-meaning {
-  font-size: 28rpx;
-}
-
-.sr-book {
-  font-size: 22rpx;
-  margin-top: 6rpx;
-}
+.book-meta { font-size: 20rpx; color: var(--ink-mute); margin-top: 6rpx; }
+.book-bar { margin-top: 14rpx; height: 18rpx; }
+.book-progress { font-size: 20rpx; color: var(--ink-mute); margin-top: 8rpx; }
 
 .version {
-  margin-top: 20rpx;
+  margin: 30rpx 0 10rpx;
+  text-align: center;
+  font-size: 20rpx;
+  color: var(--ink-mute);
+  opacity: .8;
 }

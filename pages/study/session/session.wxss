@@ -1,121 +1,113 @@
-/* 学习会话 */
+/* ============ 学习页 · 积木世界 ============ */
 
-.session {
-  padding-bottom: 80rpx;
-}
+.session { padding-bottom: 80rpx; }
 
-.s-head {
-  margin-bottom: 24rpx;
-}
+/* --- 顶部进度 --- */
+.s-head { margin-bottom: 26rpx; }
 
-/* 进度条：一条走完全程，但按阶段分色。
-   底色 = 新词段（淡珊瑚），左侧叠一段 = 复习段（淡靛蓝），
-   再叠一条主色填充 = 已完成。这样未完成的部分一眼能看出
-   "接下来是复习还是新词"。 */
+/* 一条走完全程的总进度，按阶段分段上色：
+ * 底 = 新词段，左叠一段 = 复习段，再叠主色 = 已完成。
+ * 未完成区域一眼能看出"接下来是复习还是新词"。 */
 .bar.s-bar {
-  margin-top: 18rpx;
-  height: 16rpx;
-  background: var(--accent-soft);
+  margin-top: 16rpx;
+  height: 26rpx;
+  background: #E3CBA6;
 }
-
-.bar-seg {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  border-radius: var(--r-pill);
-  background: #E1E8F7;
+.s-bar .bar-seg {
+  background: rgba(47,143,224,.32);
+  border-radius: 8rpx;
 }
-
-/* 填充要盖在分段之上 */
 .s-bar .bar-fill {
   z-index: 2;
-  transition: width 0.45s var(--ease);
+  transition: width .45s var(--ease);
 }
 
-/* 进度数字：真机上原来太小，看不清 */
+/* 进度数字：真机上原来太小 */
 .s-count {
   font-family: var(--font-display);
-  font-size: 30rpx;
-  font-weight: 700;
-  color: var(--text-sub);
+  font-size: 32rpx;
+  font-weight: 900;
+  color: var(--ink-2);
   font-variant-numeric: tabular-nums;
 }
 
-/* 结构提示：原来是 22rpx，真机偏小 */
 .s-note {
   display: block;
   margin-top: 14rpx;
-  font-size: 28rpx;
+  font-size: 26rpx;
+  font-weight: 700;
   line-height: 1.5;
-  color: var(--text-sub);
+  color: var(--ink-2);
 }
-
-/* 复习来源拆分：比主提示再轻一档，属于"想了解就看得见"的补充信息 */
 .s-note-sub {
   margin-top: 6rpx;
-  font-size: 24rpx;
-  color: var(--muted);
+  font-size: 23rpx;
+  font-weight: 500;
+  color: var(--ink-mute);
 }
 
-/* 中途鼓励：浮在顶部，不占布局、不遮挡题目 */
+/* 中途鼓励：浮层，不占布局、不遮挡题目 */
 .s-milestone {
   position: fixed;
   top: 170rpx;
   left: 50%;
   z-index: 30;
   padding: 20rpx 40rpx;
-  border-radius: var(--r-pill);
-  background: rgba(39, 56, 110, 0.95);
-  color: #FFFFFF;
+  border-radius: 22rpx / 40%;
+  background: var(--yellow-c);
+  color: #4A1608;
   font-size: 32rpx;
-  font-weight: 700;
+  font-weight: 900;
   letter-spacing: 1rpx;
   transform: translateX(-50%);
-  animation: msPop 0.32s var(--spring);
+  animation: msPop .32s var(--spring);
   pointer-events: none;
-  box-shadow: 0 12rpx 32rpx -10rpx rgba(26, 39, 80, 0.6);
+  box-shadow: 0 0 0 6rpx var(--yellow-e), 0 9rpx 0 var(--yellow-sd), 0 14rpx 24rpx -8rpx rgba(90,50,10,.55);
 }
-
 @keyframes msPop {
-  from { opacity: 0; transform: translateX(-50%) translateY(-14rpx) scale(0.92); }
+  from { opacity: 0; transform: translateX(-50%) translateY(-14rpx) scale(.92); }
   to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
 }
 
-/* 顶部阶段标签：全局 .tag 是 22rpx，真机上偏小，这里覆盖一下 */
+/* 阶段标签：全局 .tag 是 22rpx，学习页要更大 */
 .s-head .tag {
-  font-size: 26rpx;
+  font-size: 25rpx;
   padding: 8rpx 24rpx;
 }
 
-/* 卡片 */
+/* --- 单词卡 --- */
 .s-card {
   text-align: center;
-  padding: 56rpx 36rpx 48rpx;
+  margin-top: 44rpx;
+  padding: 52rpx 40rpx 46rpx;
+  transform: rotate(.5deg);
 }
+.s-card::before { top: 30rpx; }
 
 .s-tag {
   display: inline-block;
-  font-size: 26rpx;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: #B03D0F;
-  background: linear-gradient(135deg, #FFE3D3, #FFD5C0);
-  padding: 8rpx 24rpx;
-  border-radius: var(--r-pill);
-  margin-bottom: 32rpx;
-  box-shadow: 0 4rpx 10rpx -4rpx rgba(242, 84, 42, 0.6);
+  font-size: 24rpx;
+  font-weight: 900;
+  letter-spacing: .1em;
+  color: #fff;
+  background: var(--orange-c);
+  padding: 7rpx 24rpx;
+  border-radius: 18rpx / 34%;
+  margin-bottom: 28rpx;
+  --sk: #6E3208;
+  text-shadow: -1rpx -1rpx 0 var(--sk), 1rpx -1rpx 0 var(--sk), -1rpx 1rpx 0 var(--sk), 1rpx 1rpx 0 var(--sk);
+  box-shadow: 0 0 0 5rpx var(--orange-e), 0 6rpx 0 var(--orange-sd);
 }
 
 .s-word {
-  font-size: 84rpx;
-  font-weight: 700;
-  color: var(--primary);
-  line-height: 1.14;
+  font-size: 85rpx;
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1.12;
   letter-spacing: -0.01em;
   word-break: break-all;
 }
 
-/* 单词 + 喇叭：居中对齐，喇叭不参与换行 */
 .s-word-row {
   display: flex;
   align-items: center;
@@ -123,263 +115,269 @@
   gap: 20rpx;
 }
 
+/* 喇叭：蓝色小积木 */
 .s-spk {
   flex: 0 0 auto;
-  width: 68rpx;
-  height: 68rpx;
+  width: 72rpx;
+  height: 72rpx;
   line-height: 68rpx;
   text-align: center;
   font-size: 32rpx;
-  border-radius: 50%;
-  background: linear-gradient(180deg, #F2F6FF, #E3EAF9);
-  box-shadow: 0 4rpx 0 #CBD6EC, 0 8rpx 16rpx -8rpx rgba(39, 56, 110, 0.4);
-  transition: transform 0.12s var(--ease), box-shadow 0.12s;
+  border-radius: 22rpx / 30%;
+  background-image: linear-gradient(180deg, var(--blue-ft) 0 30%, var(--blue-fb) 58%, var(--blue-fb2) 100%);
+  box-shadow: 0 0 0 5rpx var(--blue-e), 0 6rpx 0 var(--blue-sd);
+  transition: transform .12s var(--ease), box-shadow .12s;
 }
 .s-spk:active {
-  transform: translateY(4rpx);
-  box-shadow: 0 0 0 #CBD6EC;
+  transform: translateY(5rpx);
+  box-shadow: 0 0 0 5rpx var(--blue-e), 0 2rpx 0 var(--blue-sd);
 }
-
-/* 插件未启用时保留位置但不显眼，避免布局跳动 */
-.s-spk-off {
-  opacity: 0.35;
-}
+.s-spk-off { opacity: .4; }
 
 .s-word-cn {
   font-size: 52rpx;
-  font-weight: 600;
-  color: var(--primary);
+  font-weight: 900;
+  color: var(--ink);
   line-height: 1.4;
 }
 
 .s-phonetic {
-  font-size: 30rpx;
-  color: var(--muted);
-  margin-top: 16rpx;
+  font-size: 27rpx;
+  color: var(--ink-mute-2);
+  margin-top: 14rpx;
 }
 
 .s-meaning {
   font-size: 40rpx;
-  font-weight: 600;
+  font-weight: 900;
   text-align: left;
-  margin-bottom: 28rpx;
+  color: var(--ink);
+  margin-bottom: 24rpx;
+  line-height: 1.5;
 }
 
 .s-pos {
-  font-size: 24rpx;
-  color: var(--accent);
-  background: var(--accent-soft);
-  padding: 2rpx 12rpx;
-  border-radius: 6rpx;
-  margin-right: 14rpx;
+  font-size: 22rpx;
+  font-weight: 800;
+  color: #fff;
+  background: var(--green-c);
+  padding: 3rpx 12rpx;
+  border-radius: 8rpx;
+  margin-right: 12rpx;
+  --sk: #0A3A10;
+  text-shadow: -1rpx -1rpx 0 var(--sk), 1rpx 1rpx 0 var(--sk);
 }
 
 .s-example {
-  background: var(--bg);
-  border-radius: 14rpx;
-  padding: 24rpx;
+  background: rgba(255,249,236,.72);
+  border-radius: 16rpx;
+  padding: 22rpx;
   text-align: left;
+  box-shadow: inset 0 0 0 3rpx rgba(140,88,20,.2);
 }
-
-.s-ex-en {
-  font-size: 28rpx;
-  color: var(--text);
-  margin-bottom: 8rpx;
-}
-
-.s-ex-cn {
-  font-size: 24rpx;
-  color: var(--muted);
-}
+.s-ex-en { font-size: 27rpx; color: var(--ink); margin-bottom: 6rpx; }
+.s-ex-cn { font-size: 23rpx; color: var(--ink-mute); }
 
 .s-hint {
-  font-size: 28rpx;
-  color: var(--text-sub);
-  margin-top: 32rpx;
+  font-size: 27rpx;
+  font-weight: 700;
+  color: var(--ink-2);
+  margin-top: 30rpx;
 }
 
-.s-btn {
-  margin-top: 32rpx;
-}
+.s-btn { margin-top: 30rpx; transform: rotate(-.6deg); }
+.s-btn.btn-press { transform: rotate(-.6deg) translateY(7rpx) scale(.992); }
+.s-card-btn { margin-top: 8rpx; transform: rotate(-1deg); }
+.s-card-btn.btn-press { transform: rotate(-1deg) translateY(7rpx) scale(.992); }
 
-.s-card-btn {
-  margin-top: 0;
-}
-
-/* 选项 */
+/* --- 选项：2×2 四色积木 ---
+ * 行 gap 38rpx 是必须的：第二行的凸点刚好插进第一行底部，
+ * 看起来才像积木堆叠，而不是普通按钮列表。
+ */
 .opts {
-  margin-top: 8rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 38rpx 23rpx;
+  margin-top: 36rpx;
+  padding-top: 12rpx;
 }
-
 .opt {
-  background: #fff;
-  border: 2rpx solid var(--line);
-  border-radius: var(--r-md);
-  padding: 32rpx;
-  margin-bottom: 20rpx;
-  font-size: 30rpx;
-  color: var(--text);
-  box-shadow: 0 4rpx 0 rgba(26, 39, 80, 0.05);
-  transition: transform 0.13s var(--ease), border-color 0.13s, box-shadow 0.13s, background 0.13s;
-}
-.opt:active {
-  transform: translateY(4rpx);
-  border-color: #B4C4E5;
-  box-shadow: 0 0 0 rgba(26, 39, 80, 0.05);
-}
-
-.opt-right {
-  background: var(--success-soft);
-  border-color: var(--success);
-  color: #06714F;
-  font-weight: 700;
-  box-shadow: 0 4rpx 0 rgba(12, 154, 108, 0.25);
-  animation: wbPopIn 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-.opt-wrong {
-  background: var(--danger-soft);
-  border-color: var(--danger);
-  color: #A93236;
-  font-weight: 700;
-  box-shadow: 0 4rpx 0 rgba(216, 71, 74, 0.2);
-  animation: wbShake 0.45s var(--ease) both;
-}
-
-/* 输入作答 */
-.ans {
-  margin-top: 8rpx;
-}
-
-.ans-input {
-  background: #fff;
-  border: 2rpx solid var(--line);
-  border-radius: var(--r-md);
-  height: 108rpx;
-  padding: 0 32rpx;
-  font-size: 34rpx;
+  flex: 0 0 calc(50% - 12rpx);
+  box-sizing: border-box;
+  min-height: 104rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14rpx 16rpx;
+  border: 10rpx solid transparent;
+  border-radius: 29rpx / 30%;
+  font-size: 29rpx;
+  font-weight: 900;
+  color: #fff;
   text-align: center;
-  margin-bottom: 24rpx;
-  box-shadow: inset 0 2rpx 6rpx rgba(26, 39, 80, 0.04);
+  line-height: 1.35;
+  --c: var(--red-c); --ft: var(--red-ft); --fb: var(--red-fb);
+  --fb2: var(--red-fb2); --sd: var(--red-sd); --e: var(--red-e);
+  background-color: var(--c);
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,0) 42%, rgba(0,0,0,.05)),
+    linear-gradient(180deg, var(--c), var(--c)),
+    linear-gradient(180deg, var(--ft) 0 24%, var(--fb) 56%, var(--fb2) 100%);
+  background-clip: padding-box, padding-box, border-box;
+  background-origin: padding-box, padding-box, border-box;
+  box-shadow:
+    inset 0 0 0 3rpx rgba(70,35,10,.2),
+    0 0 0 6rpx var(--e),
+    0 8rpx 0 var(--sd),
+    0 10rpx 16rpx -8rpx rgba(60,25,8,.45);
+  --sk: #6B2408;
+  text-shadow:
+    -1.5rpx -1.5rpx 0 var(--sk), 1.5rpx -1.5rpx 0 var(--sk),
+    -1.5rpx 1.5rpx 0 var(--sk),  1.5rpx 1.5rpx 0 var(--sk),
+    0 -1.5rpx 0 var(--sk), 0 1.5rpx 0 var(--sk),
+    -1.5rpx 0 0 var(--sk), 1.5rpx 0 0 var(--sk);
+  transition: transform .13s var(--ease), box-shadow .13s;
+}
+/* 四色轮换 + 各自的角度，形成随手摆放的不齐感 */
+.opt:nth-child(1) { transform: rotate(-1.6deg); }
+.opt:nth-child(2) {
+  transform: rotate(1.2deg);
+  --c: var(--blue-c); --ft: var(--blue-ft); --fb: var(--blue-fb);
+  --fb2: var(--blue-fb2); --sd: var(--blue-sd); --e: var(--blue-e); --sk: #062A52;
+}
+.opt:nth-child(3) {
+  transform: rotate(1.4deg);
+  --c: var(--purple-c); --ft: var(--purple-ft); --fb: var(--purple-fb);
+  --fb2: var(--purple-fb2); --sd: var(--purple-sd); --e: var(--purple-e); --sk: #280C50;
+}
+.opt:nth-child(4) {
+  transform: rotate(-1.2deg);
+  --c: var(--green-c); --ft: var(--green-ft); --fb: var(--green-fb);
+  --fb2: var(--green-fb2); --sd: var(--green-sd); --e: var(--green-e); --sk: #0A3A10;
+}
+.opt:active { transform: translateY(6rpx) scale(.99); }
+
+/* 答对：保留角度，加白色内框 + 弹一下 */
+.opt-right {
+  outline: 5rpx solid #FFF8E9;
+  outline-offset: -12rpx;
+  animation: wbPopIn .42s var(--spring) both;
+}
+/* 答错：抖动 + 描边压深 */
+.opt-wrong {
+  --e: rgba(120,20,8,.95);
+  animation: wbShake .45s var(--ease) both;
 }
 
-/* "这题只能填英文"的即时提示，2 秒消失，不打断答题 */
+/* --- 输入作答 --- */
+.ans {
+  margin-top: 36rpx;
+  display: flex;
+  flex-direction: column;
+}
+/* 输入框做成"凹槽"：面板比斜面亮，和内嵌积木相反，暗示"往里填" */
+.ans-input {
+  height: 108rpx;
+  padding: 0 30rpx;
+  border-radius: 26rpx / 42%;
+  font-size: 34rpx;
+  font-weight: 700;
+  text-align: center;
+  color: var(--ink);
+  background-color: #FFF6E4;
+  background-image: linear-gradient(180deg, var(--cream-ft) 0 24%, var(--cream-fb) 56%, var(--cream-fb2) 100%);
+  box-shadow:
+    inset 0 4rpx 8rpx rgba(120,80,30,.18),
+    0 0 0 6rpx var(--cream-e),
+    0 6rpx 0 var(--cream-sd);
+  margin-bottom: 26rpx;
+}
+
 .ans-warn {
-  margin: -12rpx 0 16rpx;
+  margin: -10rpx 0 18rpx;
   font-size: 26rpx;
-  font-weight: 600;
+  font-weight: 800;
   text-align: center;
   color: #B03D0F;
 }
 
-/* 判分反馈 */
+/* --- 判分反馈：小积木面板（有描边和厚度，但不带凸点，信息优先） --- */
 .fb {
-  border-radius: var(--r-md);
-  padding: 30rpx;
-  margin-top: 8rpx;
-  border: 2rpx solid transparent;
+  position: relative;
+  border-radius: 30rpx / 16%;
+  padding: 28rpx 30rpx;
+  margin-top: 34rpx;
+  --c: var(--green-c); --sd: var(--green-sd); --e: var(--green-e);
+  background-image: linear-gradient(180deg, #E6F8DA 0 22%, #CDEEC0 55%, #B9E4AC 100%);
+  box-shadow: 0 0 0 6rpx var(--e), 0 8rpx 0 var(--sd), 0 12rpx 20rpx -10rpx rgba(30,80,20,.4);
 }
-
-.fb-right {
-  background: linear-gradient(135deg, #E7FAF2, #DAF5EA);
-  border-color: rgba(12, 154, 108, 0.28);
-  box-shadow: 0 10rpx 30rpx -16rpx rgba(12, 154, 108, 0.6);
-  animation: wbPopIn 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
+.fb-right { animation: wbPopIn .42s var(--spring) both; }
 .fb-wrong {
-  background: linear-gradient(135deg, #FDEEED, #FBE4E3);
-  border-color: rgba(216, 71, 74, 0.26);
-  box-shadow: 0 10rpx 30rpx -16rpx rgba(216, 71, 74, 0.5);
-  animation: wbShake 0.5s var(--ease) both;
+  --sd: var(--red-sd); --e: var(--red-e);
+  background-image: linear-gradient(180deg, #FFE2CE 0 22%, #FFD5C0 55%, #F8C6AE 100%);
+  animation: wbShake .5s var(--ease) both;
 }
 
 .fb-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16rpx;
+  margin-bottom: 14rpx;
 }
-
-.fb-title {
-  font-size: 32rpx;
-  font-weight: 600;
-}
-
-.fb-right .fb-title { color: var(--success); }
-.fb-wrong .fb-title { color: var(--danger); }
-
-.fb-badge {
-  font-size: 22rpx;
-  opacity: 0.8;
-}
-
-.fb-right .fb-badge { color: var(--success); }
-.fb-wrong .fb-badge { color: var(--danger); }
+.fb-title { font-size: 32rpx; font-weight: 900; }
+.fb-right .fb-title { color: #1C5E14; }
+.fb-wrong .fb-title { color: #8E2A10; }
+.fb-badge { font-size: 21rpx; font-weight: 800; opacity: .8; }
+.fb-right .fb-badge { color: #1C5E14; }
+.fb-wrong .fb-badge { color: #8E2A10; }
 
 .fb-correct {
-  font-size: 28rpx;
-  color: var(--danger);
-  margin-bottom: 16rpx;
+  font-size: 27rpx;
+  font-weight: 800;
+  color: #8E2A10;
+  margin-bottom: 14rpx;
 }
 
 .fb-detail {
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 14rpx;
-  padding: 24rpx;
+  background: rgba(255,255,255,.66);
+  border-radius: 16rpx;
+  padding: 20rpx;
   display: flex;
   flex-direction: column;
-  gap: 8rpx;
+  gap: 6rpx;
+  box-shadow: inset 0 0 0 3rpx rgba(120,80,30,.16);
 }
+.fb-w { font-size: 38rpx; font-weight: 900; color: var(--ink); }
+.fb-p { font-size: 24rpx; color: var(--ink-mute); }
+.fb-m { font-size: 27rpx; color: var(--ink-2); }
 
-.fb-w {
-  font-size: 36rpx;
-  font-weight: 600;
-  color: var(--primary);
-}
-
-.fb-p {
-  font-size: 26rpx;
-  color: var(--muted);
-}
-
-.fb-m {
-  font-size: 28rpx;
-  color: var(--text);
-}
-
-/* 抽查未过关 */
+/* --- 抽查未过关 --- */
 .gate {
   text-align: center;
-  padding: 64rpx 40rpx;
+  margin-top: 48rpx;
+  padding: 56rpx 36rpx 48rpx;
 }
-
 .gate-score {
   font-size: 112rpx;
-  font-weight: 700;
-  color: var(--danger);
+  font-weight: 900;
+  color: #B23A1E;
   line-height: 1.05;
   font-variant-numeric: tabular-nums;
+  --sk: #6B2408;
+  text-shadow: -2rpx -2rpx 0 rgba(255,255,255,.9), 2rpx 2rpx 0 rgba(255,255,255,.9);
 }
-
-.gate-pct {
-  font-size: 44rpx;
-}
-
+.gate-pct { font-size: 44rpx; }
 .gate-title {
   font-size: 34rpx;
-  font-weight: 600;
-  margin: 20rpx 0 20rpx;
+  font-weight: 900;
+  color: var(--ink);
+  margin: 18rpx 0;
 }
-
 .gate-desc {
-  font-size: 26rpx;
-  color: var(--text-sub);
+  font-size: 25rpx;
+  color: var(--ink-3);
   line-height: 1.7;
-  margin-bottom: 16rpx;
+  margin-bottom: 14rpx;
   text-align: left;
 }
-
-.gate-skip {
-  margin-top: 20rpx;
-}
+.gate-skip { margin-top: 20rpx; }

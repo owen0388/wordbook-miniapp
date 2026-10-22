@@ -1,100 +1,147 @@
-/* 结算页 */
+/* ============ 结算页 · 积木世界 ============ */
 
-.hero {
+/* --- 大星星 ---
+ * 用 clip-path 画五角星，比文字 ★ 饱满得多，且任意尺寸不糊。
+ * clip-path 无法描边，所以外圈描边用 drop-shadow 模拟。
+ */
+.star-wrap {
   position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(110% 130% at 50% 0%, #40569C 0%, rgba(64, 86, 156, 0) 60%),
-    linear-gradient(158deg, #2D4079 0%, #19264D 100%);
-  border-radius: var(--r-lg);
-  padding: 56rpx 36rpx 48rpx;
-  margin-bottom: 22rpx;
-  color: #fff;
-  text-align: center;
-  box-shadow: 0 20rpx 44rpx -22rpx rgba(25, 38, 77, 0.8);
+  height: 420rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30rpx;
 }
-
-.hero::after {
-  content: '';
+.halo {
   position: absolute;
-  width: 320rpx;
-  height: 320rpx;
-  left: 50%;
-  top: -200rpx;
-  margin-left: -160rpx;
+  width: 454rpx;
+  height: 454rpx;
   border-radius: 50%;
-  border: 2rpx solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 0 0 40rpx rgba(255, 255, 255, 0.04), 0 0 0 86rpx rgba(255, 255, 255, 0.025);
-  pointer-events: none;
+  background: radial-gradient(circle, rgba(255,224,122,.55) 0%, rgba(255,201,61,.22) 46%, transparent 70%);
+  animation: wbPulse 3s ease-in-out infinite;
+}
+.bigstar {
+  position: relative;
+  width: 319rpx;
+  height: 319rpx;
+  /* clip-path 不生效时的兜底形状：圆角方块，总比裸方块好看 */
+  border-radius: 22%;
+  background-image: linear-gradient(160deg, #FFE07A 0%, #FFC53D 52%, #E8A420 100%);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  filter: drop-shadow(0 6rpx 0 rgba(160,110,10,.55)) drop-shadow(0 10rpx 16rpx rgba(140,90,0,.4));
+  animation: starIn .62s var(--spring) both;
+}
+@keyframes starIn {
+  0% { opacity: 0; transform: scale(.5) rotate(-16deg); }
+  60% { opacity: 1; transform: scale(1.08) rotate(4deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+.bigstar-in {
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* 笑脸：两颗眼 + 一条弧线嘴 */
+.star-face {
+  position: relative;
+  width: 130rpx;
+  height: 110rpx;
+  margin-top: 34rpx;
+}
+.sf-eye {
+  position: absolute;
+  top: 10rpx;
+  width: 22rpx;
+  height: 26rpx;
+  border-radius: 50%;
+  background: #8A5A08;
+}
+.sf-eye.l { left: 16rpx; }
+.sf-eye.r { right: 16rpx; }
+.sf-mouth {
+  position: absolute;
+  left: 28rpx; right: 28rpx;
+  top: 52rpx;
+  height: 32rpx;
+  border: 6rpx solid #8A5A08;
+  border-top: none;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-radius: 0 0 60rpx 60rpx / 0 0 40rpx 40rpx;
 }
 
-/* 这枚小胶囊是整页的情绪落点：先弹出来，再读下面的数字 */
-.hero-emoji {
-  position: relative;
-  display: inline-block;
-  font-size: 24rpx;
+/* --- 标题区 --- */
+.res-title {
+  font-size: 48rpx;
+  font-weight: 900;
+  color: var(--ink);
+  text-align: center;
+  line-height: 1.32;
+  margin-top: 8rpx;
+}
+.res-sub {
+  font-size: 23rpx;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  padding: 8rpx 26rpx;
-  border-radius: var(--r-pill);
-  background: linear-gradient(135deg, #FF9A5E, #F2542A);
-  color: #fff;
-  margin-bottom: 24rpx;
-  box-shadow: 0 6rpx 0 #C7431C, 0 16rpx 30rpx -12rpx rgba(242, 84, 42, 0.9);
-  animation: wbPopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  color: var(--ink-3);
+  text-align: center;
+  margin-top: 12rpx;
+}
+.res-note {
+  font-size: 23rpx;
+  color: var(--ink-mute);
+  text-align: center;
+  margin-top: 8rpx;
+  padding: 0 40rpx;
+  line-height: 1.6;
 }
 
-.hero-title {
-  position: relative;
-  font-size: 40rpx;
-  font-weight: 700;
-  line-height: 1.35;
-  margin-bottom: 16rpx;
-  letter-spacing: -0.01em;
-}
-
-.hero-sub {
-  position: relative;
-  font-size: 24rpx;
-  opacity: 0.8;
-}
-
-/* 第二行副文案（一句人话点评），和上一行拉开一点 */
-.hero-note {
-  margin-top: 10rpx;
-  font-size: 22rpx;
-  opacity: 0.7;
+/* --- 内容卡片 --- */
+.plate {
+  margin-top: 40rpx;
+  margin-bottom: 32rpx;
+  padding: 32rpx 6.5% 6.5%;
 }
 
 .acc {
   font-size: 44rpx;
-  font-weight: 700;
-  color: var(--primary);
+  font-weight: 900;
+  color: var(--accent-deep);
   font-variant-numeric: tabular-nums;
 }
-
-/* 累计区块：把"我变强了"讲成一句话，而不是再摆一排数字 */
 .acc-line {
-  font-size: 28rpx;
+  font-size: 27rpx;
   line-height: 1.7;
-  color: var(--text);
+  color: var(--ink);
+  font-weight: 700;
 }
-
 .acc-num {
   font-size: 42rpx;
-  font-weight: 700;
-  color: var(--primary);
+  font-weight: 900;
+  color: var(--accent-hot);
   font-variant-numeric: tabular-nums;
   margin: 0 6rpx;
 }
-
 .acc-hint {
   margin-top: 6rpx;
   font-size: 22rpx;
   line-height: 1.5;
-  color: var(--muted);
+  color: var(--ink-mute);
 }
+.mt { margin-top: 20rpx; }
 
-.mt {
-  margin-top: 20rpx;
+/* --- 按钮 --- */
+.res-btn {
+  width: 100%;
+  height: 104rpx;
+  margin-top: 40rpx;
+  transform: rotate(.6deg);
 }
+.res-btn.btn-press { transform: rotate(.6deg) translateY(7rpx) scale(.992); }
+.res-btn-2 {
+  margin-top: 28rpx;
+  height: 96rpx;
+  transform: rotate(-.5deg);
+}
+.res-btn-2.btn-press { transform: rotate(-.5deg) translateY(6rpx) scale(.992); }

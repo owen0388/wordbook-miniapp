@@ -3,26 +3,26 @@
   <view class="fx-glow"></view>
   <view class="fx-bg"></view>
 
-  <view class="card">
-    <view class="card-title">
-      <text>我的教材</text>
-      <text class="muted">共 {{books.length}} 本</text>
+  <view class="card plate">
+    <view class="studs">
+      <view class="pt"></view><view class="pt"></view>
+      <view class="pt"></view><view class="pt"></view>
+    </view>
+    <view class="sec-head">
+      <text class="sec-title">我的教材</text>
+      <text class="sec-link">共 {{books.length}} 本</text>
     </view>
 
     <view class="book" wx:for="{{books}}" wx:key="textbookId">
-      <view class="row-between">
-        <view class="book-main">
-          <view class="row gap-sm">
-            <text class="book-name">{{item.name}}</text>
-            <text class="tag tag-primary" wx:if="{{item.isPrimary}}">主学</text>
-          </view>
-          <view class="muted book-meta">{{item.publisher}} · {{item.grade}} 年级{{item.term}}册</view>
-        </view>
+      <view class="row gap-sm book-head">
+        <text class="book-name">{{item.name}}</text>
+        <text class="tag tag-primary" wx:if="{{item.isPrimary}}">主学</text>
       </view>
+      <view class="book-meta">{{item.publisher}} · {{item.grade}} 年级{{item.term}}册</view>
 
       <view class="row-between book-stat">
-        <text class="muted">已学 {{item.learned}} / {{item.total}} 词 · 掌握 {{item.mastered}}</text>
-        <text class="tag">{{item.percent}}%</text>
+        <text class="book-prog-text">已学 {{item.learned}} / {{item.total}} 词 · 掌握 {{item.mastered}}</text>
+        <text class="book-pct">{{item.percent}}%</text>
       </view>
       <view class="bar">
         <view class="bar-fill" style="width: {{item.percent}}%"></view>
@@ -42,8 +42,12 @@
     </view>
   </view>
 
-  <view class="card" wx:if="{{books.length > 0}}">
-    <view class="card-title"><text>关于排序</text></view>
+  <view class="card plate offset" wx:if="{{books.length > 0}}">
+    <view class="studs">
+      <view class="pt"></view><view class="pt"></view>
+      <view class="pt"></view><view class="pt"></view>
+    </view>
+    <view class="sec-head"><text class="sec-title">关于排序</text></view>
     <view class="sub">
       主学教材的新词会优先出题，学完后按书架顺序顺延到下一本。
       上移 / 下移调整优先级顺序。

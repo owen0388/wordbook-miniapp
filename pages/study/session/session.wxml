@@ -37,6 +37,9 @@
 
     <!-- ===== 学习卡（新词首次出现） ===== -->
     <view class="card s-card" wx:if="{{kind === 'card'}}">
+      <view class="studs">
+        <view class="pt"></view><view class="pt"></view><view class="pt"></view>
+      </view>
       <view class="s-tag">新词</view>
       <view class="s-word-row">
         <view class="s-word">{{word.word}}</view>
@@ -55,6 +58,9 @@
 
     <!-- ===== 答题卡 ===== -->
     <view class="card s-card" wx:else>
+      <view class="studs">
+        <view class="pt"></view><view class="pt"></view><view class="pt"></view>
+      </view>
       <view class="s-tag">{{modeLabel}}</view>
 
       <!-- 英译中 / 词义选择：给英文 -->

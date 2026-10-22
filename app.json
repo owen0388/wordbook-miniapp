@@ -10,16 +10,16 @@
     "pages/study/result/result"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#27386E",
+    "navigationBarBackgroundColor": "#EFD9B4",
     "navigationBarTitleText": "单词秒记",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#F8F3E9",
-    "backgroundTextStyle": "light"
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#EFD9B4",
+    "backgroundTextStyle": "dark"
   },
   "tabBar": {
-    "color": "#8A9099",
-    "selectedColor": "#1B3A6B",
-    "backgroundColor": "#FFFFFF",
+    "color": "#8A6A48",
+    "selectedColor": "#C0563C",
+    "backgroundColor": "#F3DCB6",
     "borderStyle": "black",
     "list": [
       { "pagePath": "pages/index/index", "text": "今日" },

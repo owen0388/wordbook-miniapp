@@ -1,42 +1,53 @@
-/* 学习记录页 */
+/* ============ 学习记录 · 积木世界 ============ */
+
+.plate {
+  margin-top: 40rpx;
+  margin-bottom: 32rpx;
+  padding: 32rpx 6.5% 6.5%;
+}
+
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18rpx;
+}
+.sec-title { font-size: 29rpx; font-weight: 900; color: var(--ink); }
+.sec-link { font-size: 22rpx; font-weight: 800; color: var(--ink-mute); }
+.stat-num-sm { font-size: 36rpx; }
 
 /* 今日总结底部一行 */
 .r-foot {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 18rpx;
+  margin-top: 20rpx;
   padding-top: 18rpx;
-  border-top: 1rpx solid var(--line-soft);
+  border-top: 3rpx dashed var(--dash);
 }
-
-.r-foot-text {
-  font-size: 26rpx;
-  color: var(--text-sub);
-}
-
+.r-foot-text { font-size: 23rpx; color: var(--ink-3); }
 .r-done {
-  font-size: 26rpx;
-  font-weight: 700;
-  color: var(--success);
+  font-size: 23rpx;
+  font-weight: 900;
+  color: #1C5E14;
+  padding: 6rpx 18rpx;
+  border-radius: 999rpx;
+  background: #C9EDBF;
+  box-shadow: inset 0 0 0 3rpx rgba(12,62,18,.3);
 }
-
-.r-undone {
-  font-size: 26rpx;
-  color: var(--muted);
-}
+.r-undone { font-size: 23rpx; color: var(--ink-mute); }
 
 /* ===== 月历 ===== */
 .cal-head {
   display: flex;
-  margin-top: 16rpx;
+  margin-top: 12rpx;
 }
-
 .cal-wd {
   flex: 1;
   text-align: center;
-  font-size: 24rpx;
-  color: var(--muted);
+  font-size: 21rpx;
+  font-weight: 800;
+  color: var(--ink-mute);
 }
 
 .cal-grid {
@@ -44,101 +55,95 @@
   flex-wrap: wrap;
   margin-top: 10rpx;
 }
-
 .cal-cell {
   width: 14.285%;
-  height: 76rpx;
+  height: 78rpx;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .cal-dot {
-  width: 58rpx;
-  height: 58rpx;
+  width: 60rpx;
+  height: 60rpx;
   border-radius: 50%;
   line-height: 58rpx;
   text-align: center;
-  font-size: 26rpx;
+  font-size: 24rpx;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
+  box-sizing: border-box;
 }
 
-/* 完成了：实心强调色 */
+/* 完成：实心橙红 + 厚度，像一颗压进桌面的积木 */
 .cal-done {
-  background: var(--accent);
-  color: #FFFFFF;
-  font-weight: 700;
+  background: #FF7A4D;
+  color: #fff;
+  box-shadow: 0 0 0 4rpx rgba(110,24,10,.85), 0 4rpx 0 var(--red-sd);
+  --sk: #6B2408;
+  text-shadow: -1rpx -1rpx 0 var(--sk), 1rpx -1rpx 0 var(--sk), -1rpx 1rpx 0 var(--sk), 1rpx 1rpx 0 var(--sk);
 }
 
-/* 学了但没做完：浅橙底 + 橙字 */
+/* 学过没做完：浅橙底 + 深字 */
 .cal-partial {
-  background: var(--accent-soft);
-  color: var(--accent-ink);
-  font-weight: 700;
+  background: #FFD9C4;
+  color: #8E2A10;
+  box-shadow: 0 0 0 4rpx rgba(176,72,46,.6), 0 4rpx 0 #D0836A;
 }
 
-/* 没学 */
+/* 没学：只是浅色数字 */
 .cal-none {
-  color: var(--muted);
+  color: var(--ink-mute);
 }
 
 /* 未来的日子 */
 .cal-future {
-  color: #CFC8B8;
+  color: #C7B08C;
 }
+.cal-blank { background: transparent; }
 
-.cal-blank {
-  background: transparent;
-}
-
-/* 今天：加一圈描边，不管什么状态都认得出 */
+/* 今天：深棕描边圈，不管什么状态都认得出 */
 .cal-today {
-  box-shadow: 0 0 0 3rpx var(--primary);
+  outline: 4rpx solid var(--ink-3);
+  outline-offset: 3rpx;
 }
 
 /* 图例 */
 .cal-legend {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 18rpx;
+  margin-top: 20rpx;
   padding-top: 18rpx;
-  border-top: 1rpx solid var(--line-soft);
+  border-top: 3rpx dashed var(--dash);
 }
-
 .lg {
   display: flex;
   align-items: center;
-  margin-right: 28rpx;
+  margin-right: 26rpx;
 }
-
 .lg-dot {
-  width: 22rpx;
-  height: 22rpx;
+  width: 24rpx;
+  height: 24rpx;
   border-radius: 50%;
   margin-right: 10rpx;
 }
-
-.lg-text {
-  font-size: 22rpx;
-  color: var(--muted);
-}
+.lg-dot.cal-done { box-shadow: 0 0 0 3rpx rgba(110,24,10,.85), 0 2rpx 0 var(--red-sd); }
+.lg-dot.cal-partial { box-shadow: 0 0 0 3rpx rgba(176,72,46,.6); }
+.lg-dot.cal-none { background: #FFF0D2; box-shadow: 0 0 0 3rpx rgba(140,88,20,.5); }
+.lg-text { font-size: 21rpx; color: var(--ink-mute); }
 
 /* ===== 累计 ===== */
-.r-row {
-  padding: 14rpx 0;
-}
-
+.r-row { padding: 14rpx 0; }
 .r-num {
   font-family: var(--font-display);
-  font-size: 34rpx;
-  font-weight: 700;
-  color: var(--primary);
+  font-size: 36rpx;
+  font-weight: 900;
+  color: var(--accent-deep);
   font-variant-numeric: tabular-nums;
 }
-
 .r-hint {
-  margin-top: 10rpx;
-  font-size: 22rpx;
+  margin-top: 12rpx;
+  font-size: 21rpx;
   line-height: 1.5;
-  color: var(--muted);
+  color: var(--ink-mute);
 }
