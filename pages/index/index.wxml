@@ -20,17 +20,8 @@
       <view class="sk">连续 <text class="sk-num">{{overall.streak}}</text> 天</view>
     </view>
 
-    <!-- 吉祥物：积木小鸟 -->
-    <view class="mascot hero-pup">
-      <view class="m-stud l"></view>
-      <view class="m-stud r"></view>
-      <view class="m-body">
-        <view class="m-belly"></view>
-        <view class="m-eye l"><view class="m-pupil"></view></view>
-        <view class="m-eye r"><view class="m-pupil"></view></view>
-        <view class="m-beak"></view>
-      </view>
-    </view>
+    <!-- 吉祥物：柯基豆豆（透明底位图，贴在红色正面板上） -->
+    <image class="mascot hero-pup" src="/assets/images/mascot-corgi.png" mode="widthFix" />
 
     <view class="hero-h1 sticker sticker-lg">
       {{doneToday ? '今天已通关' : '今天也要'}}<text class="hero-h1-b">{{doneToday ? '真棒！' : '记单词！'}}</text>

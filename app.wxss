@@ -633,80 +633,23 @@ page {
   to { transform: translateX(120%); }
 }
 
-/* ===================== 吉祥物：积木小鸟 =====================
- * 全部纯 CSS，0 字节、任意 DPR 不糊、颜色跟随令牌。
- * 造型：方块身体 + 顶部两个凸点 + 圆眼 + 三角嘴，呼应积木语言。
- * 结构对应 WXML：
- *   .mascot > .m-stud ×2 / .m-body > .m-eye ×2 > .m-pupil / .m-beak
+/* ===================== 吉祥物：柯基豆豆 =====================
+ * 位图：assets/images/mascot-corgi.png（138×125 原图，已抠成透明底）。
+ * 为什么不再用纯 CSS 画：这是指定的角色形象，毛色分层、眼睛高光、舌头
+ * 这些细节用 CSS 画不出来。图片本身做了两件事：
+ *   1) 背景米白纸纹 + 身下冷灰投影一起抠掉（否则贴在红积木上会有一圈亮边）
+ *   2) 边缘向外收 1px 再羽化，避免混色过渡残留成描边
+ * 显示宽度 240rpx ≈ 手机 120px，2 倍屏下 240 设备像素，源图 138px 略有放大，
+ * 但在这个尺寸肉眼可接受；再放大就需要更高分辨率的原图了。
  */
 .mascot {
-  position: relative;
-  width: 112rpx;
-  height: 112rpx;
+  width: 240rpx;
+  height: 218rpx;
   flex: none;
-  animation: mascotBob 3.6s ease-in-out infinite;
+  animation: mascotBob 4.2s ease-in-out infinite;
+  filter: drop-shadow(0 10rpx 12rpx rgba(120, 60, 10, .34));
 }
 @keyframes mascotBob {
-  0%, 100% { transform: translateY(0) rotate(-3deg); }
-  50% { transform: translateY(-9rpx) rotate(3deg); }
-}
-.m-stud {
-  position: absolute;
-  top: 2rpx;
-  width: 22rpx;
-  height: 16rpx;
-  border-radius: 50% / 40%;
-  background-image: linear-gradient(180deg, #FFC48F 0 40%, #FF8A5C 70%, #E85A2C 100%);
-  box-shadow: 0 0 0 4rpx rgba(150,50,20,.75);
-}
-.m-stud.l { left: 20rpx; }
-.m-stud.r { right: 20rpx; }
-.m-body {
-  position: absolute;
-  left: 4rpx; right: 4rpx;
-  top: 14rpx; bottom: 0;
-  border-radius: 26rpx / 22%;
-  background-image: linear-gradient(160deg, #FFC08A 0%, #FF8A5C 46%, #E85A2C 100%);
-  box-shadow:
-    inset 0 -8rpx 0 rgba(190,70,30,.35),
-    inset 0 0 0 4rpx rgba(150,50,20,.7),
-    0 8rpx 14rpx -6rpx rgba(150,50,20,.6);
-  overflow: hidden;
-}
-.m-belly {
-  position: absolute;
-  left: 26%; right: 26%; bottom: 6%;
-  height: 30%;
-  border-radius: 40% 40% 46% 46%;
-  background: linear-gradient(180deg, rgba(255,249,236,.75), rgba(255,236,210,.92));
-}
-.m-eye {
-  position: absolute;
-  top: 24%;
-  width: 26rpx; height: 26rpx;
-  border-radius: 50%;
-  background: #FFF9F0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: inset 0 -3rpx 5rpx rgba(120,60,20,.2);
-}
-.m-eye.l { left: 16%; }
-.m-eye.r { right: 16%; }
-.m-pupil {
-  width: 13rpx; height: 13rpx;
-  border-radius: 50%;
-  background: #4A3524;
-  box-shadow: inset 3rpx -3rpx 0 rgba(255,255,255,.5);
-}
-.m-beak {
-  position: absolute;
-  left: 50%;
-  top: 54%;
-  margin-left: -10rpx;
-  width: 0; height: 0;
-  border-left: 10rpx solid transparent;
-  border-right: 10rpx solid transparent;
-  border-top: 15rpx solid #FFC24A;
-  filter: drop-shadow(0 2rpx 0 rgba(150,90,10,.45));
+  0%, 100% { transform: rotate(-3.5deg) translateY(0); }
+  50%      { transform: rotate(-1deg) translateY(-10rpx); }
 }

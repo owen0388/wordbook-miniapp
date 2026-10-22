@@ -64,19 +64,21 @@
 .sk { font-size: 18rpx; font-weight: 800; color: #FFF1DC; text-shadow: 0 2rpx 0 rgba(110,24,10,.5); }
 .sk-num { font-size: 29rpx; font-weight: 900; color: var(--btn-yellow-num); margin: 0 3rpx; }
 
-/* --- 吉祥物：压在日期条上沿 --- */
+/* --- 吉祥物：贴在红色正面板右侧、标题旁边 ---
+ * 位置按 390px 设计稿换算：top 168px / right 20px / 宽 120px
+ * ×1.923 → 323rpx / 38rpx / 231rpx。宽度由 .mascot 给（240rpx），
+ * 这里只管摆位，别在这里覆写宽度。 */
 .hero > .hero-pup {
-  right: 31rpx;
-  top: 15rpx;
+  right: 38rpx;
+  top: 322rpx;
   z-index: 6;
-  filter: drop-shadow(0 10rpx 13rpx rgba(120,75,0,.32));
 }
 
 /* --- 标题 --- */
 .hero > .hero-h1 {
   left: 35rpx;
   top: 331rpx;
-  right: 190rpx;
+  right: 290rpx;
   font-size: 46rpx;
   font-weight: 900;
   line-height: 1.24;

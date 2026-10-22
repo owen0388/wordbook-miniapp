@@ -219,6 +219,25 @@ const dict = path.join(ROOT, 'assets', 'dict', 'bundle.js');
 if (!fs.existsSync(dict)) err('缺少词库产物 assets/dict/bundle.js');
 else ok('词库产物存在');
 
+// WXML 里写的 /assets/... 图片必须真实存在，否则真机上只是一块空白，
+// 控制台也不会报错（和之前 require 路径写错整页白屏是同一类隐形故障）
+let imgRefs = 0;
+const imgRe = /src\s*=\s*"(\/assets\/[^"{}]+)"/g;
+wxmlFiles.forEach((f) => {
+  const file = path.isAbsolute(f) ? f : path.join(ROOT, f);
+  const src = fs.readFileSync(file, 'utf8');
+  let m;
+  imgRe.lastIndex = 0;
+  while ((m = imgRe.exec(src))) {
+    imgRefs++;
+    const rel = m[1].replace(/^\//, '');
+    if (!fs.existsSync(path.join(ROOT, rel))) {
+      err(path.basename(f) + ' 引用的图片不存在：' + m[1]);
+    }
+  }
+});
+if (imgRefs) ok(imgRefs + ' 处 /assets 图片引用全部存在');
+
 /* ---------- 汇总 ---------- */
 console.log('\n' + '='.repeat(44));
 console.log('通过检查 ' + checks + ' 项 · 警告 ' + warns + ' 项 · 错误 ' + errors + ' 项');
