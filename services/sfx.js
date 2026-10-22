@@ -20,11 +20,13 @@
  *      → 这个代码救不了，只能提示用户；因此额外配了震动反馈做兜底
  */
 
-/* 每种音效的实例数。总数控制在 6 个以内：
+/* 每种音效的实例数。现在共 7 个：
  * innerAudioContext 同时存在的实例数在部分机型上有上限（约 10 个），
- * 单词朗读还要占 1 个，留足余量。 */
+ * 单词朗读还要占 1 个，7 + 1 = 8 仍有 2 个余量，别再往上加。
+ * 只有 correct / wrong 需要 2 个（连续答题时要能叠着放）。 */
 const POOL = {
   tap: 1,
+  pup: 1,
   correct: 2,
   wrong: 2,
   finish: 1
@@ -32,6 +34,7 @@ const POOL = {
 
 const SRC = {
   tap: '/assets/sfx/tap.mp3',
+  pup: '/assets/sfx/pup.mp3',
   correct: '/assets/sfx/correct.mp3',
   wrong: '/assets/sfx/wrong.mp3',
   finish: '/assets/sfx/finish.mp3'
@@ -154,6 +157,11 @@ function tap() {
   play('tap');
 }
 
+/** 柯基被戳一下的回应。刻意不配震动：它只是"摸了一下狗"，不该有答题那种反馈强度 */
+function pup() {
+  play('pup');
+}
+
 function finish() {
   play('finish');
 }
@@ -177,6 +185,7 @@ module.exports = {
   correct,
   wrong,
   tap,
+  pup,
   finish,
   vibrate,
   destroy

@@ -14,6 +14,8 @@
 
 音色设计（与浏览器预览版保持同一套听感）：
   tap     1046Hz 极短"哒"，音量最小 —— 只做触感确认，不参与信息表达
+  pup     784→1046Hz 两声短促上滑，音量压在中档 —— 柯基被戳时的回应
+          （刻意比 correct 少一个音、更低更轻，避免和"答对"混淆）
   correct 659→880→1175Hz 上行三音，像小铃铛滚下来 —— 奖励感
   wrong   311→233Hz 下行两音，三角波，刻意更轻更短 —— 答错时孩子已经紧张，不能再施压
   finish  523/659/784/1046 琶音 + 高音点缀 —— 完成感
@@ -148,6 +150,14 @@ def main():
     mix(buf, tone(1046.5, 0.07, amp=0.55, attack=0.001, decay=0.28), 0)
     mix(buf, click(0.028, amp=0.22), 0)
     total += build('tap', buf, peak=0.62)
+
+    # pup：柯基被戳时的回应。两个音、更快、更轻 —— 和 correct 的三音区别开，
+    # 孩子不会把"戳狗"误听成"答对了"
+    buf = blank(0.26)
+    mix(buf, tone(783.99, 0.09, amp=0.50, attack=0.002, decay=0.34), 0.000)
+    mix(buf, tone(1046.50, 0.14, amp=0.46, decay=0.42), 0.062)
+    mix(buf, click(0.02, amp=0.10), 0.000)
+    total += build('pup', buf, peak=0.55)
 
     # correct：E5 → A5 → D6，三音上行
     buf = blank(0.42)

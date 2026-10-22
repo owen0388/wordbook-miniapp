@@ -209,11 +209,11 @@ ok(requireCount + ' 条相对 require 路径有效');
 
 /* ---------- 6. 音效资源 ---------- */
 console.log('\n[6] 资源完整性');
-['tap', 'correct', 'wrong', 'finish'].forEach((n) => {
+['tap', 'pup', 'correct', 'wrong', 'finish'].forEach((n) => {
   const f = path.join(ROOT, 'assets', 'sfx', n + '.mp3');
   if (!fs.existsSync(f)) err('缺少音效 assets/sfx/' + n + '.mp3（运行 node scripts/build-sfx 前需先跑 build-sfx.py）');
 });
-if (fs.existsSync(path.join(ROOT, 'assets', 'sfx'))) ok('4 个答题音效齐全');
+if (fs.existsSync(path.join(ROOT, 'assets', 'sfx'))) ok('5 个音效齐全');
 
 const dict = path.join(ROOT, 'assets', 'dict', 'bundle.js');
 if (!fs.existsSync(dict)) err('缺少词库产物 assets/dict/bundle.js');

@@ -339,6 +339,13 @@ check('总体统计有词库总量', user.getOverallStats().totalLibrary > 0);
 const overall = user.getOverallStats();
 check('已学单词数 > 0', overall.learned > 0);
 
+/* ---------- 6b. 吉祥物 ---------- */
+/* 打招呼是"一天只主动说一次"，标记写坏了会变成每次进首页都说话，
+ * 孩子几分钟内就会觉得烦。这里把"第二次必须返回 false"钉死。 */
+section('6b. 吉祥物');
+check('当天第一次会打招呼', user.greetPupOnce() === true);
+check('同一天第二次不再主动说话', user.greetPupOnce() === false);
+
 /* ---------- 7. 发音音频 ---------- */
 /* 音频是按教材预生成后打进包的，加教材时最容易忘的一步就是没跑 build-audio.py，
  * 结果界面上有喇叭但点了没声音。这里在数据层直接拦住。 */

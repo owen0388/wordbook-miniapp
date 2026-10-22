@@ -20,8 +20,19 @@
       <view class="sk">连续 <text class="sk-num">{{overall.streak}}</text> 天</view>
     </view>
 
-    <!-- 吉祥物：柯基豆豆（透明底位图，贴在红色正面板上） -->
-    <image class="mascot hero-pup" src="/assets/images/mascot-corgi.png" mode="widthFix" />
+    <!-- 吉祥物：柯基豆豆。点一下会跳、会说话；连点三下冒爱心 -->
+    <view class="hero-pup" bindtap="onPupTap" hover-class="none" hover-stop-propagation>
+      <image
+        class="mascot {{pupHop ? 'pup-hop' : ''}}"
+        src="/assets/images/mascot-corgi.png"
+        mode="widthFix" />
+      <view class="pup-say" wx:if="{{pupLine}}">{{pupLine}}</view>
+      <block wx:if="{{pupLove}}">
+        <text class="pup-heart h1">♥</text>
+        <text class="pup-heart h2">♥</text>
+        <text class="pup-heart h3">♥</text>
+      </block>
+    </view>
 
     <view class="hero-h1 sticker sticker-lg">
       {{doneToday ? '今天已通关' : '今天也要'}}<text class="hero-h1-b">{{doneToday ? '真棒！' : '记单词！'}}</text>

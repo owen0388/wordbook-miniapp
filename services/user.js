@@ -351,6 +351,22 @@ function toggleFavorite(wordId) {
   return i < 0;
 }
 
+/* ============ 吉祥物 ============ */
+
+/**
+ * 柯基每天第一次被看到时打个招呼，返回 true 表示"今天还没打过"。
+ * 存在 META 里而不是新开一个 key：这条只是个小标记，不值得占一个存储槽。
+ * 一天只打一次 —— 每次进首页都说话会变成干扰，孩子很快就烦了。
+ */
+function greetPupOnce() {
+  const meta = storage.get(K.META, {});
+  const t = today();
+  if (meta.pupGreet === t) return false;
+  meta.pupGreet = t;
+  storage.set(K.META, meta);
+  return true;
+}
+
 module.exports = {
   // 书架
   getBookshelf, isInShelf, addBook, removeBook, setPrimary, moveBook, getPrimaryBook,
@@ -366,5 +382,7 @@ module.exports = {
   // 复习明细（FSRS 数据基础）
   addReviewLog, getReviewLogs, listReviewLogMonths, countReviewLogs,
   // 收藏
-  getFavorites, toggleFavorite
+  getFavorites, toggleFavorite,
+  // 吉祥物
+  greetPupOnce
 };

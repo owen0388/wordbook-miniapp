@@ -64,14 +64,84 @@
 .sk { font-size: 18rpx; font-weight: 800; color: #FFF1DC; text-shadow: 0 2rpx 0 rgba(110,24,10,.5); }
 .sk-num { font-size: 29rpx; font-weight: 900; color: var(--btn-yellow-num); margin: 0 3rpx; }
 
-/* --- 吉祥物：贴在红色正面板右侧、标题旁边 ---
- * 位置按 390px 设计稿换算：top 168px / right 20px / 宽 120px
- * ×1.923 → 323rpx / 38rpx / 231rpx。宽度由 .mascot 给（240rpx），
- * 这里只管摆位，别在这里覆写宽度。 */
+/* --- 吉祥物：坐在红色正面板右下角，头压住日期条下沿 ---
+ * 尺寸由 .mascot 给（app.wxss），这里只管摆位与交互。
+ * 图是竖构图（160×255），所以用 bottom 定位而不是 top —— 从底边长上去，
+ * 换手机或改尺寸都不会跑到面板外面。 */
 .hero > .hero-pup {
-  right: 38rpx;
-  top: 322rpx;
+  position: absolute;
+  right: 22rpx;
+  bottom: 8rpx;
   z-index: 6;
+}
+
+/* 点一下：压缩 → 弹起 → 落回，保留倾角。用 animation 不用 transition，
+ * 因为要"点完自动回到待机"，靠定时器摘类名恢复缓慢浮动 */
+.mascot.pup-hop {
+  animation: pupHop .52s var(--spring) both;
+}
+@keyframes pupHop {
+  0%   { transform: rotate(-3.5deg) translateY(0) scale(1, 1); }
+  26%  { transform: rotate(2deg) translateY(3rpx) scale(1.05, .93); }
+  62%  { transform: rotate(-5deg) translateY(-26rpx) scale(.97, 1.04); }
+  100% { transform: rotate(-3.5deg) translateY(0) scale(1, 1); }
+}
+
+/* 说话气泡：从狗头顶冒出来，右对齐，往下指的小尾巴
+ * 位置在日期条那一段的高度上，只在说话的 2.6 秒里遮住"连续 N 天"，可以接受 */
+.pup-say {
+  position: absolute;
+  right: 6rpx;
+  bottom: 100%;
+  margin-bottom: 10rpx;
+  width: 268rpx;             /* 绝对定位元素的 shrink-to-fit 会缩到很窄，必须给死宽度 */
+  padding: 12rpx 18rpx;
+  border-radius: 20rpx;
+  background: #FFF9EC;
+  color: var(--ink);
+  font-size: 22rpx;
+  font-weight: 800;
+  line-height: 1.45;
+  white-space: normal;
+  box-shadow: 0 6rpx 0 rgba(150, 90, 20, .22), 0 12rpx 20rpx -10rpx rgba(90, 40, 0, .45);
+  animation: sayIn .22s var(--spring) both;
+  z-index: 2;
+}
+/* 气泡尾巴：指向右下（狗的头顶） */
+.pup-say::after {
+  content: '';
+  position: absolute;
+  right: 62rpx;
+  bottom: -14rpx;
+  width: 0;
+  height: 0;
+  border-left: 12rpx solid transparent;
+  border-right: 12rpx solid transparent;
+  border-top: 16rpx solid #FFF9EC;
+  filter: drop-shadow(0 3rpx 0 rgba(150, 90, 20, .18));
+}
+@keyframes sayIn {
+  from { opacity: 0; transform: translateY(10rpx) scale(.9); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 爱心：连点三下时冒三颗，向上飘散 */
+.pup-heart {
+  position: absolute;
+  right: 58rpx;
+  bottom: 88%;
+  font-size: 30rpx;
+  color: #FF5C7A;
+  text-shadow: 0 2rpx 0 rgba(255, 255, 255, .8);
+  animation: heartUp .95s ease-out both;
+  pointer-events: none;
+}
+.pup-heart.h2 { right: 26rpx; font-size: 24rpx; animation-delay: .08s; }
+.pup-heart.h3 { right: 92rpx; font-size: 21rpx; animation-delay: .16s; }
+@keyframes heartUp {
+  0%   { opacity: 0; transform: translateY(0) scale(.55); }
+  22%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-104rpx) scale(1.15); }
 }
 
 /* --- 标题 --- */

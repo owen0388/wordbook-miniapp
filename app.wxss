@@ -634,20 +634,21 @@ page {
 }
 
 /* ===================== 吉祥物：柯基豆豆 =====================
- * 位图：assets/images/mascot-corgi.png（138×125 原图，已抠成透明底）。
- * 为什么不再用纯 CSS 画：这是指定的角色形象，毛色分层、眼睛高光、舌头
- * 这些细节用 CSS 画不出来。图片本身做了两件事：
- *   1) 背景米白纸纹 + 身下冷灰投影一起抠掉（否则贴在红积木上会有一圈亮边）
- *   2) 边缘向外收 1px 再羽化，避免混色过渡残留成描边
- * 显示宽度 240rpx ≈ 手机 120px，2 倍屏下 240 设备像素，源图 138px 略有放大，
- * 但在这个尺寸肉眼可接受；再放大就需要更高分辨率的原图了。
+ * 位图：assets/images/mascot-corgi.png（160×255，透明底 + 2px 白描边）。
+ *
+ * 为什么加白描边：狗的毛色和背景白几乎同色（239~251 的暖白），软边过渡
+ * 用色差切不掉，切完会留一圈浅色晕。给一圈白边，把"晕"变成有意的贴纸边，
+ * 和全站 .sticker 文字描边是同一套视觉语言。
+ *
+ * 尺寸：宽 188rpx ≈ 手机 94px，2 倍屏 188 设备像素 ≈ 源图 160px 的 1.17 倍，
+ * 基本 1:1，不发虚。
  */
 .mascot {
-  width: 240rpx;
-  height: 218rpx;
-  flex: none;
+  display: block;
+  width: 188rpx;
+  height: 300rpx;
   animation: mascotBob 4.2s ease-in-out infinite;
-  filter: drop-shadow(0 10rpx 12rpx rgba(120, 60, 10, .34));
+  filter: drop-shadow(0 10rpx 12rpx rgba(120, 60, 10, .3));
 }
 @keyframes mascotBob {
   0%, 100% { transform: rotate(-3.5deg) translateY(0); }
