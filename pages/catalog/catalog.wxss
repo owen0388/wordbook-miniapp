@@ -84,12 +84,6 @@
 .sec-link { font-size: 22rpx; font-weight: 800; color: var(--accent-deep); }
 
 /* --- 卡片 --- */
-.plate {
-  margin-top: 40rpx;
-  margin-bottom: 32rpx;
-  padding: 32rpx 6.5% 6.5%;
-}
-
 /* --- 搜索结果行 --- */
 .sr {
   display: flex;

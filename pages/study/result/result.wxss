@@ -98,12 +98,6 @@
 }
 
 /* --- 内容卡片 --- */
-.plate {
-  margin-top: 40rpx;
-  margin-bottom: 32rpx;
-  padding: 32rpx 6.5% 6.5%;
-}
-
 .acc {
   font-size: 44rpx;
   font-weight: 900;

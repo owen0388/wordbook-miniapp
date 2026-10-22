@@ -1,11 +1,5 @@
 /* ============ 学习记录 · 积木世界 ============ */
 
-.plate {
-  margin-top: 40rpx;
-  margin-bottom: 32rpx;
-  padding: 32rpx 6.5% 6.5%;
-}
-
 .sec-head {
   display: flex;
   align-items: center;

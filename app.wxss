@@ -26,6 +26,17 @@ page {
   --brown-c:#B0703C;  --brown-ft:#E8C49A;--brown-fb:#CC9462; --brown-fb2:#B77C48;--brown-sd:#7A4A22;--brown-e:rgba(74,40,12,.92);
 
   /* 文字与辅助 */
+  /* 卡片留白（2026-10-22 统一）：
+   * --frame = 内框线距卡片外缘；--pad-x/t/b = 内容内边距。
+   * 必须满足 pad > frame，否则文字会压在内框线上 —— 之前 pad-x 是 6.5%、内框 5.5%，
+   * 只差 7rpx，看起来就是"标题贴着框"。现在 pad-x = frame + 32rpx。
+   */
+  --frame: 38rpx;
+  --gut: 32rpx;
+  --pad-x: 70rpx;
+  --pad-t: 60rpx;
+  --pad-b: 64rpx;
+
   --ink: #4A3524;             /* 主文字：深棕，不用纯黑 */
   --ink-2: #7A5732;
   --ink-3: #8A6A48;
@@ -148,7 +159,7 @@ page {
  */
 .brick {
   position: relative;
-  padding: 35rpx 6.5% 6.5%;
+  padding: var(--pad-t) var(--pad-x) var(--pad-b);
   border-radius: 38rpx / 14%;
   background-image: linear-gradient(180deg, var(--ft) 0 22%, var(--fb) 55%, var(--fb2) 100%);
   box-shadow:
@@ -161,8 +172,8 @@ page {
   content: "";
   position: absolute;
   z-index: 1;
-  left: 5.5%; right: 5.5%;
-  top: 25rpx; bottom: 5.5%;
+  left: var(--frame); right: var(--frame);
+  top: 25rpx; bottom: var(--frame);
   border-radius: 0 0 17rpx 17rpx / 0 0 12% 12%;
   background: var(--c);
   box-shadow: inset 0 0 0 3rpx var(--e);
@@ -255,7 +266,7 @@ page {
   position: relative;
   margin-top: 26rpx;
   margin-bottom: 26rpx;
-  padding: 35rpx 6.5% 6.5%;
+  padding: var(--pad-t) var(--pad-x) var(--pad-b);
   border-radius: 38rpx / 14%;
   --c: var(--cream-c); --ft: var(--cream-ft); --fb: var(--cream-fb);
   --fb2: var(--cream-fb2); --sd: var(--cream-sd); --e: var(--cream-e);
@@ -271,8 +282,8 @@ page {
   content: "";
   position: absolute;
   z-index: 1;
-  left: 5.5%; right: 5.5%;
-  top: 25rpx; bottom: 5.5%;
+  left: var(--frame); right: var(--frame);
+  top: 25rpx; bottom: var(--frame);
   border-radius: 0 0 17rpx 17rpx / 0 0 12% 12%;
   background: var(--c);
   box-shadow: inset 0 0 0 3rpx var(--e);
@@ -415,6 +426,15 @@ page {
   box-shadow: inset 0 0 0 3rpx rgba(150,40,20,.2), 0 0 0 6rpx rgba(150,40,20,.85), 0 2rpx 0 #C4785C;
 }
 
+/* --- .plate → 内容卡片（卡片本体，只补外边距） ---
+ * 之前每个页面各写一份完全相同的 `.plate { margin; padding }`，
+ * 调留白要改 7 个文件。统一收在这里，页面不再覆写 padding。
+ */
+.plate {
+  margin-top: 40rpx;
+  margin-bottom: 32rpx;
+}
+
 /* --- .tag → 小号 chip --- */
 .tag {
   display: inline-block;
@@ -441,7 +461,7 @@ page {
 .stat {
   flex: 1;
   position: relative;
-  padding: 22rpx 8rpx 18rpx;
+  padding: 28rpx 18rpx 24rpx;
   border-radius: 30rpx / 16%;
   text-align: center;
   --c: var(--red-c); --ft: var(--red-ft); --fb: var(--red-fb);
@@ -453,7 +473,7 @@ page {
   content: "";
   position: absolute;
   z-index: 1;
-  left: 5.5%; right: 5.5%; top: 15rpx; bottom: 5.5%;
+  left: 14rpx; right: 14rpx; top: 16rpx; bottom: 14rpx;
   border-radius: 0 0 13rpx 13rpx / 0 0 12% 12%;
   background: var(--c);
   box-shadow: inset 0 0 0 3rpx var(--e);
@@ -464,10 +484,11 @@ page {
 .stat > .studs { position: absolute; z-index: 3; }
 .stat-num {
   font-family: var(--font-display);
-  font-size: 46rpx;
+  font-size: 42rpx;
   font-weight: 900;
   color: #fff;
   line-height: 1.05;
+  white-space: nowrap;    /* 数字绝不能折行，否则三连块高度会跳 */
   font-variant-numeric: tabular-nums;
   --sk: #6B2408;
   text-shadow: -1.5rpx -1.5rpx 0 var(--sk), 1.5rpx -1.5rpx 0 var(--sk), -1.5rpx 1.5rpx 0 var(--sk), 1.5rpx 1.5rpx 0 var(--sk), 0 3rpx 0 rgba(110,24,10,.45);
@@ -478,7 +499,8 @@ page {
   font-size: 21rpx;
   font-weight: 800;
   color: #FFF1DC;
-  margin-top: 6rpx;
+  margin-top: 8rpx;
+  white-space: nowrap;
   --sk: none;
   text-shadow: 0 1.5rpx 0 rgba(110,24,10,.55);
 }

@@ -210,12 +210,6 @@
 }
 
 /* --- 内容卡片：给顶部凸点留 40rpx --- */
-.plate {
-  margin-top: 40rpx;
-  margin-bottom: 32rpx;
-  padding: 32rpx 6.5% 6.5%;
-}
-
 /* --- 区块标题 --- */
 .sec-head {
   display: flex;
@@ -243,7 +237,7 @@
 
 /* --- 已完成态 --- */
 .done-box {
-  padding: 26rpx 22rpx;
+  padding: 28rpx 26rpx;
   border-radius: 26rpx;
   background: rgba(255,249,236,.6);
   box-shadow: inset 0 0 0 3rpx rgba(140,88,20,.28);
